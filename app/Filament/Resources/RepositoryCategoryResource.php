@@ -1,0 +1,229 @@
+<?php
+
+namespace App\Filament\Resources;
+
+use App\Filament\Resources\RepositoryCategoryResource\Pages;
+use App\Models\RepositoryCategory;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Table;
+
+class RepositoryCategoryResource extends Resource
+{
+    protected static ?string $model = RepositoryCategory::class;
+
+    protected static ?string $navigationIcon = 'heroicon-o-folder-open';
+    protected static ?string $navigationGroup = 'Repositorio';
+    protected static ?int $navigationSort = 1;
+
+    private static function userCanList(): bool
+    {
+        $user = auth()->user();
+        if (!$user) return false;
+        return $user->can('listRepositoryCategories') || $user->hasRole('SuperAdmin');
+    }
+
+    private static function userCanCreate(): bool
+    {
+        $user = auth()->user();
+        if (!$user) return false;
+        return $user->can('createRepositoryCategory') || $user->hasRole('SuperAdmin');
+    }
+
+    private static function userCanEdit(): bool
+    {
+        $user = auth()->user();
+        if (!$user) return false;
+        return $user->can('editRepositoryCategory') || $user->hasRole('SuperAdmin');
+    }
+
+    private static function userCanDelete(): bool
+    {
+        $user = auth()->user();
+        if (!$user) return false;
+        return $user->can('deleteRepositoryCategory') || $user->hasRole('SuperAdmin');
+    }
+
+    public static function canViewAny(): bool
+    {
+        return static::userCanList();
+    }
+
+    public static function canCreate(): bool
+    {
+        return static::userCanCreate();
+    }
+
+    public static function canEdit($record): bool
+    {
+        return static::userCanEdit();
+    }
+
+    public static function canDelete($record): bool
+    {
+        return static::userCanDelete();
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return static::canViewAny();
+    }
+
+    public static function getModelLabel(): string
+    {
+        return 'Categoría de Repositorio';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Categorías de Repositorio';
+    }
+
+    public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Section::make('Información de la Categoría')
+                    ->description('Datos de la categoría del repositorio')
+                    ->icon('heroicon-o-folder-open')
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->label('Título')
+                            ->required()
+                            ->maxLength(255)
+                            ->placeholder('Ej: Guías de Salud, Manuales Educativos')
+                            ->prefixIcon('heroicon-o-bookmark'),
+
+                        Forms\Components\TextInput::make('order')
+                            ->label('Orden')
+                            ->numeric()
+                            ->default(0)
+                            ->required()
+                            ->prefixIcon('heroicon-o-arrows-up-down'),
+
+                        Forms\Components\Textarea::make('description')
+                            ->label('Descripción')
+                            ->rows(3)
+                            ->placeholder('Descripción de la categoría...')
+                            ->columnSpanFull(),
+                    ])->columns(2)->collapsible(),
+
+                Forms\Components\Section::make('Imagen')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Imagen de la Categoría')
+                            ->image()
+                            ->imageEditor()
+                            ->directory('repository/categories')
+                            ->nullable(),
+                    ])->collapsible(),
+
+                Forms\Components\Section::make('Estado')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->schema([
+                        Forms\Components\Toggle::make('status')
+                            ->label('Categoría Activa')
+                            ->default(true)
+                            ->helperText('Si está activa, será visible en el repositorio'),
+                    ])->collapsible(),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('order')
+                    ->label('#')
+                    ->sortable()
+                    ->alignCenter(),
+
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Imagen')
+                    ->circular()
+                    ->size(40),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Título')
+                    ->searchable()
+                    ->sortable()
+                    ->weight('bold'),
+
+                Tables\Columns\TextColumn::make('documents_count')
+                    ->label('Documentos')
+                    ->counts('documents')
+                    ->badge()
+                    ->color('info'),
+
+                Tables\Columns\IconColumn::make('status')
+                    ->label('Estado')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Creado')
+                    ->dateTime('d/m/Y')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+            ])
+            ->defaultSort('order', 'asc')
+            ->reorderable('order')
+            ->filters([
+                Tables\Filters\TernaryFilter::make('status')
+                    ->label('Estado')
+                    ->boolean()
+                    ->trueLabel('Activas')
+                    ->falseLabel('Inactivas')
+                    ->placeholder('Todas'),
+            ])
+            ->actions([
+                Tables\Actions\ViewAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-eye')
+                    ->tooltip('Ver detalles')
+                    ->visible(fn() => static::userCanList()),
+
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-pencil-square')
+                    ->tooltip('Editar categoría')
+                    ->visible(fn() => static::userCanEdit()),
+
+                Tables\Actions\DeleteAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->tooltip('Eliminar categoría')
+                    ->requiresConfirmation()
+                    ->modalHeading('¿Eliminar categoría?')
+                    ->modalDescription('Se eliminarán también todos los documentos asociados.')
+                    ->visible(fn() => static::userCanDelete()),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->visible(fn() => static::userCanDelete()),
+                ]),
+            ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [];
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListRepositoryCategories::route('/'),
+            'create' => Pages\CreateRepositoryCategory::route('/create'),
+            'edit' => Pages\EditRepositoryCategory::route('/{record}/edit'),
+        ];
+    }
+}
