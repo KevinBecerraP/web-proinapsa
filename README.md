@@ -1,29 +1,81 @@
 # Instituto Proinapsa — CMS
 
-Sistema de gestión de contenido (CMS) para el sitio web institucional del Instituto Proinapsa. Desarrollado con Laravel 10 y el panel de administración Filament 3. Permite gestionar toda la información del sitio web: páginas institucionales, noticias, cursos, publicaciones, repositorio de documentos, banners, testimonios y más.
+![PHP](https://img.shields.io/badge/PHP-8.1+-777BB4?style=flat&logo=php&logoColor=white)
+![Laravel](https://img.shields.io/badge/Laravel-10-FF2D20?style=flat&logo=laravel&logoColor=white)
+![Filament](https://img.shields.io/badge/Filament-3.x-F59E0B?style=flat&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-8.0+-4479A1?style=flat&logo=mysql&logoColor=white)
+![Licencia](https://img.shields.io/badge/Licencia-Uso_Interno-6B7280?style=flat)
+
+Sistema de gestión de contenido **(CMS)** para el sitio web institucional del **Instituto Proinapsa**. Desarrollado con **Laravel 10** y el panel administrativo **Filament 3**, centraliza la gestión de todo el contenido del sitio desde un único panel: páginas institucionales, noticias, cursos, publicaciones, repositorio de documentos, banners, testimonios y más.
+
+---
+
+## Tabla de contenido
+
+- [Stack tecnológico](#stack-tecnológico)
+- [Módulos del CMS](#módulos-del-cms)
+- [Requisitos previos](#requisitos-previos)
+- [Instalación](#instalación)
+- [Estructura de directorios](#estructura-de-directorios)
+- [Arquitectura del panel (Filament)](#arquitectura-del-panel-filament)
+- [Patrones de diseño](#patrones-de-diseño)
+- [Base de datos](#base-de-datos)
+- [Grupos de navegación del panel](#grupos-de-navegación-del-panel)
+- [Sistema de roles y permisos](#sistema-de-roles-y-permisos)
+- [Seeders](#seeders)
+- [Comandos útiles](#comandos-útiles)
 
 ---
 
 ## Stack tecnológico
 
-| Capa | Tecnología | Versión |
-|---|---|---|
-| Backend | Laravel | ^10.10 |
-| Lenguaje | PHP | ^8.1 |
-| Panel admin | Filament | ~3.3 |
-| Base de datos | MySQL | — |
-| Autenticación API | Laravel Sanctum | ^3.3 |
-| Roles y permisos | Spatie Roles & Permissions (integración Filament) | ^2.3 |
-| Assets | Vite + Tailwind CSS | — |
+| Capa | Tecnología | Versión | Descripción |
+|:---|:---|:---:|:---|
+| Backend | [Laravel](https://laravel.com) | ^10.10 | Framework PHP principal |
+| Lenguaje | PHP | ^8.1 | Requisito mínimo del servidor |
+| Panel admin | [Filament](https://filamentphp.com) | ~3.3 | Panel de administración visual |
+| Base de datos | MySQL | ≥ 8.0 | Motor de base de datos relacional |
+| Autenticación API | Laravel Sanctum | ^3.3 | Tokens para integración con el frontend |
+| Roles y permisos | Spatie Roles & Permissions | ^2.3 | Control de acceso granular con integración Filament |
+| Assets | Vite + Tailwind CSS | — | Compilación y estilos del panel |
+
+---
+
+## Módulos del CMS
+
+El sistema cuenta con **18 módulos** de gestión de contenido. La siguiente tabla resume sus capacidades:
+
+| Módulo | Tabla | Límite | Reordenable | Estado | Imágenes / Archivos | Auditoría | Soft Delete |
+|:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
+| Empresa | `companies` | Singleton | — | — | Sí | — | — |
+| Equipo | `teams` | — | — | Sí | Sí | — | — |
+| Áreas | `areas` | 3 | Sí | Sí | — | Sí | — |
+| Valores Corporativos | `values` | — | Sí | Sí | — | — | — |
+| Testimonios | `testimonials` | — | Sí | Sí | — | Sí | — |
+| Noticias | `news` | — | Sí | Sí | Sí | Sí | — |
+| Banners | `banners` | — | Sí | Sí | Sí | — | — |
+| Tarjetas Home | `home_cards` | 6 | Sí | Sí | PDF / URL | — | — |
+| Educación Formal | `formal_education_sections` | — | Sí | Sí | Sí | Sí | — |
+| Cursos | `courses` | — | Sí | 3 estados | Sí | Sí | Sí |
+| Materiales Educativos | `educational_materials` | — | Sí | Sí | Sí | Sí | — |
+| Publicaciones | `publications` | — | Sí | Sí | Sí | Sí | — |
+| Grupo de Investigación | `research_group` | Singleton | — | Sí | — | Sí | — |
+| Categorías de Salud | `health_promotion_categories` | 4 | Sí | Sí | Sí | Sí | — |
+| Ítems de Salud | `health_promotion_items` | — | Sí | Sí | — | Sí | — |
+| Categorías de Repositorio | `repository_categories` | — | Sí | Sí | Sí | — | — |
+| Documentos de Repositorio | `repository_documents` | — | Sí | Sí | PDF | — | — |
+| Recursos Institucionales | `institutional_resources` | — | Sí | Sí | Sí | Sí | Sí |
 
 ---
 
 ## Requisitos previos
 
-- PHP >= 8.1
-- Composer
-- Node.js >= 18
-- MySQL >= 8.0
+| Requisito | Versión mínima | Notas |
+|:---|:---:|:---|
+| PHP | 8.1 | Extensiones requeridas: `mbstring`, `xml`, `curl`, `pdo_mysql` |
+| Composer | 2.x | Gestión de dependencias PHP |
+| Node.js | 18 | Compilación de assets con Vite |
+| MySQL | 8.0 | Motor de base de datos relacional |
 
 ---
 
@@ -68,7 +120,7 @@ php artisan make:filament-user
 php artisan serve
 ```
 
-El panel de administración queda disponible en `/admin`.
+> El panel de administración queda disponible en **`http://localhost:8000/admin`**.
 
 ---
 
@@ -78,7 +130,7 @@ El panel de administración queda disponible en `/admin`.
 institutoproinapsa-cms/
 ├── app/
 │   ├── Filament/
-│   │   └── Resources/              → Un Resource por módulo
+│   │   └── Resources/              ← Un Resource por módulo
 │   │       ├── AreaResource.php
 │   │       ├── BannerResource.php
 │   │       ├── CompanyResource.php
@@ -100,11 +152,11 @@ institutoproinapsa-cms/
 │   │       ├── ValuesResource.php
 │   │       └── [NombreResource]/
 │   │           └── Pages/
-│   │               ├── ListXxx.php      → Tabla de listado
-│   │               ├── CreateXxx.php    → Formulario de creación
-│   │               └── EditXxx.php      → Formulario de edición
+│   │               ├── ListXxx.php       ← Tabla de listado
+│   │               ├── CreateXxx.php     ← Formulario de creación
+│   │               └── EditXxx.php       ← Formulario de edición
 │   │
-│   └── Models/                     → Modelos Eloquent
+│   └── Models/                     ← Modelos Eloquent
 │       ├── Area.php
 │       ├── Banner.php
 │       ├── Company.php
@@ -125,13 +177,13 @@ institutoproinapsa-cms/
 │       └── Values.php
 │
 ├── database/
-│   ├── migrations/                 → Una migración por tabla/alteración
+│   ├── migrations/                 ← Una migración por tabla/alteración
 │   └── seeders/
 │       ├── AreaSeeder.php
 │       ├── HealthPromotionCategorySeeder.php
 │       └── DatabaseSeeder.php
 │
-└── storage/app/public/             → Archivos subidos (imágenes, PDFs)
+└── storage/app/public/             ← Archivos subidos (imágenes, PDFs)
     ├── banners/
     ├── company/
     ├── courses/
@@ -146,30 +198,30 @@ institutoproinapsa-cms/
 
 ---
 
-## Cómo funciona Filament (arquitectura del panel)
+## Arquitectura del panel (Filament)
 
-Cada módulo del CMS se compone de tres capas que trabajan juntas:
+Cada módulo del CMS se compone de **3 capas** que trabajan juntas:
 
-### 1. Modelo (`app/Models/`)
-Define la tabla de la base de datos, los campos editables (`$fillable`), los tipos de datos (`$casts`), las relaciones Eloquent y la lógica automática en `boot()`.
+| Capa | Archivo | Responsabilidad |
+|:---|:---|:---|
+| **Model** | `app/Models/Nombre.php` | Estructura de BD, reglas de negocio, relaciones Eloquent, lógica en `boot()` |
+| **Resource** | `app/Filament/Resources/NombreResource.php` | Define `form()`, `table()` y `getPages()` — qué puede hacer el módulo |
+| **Pages** | `Resources/NombreResource/Pages/*.php` | Controla cuándo y cómo se renderiza cada vista |
 
-### 2. Resource (`app/Filament/Resources/NombreResource.php`)
-Define **qué** se puede hacer con el módulo:
-- `form()` — Estructura del formulario para crear y editar registros (campos, validaciones, secciones)
-- `table()` — Columnas, filtros, acciones y ordenamiento del listado
-- `getPages()` — Qué rutas/páginas están disponibles para este módulo
+### Rutas generadas por módulo
 
-### 3. Pages (`app/Filament/Resources/NombreResource/Pages/`)
-Define **cuándo y cómo** se renderiza cada vista:
-- `ListXxx.php` — Tabla paginada con listado (`/admin/nombre`)
-- `CreateXxx.php` — Formulario vacío para nuevo registro (`/admin/nombre/create`)
-- `EditXxx.php` — Formulario con datos del registro existente (`/admin/nombre/{id}/edit`)
+| Página | Clase | Ruta |
+|:---|:---|:---|
+| Listado | `ListXxx.php` | `/admin/nombre` |
+| Crear | `CreateXxx.php` | `/admin/nombre/create` |
+| Editar | `EditXxx.php` | `/admin/nombre/{id}/edit` |
 
 ---
 
-## Patrones de diseño aplicados
+## Patrones de diseño
 
 ### Auto-orden con reorganización
+
 La mayoría de modelos asignan automáticamente el número de orden al crear un registro. Al eliminar, los órdenes restantes se reorganizan para mantener la secuencia sin huecos.
 
 ```php
@@ -184,56 +236,106 @@ static::deleted(function ($model) {
 });
 ```
 
-### Reordenamiento drag & drop
-Las tablas con `->reorderable('order')` permiten arrastrar filas para cambiar el orden visualmente. El query base siempre aplica `->getEloquentQuery()->ordered()` para que la tabla refleje el orden correcto.
+### Validaciones del campo `order`
+
+Todos los campos `order` del sistema siguen el mismo patrón de validación:
+
+| Regla | Detalle |
+|:---|:---|
+| Requerido | No puede quedar vacío |
+| Entero positivo | Solo valores > 0 (1, 2, 3…) |
+| Único | No puede repetirse con otro registro del mismo modelo |
+| Auto-asignado | Valor por defecto: `(max('order') ?? 0) + 1` |
+| Reordenable | Las tablas permiten drag & drop para cambiar el orden visualmente |
 
 ### Auditoría (created_by / updated_by)
-Los modelos con auditoría registran automáticamente qué usuario de sistema creó o modificó cada registro, capturado en el `boot()`:
 
 ```php
 static::creating(fn($m) => $m->created_by = auth()->id());
 static::updating(fn($m) => $m->updated_by = auth()->id());
 ```
 
-### Singleton (registro único)
-`ResearchGroup` solo puede tener un registro. Si se intenta crear un segundo, el `boot()` lanza una excepción. El resource también implementa `canCreate()` que devuelve `false` si ya existe uno.
+### Catálogo de patrones aplicados
 
-### Límite máximo de registros
-- `HomeCard`: máximo 6 tarjetas — `canCreate()` retorna `false` si ya hay 6
-- `Area`: máximo 3 áreas — `canCreate()` retorna `false` si ya hay 3
-- `HealthPromotionCategory`: máximo 4 categorías
-
-### Limpieza automática de archivos
-Los modelos `Company` y `News` (y otros) eliminan automáticamente del almacenamiento las imágenes antiguas cuando se actualiza o elimina un registro, usando los eventos `updating` y `deleting` del modelo.
-
-### Soft Deletes
-`Course` e `Institutional` usan `SoftDeletes`. Los registros eliminados no se borran físicamente de la base de datos; se marcan con el campo `deleted_at`. Permiten recuperación futura si fuera necesario.
-
-### Scopes Eloquent reutilizables
-Todos los modelos implementan:
-- `scopeActive($query)` — filtra registros con `active = true` (o `status = 'active'`)
-- `scopeOrdered($query)` — ordena por el campo `order` ascendente
-
-### Campos condicionales en formularios
-Algunos formularios muestran u ocultan campos según el valor de otro campo (usando `->live()` + `->visible(fn($get) => ...)`). Ejemplo: `Banner` muestra el selector de página solo cuando el tipo es `secondary`. `HomeCard` muestra el campo de archivo o URL según el tipo seleccionado.
-
-### Accessors dinámicos
-Algunos modelos tienen accessors que calculan valores sin columna en la base de datos. Ejemplo: `ResearchGroup::getTotalPublicationsAttribute()` cuenta las publicaciones activas del área en tiempo real.
+| Patrón | Descripción | Aplica a |
+|:---|:---|:---|
+| **Singleton** | Solo puede existir un registro. `canCreate()` retorna `false` si ya hay uno | `ResearchGroup`, `Company` |
+| **Límite máximo** | `canCreate()` retorna `false` al alcanzar el tope configurado | `HomeCard` (6), `Area` (3), `HealthPromotionCategory` (4) |
+| **Limpieza de archivos** | Elimina del storage archivos antiguos al actualizar o eliminar un registro | `Company`, `News` y otros |
+| **Soft Deletes** | Registros marcados con `deleted_at` en vez de borrarse físicamente | `Course`, `Institutional` |
+| **Campos condicionales** | Campos que se muestran u ocultan según el valor de otro (`->live()` + `->visible()`) | `Banner` (página por tipo), `HomeCard` (PDF vs URL) |
+| **Accessors dinámicos** | Valores calculados sin columna en base de datos | `ResearchGroup::getTotalPublicationsAttribute()` |
+| **Reordenamiento drag & drop** | `->reorderable('order')` con `getEloquentQuery()->ordered()` | Todos los módulos con campo `order` |
 
 ---
 
-## Base de datos — todas las tablas
+## Base de datos
 
-### `users`
-Tabla estándar de Laravel. Almacena los usuarios del panel de administración. Se extiende con roles y permisos de Spatie.
+### Diagrama de relaciones
+
+```
+users
+ ├── areas                          (created_by, updated_by)
+ ├── testimonials                   (created_by, updated_by)
+ ├── news                           (created_by, updated_by)
+ ├── formal_education_sections      (created_by, updated_by)
+ ├── courses                        (created_by, updated_by)
+ ├── educational_materials          (created_by, updated_by)
+ ├── publications                   (created_by, updated_by)
+ ├── research_group                 (created_by, updated_by)
+ ├── health_promotion_categories    (created_by, updated_by)
+ ├── health_promotion_items         (created_by, updated_by)
+ └── institutional_resources        (created_by, updated_by)
+
+areas
+ ├── teams                          (coordinator_id → teams.id)
+ ├── formal_education_sections      (area_id)
+ ├── courses                        (area_id)
+ ├── educational_materials          (area_id)
+ ├── publications                   (area_id)
+ ├── research_group                 (area_id)
+ └── health_promotion_categories    (area_id)
+
+health_promotion_categories
+ └── health_promotion_items         (category_id)
+
+repository_categories
+ └── repository_documents           (repository_category_id)
+```
+
+### Resumen de tablas
+
+| # | Tabla | Propósito | Cantidad | Relaciones principales |
+|:---:|:---|:---|:---:|:---|
+| 1 | `users` | Usuarios del panel | Ilimitado | — |
+| 2 | `companies` | Información institucional | 1 (singleton) | — |
+| 3 | `teams` | Equipo de trabajo | Ilimitado | `areas` (coordinador) |
+| 4 | `areas` | Áreas organizacionales | Máx. 3 | `teams`, `courses`, `publications`… |
+| 5 | `values` | Valores corporativos | Ilimitado | — |
+| 6 | `testimonials` | Testimonios de usuarios | Ilimitado | `users` (auditoría) |
+| 7 | `news` | Noticias | Ilimitado | `users` (auditoría) |
+| 8 | `banners` | Banners main y secondary | Ilimitado | — |
+| 9 | `home_cards` | Tarjetas de la página de inicio | Máx. 6 | — |
+| 10 | `formal_education_sections` | Contenido de educación formal | Ilimitado | `areas` |
+| 11 | `courses` | Cursos | Ilimitado | `areas` |
+| 12 | `educational_materials` | Materiales educativos | Ilimitado | `areas` |
+| 13 | `publications` | Publicaciones académicas | Ilimitado | `areas` |
+| 14 | `research_group` | Grupo de investigación | 1 (singleton) | `areas` |
+| 15 | `health_promotion_categories` | Categorías de salud | Máx. 4 | `areas` |
+| 16 | `health_promotion_items` | Ítems de salud | Ilimitado | `health_promotion_categories` |
+| 17 | `repository_categories` | Categorías del repositorio | Ilimitado | — |
+| 18 | `repository_documents` | Documentos del repositorio | Ilimitado | `repository_categories` |
+| 19 | `institutional_resources` | Links e instituciones aliadas | Ilimitado | `users` (auditoría) |
 
 ---
 
-### `companies` — Información institucional
-Registro único (singleton). Contiene toda la configuración general del sitio web.
+### Detalle de campos por tabla
+
+<details>
+<summary><strong>companies — Información institucional (Singleton)</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `business_name` | Razón social de la institución |
 | `slogan` | Eslogan |
 | `description` | Descripción general |
@@ -247,104 +349,114 @@ Registro único (singleton). Contiene toda la configuración general del sitio w
 | `privacy_policy_pdf` | Política de protección de datos (PDF) |
 | `mission_title` / `mission_description` / `mission_image_1/2/3` | Sección Misión |
 | `vision_title` / `vision_description` / `vision_image` | Sección Visión (imagen 960×523 px) |
-| `trajectory_title` / `trajectory_description` / `trajectory_image` | Trayectoria e historia (descripción máx. 500 chars) |
-| `methodology_title` / `methodology_description` / `methodology_image` | Metodología (descripción con RichEditor, máx. 800 chars) |
+| `trajectory_title` / `trajectory_description` / `trajectory_image` | Trayectoria e historia (máx. 500 chars) |
+| `methodology_title` / `methodology_description` / `methodology_image` | Metodología (RichEditor, máx. 800 chars) |
 | `latitude` / `longitude` | Coordenadas para Google Maps |
 
----
+</details>
 
-### `teams` — Equipo de trabajo
+<details>
+<summary><strong>teams — Equipo de trabajo</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `name` | Nombre completo del integrante |
 | `position` | Cargo |
 | `description` | Descripción profesional breve (máx. 200 chars) |
 | `image` | Fotografía del integrante (393×390 px) |
-| `status` | Activo/Inactivo |
+| `status` | Activo / Inactivo |
 
----
+</details>
 
-### `areas` — Áreas organizacionales (máx. 3)
-Cada área tiene un coordinador asignado desde el equipo. Los módulos de contenido (cursos, publicaciones, etc.) pertenecen a un área.
+<details>
+<summary><strong>areas — Áreas organizacionales (máx. 3)</strong></summary>
+
+Los módulos de contenido (cursos, publicaciones, etc.) pertenecen a un área. Cada área tiene un coordinador asignado desde el equipo.
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `name` | Nombre del área |
 | `slug` | Identificador URL (`educacion-comunicacion`, `investigacion`, `proyeccion-social`) |
 | `description` | Descripción con formato (RichEditor) |
 | `icon` | Heroicon name (ej: `heroicon-o-academic-cap`) |
 | `coordinator_id` | FK → `teams.id` (coordinador del área, obligatorio) |
 | `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
-**Relaciones:** `Area` tiene muchos `FormalEducationSection`, `Course`, `EducationalMaterial`, `Publication`, `HealthPromotionCategory`, y uno `ResearchGroup`. Un `Team` puede ser coordinador de un `Area` (relación HasOne inversa).
+**Áreas sembradas con seeder:**
 
-**Áreas base (sembradas con seeder):**
-1. Educación y Comunicación (`educacion-comunicacion`)
-2. Investigación (`investigacion`)
-3. Proyección Social (`proyeccion-social`)
+| # | Nombre | Slug |
+|:---:|:---|:---|
+| 1 | Educación y Comunicación | `educacion-comunicacion` |
+| 2 | Investigación | `investigacion` |
+| 3 | Proyección Social | `proyeccion-social` |
 
----
+</details>
 
-### `values` — Valores corporativos
+<details>
+<summary><strong>values — Valores corporativos</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `title` | Nombre del valor (ej: Integridad) |
 | `description` | Descripción del valor (máx. 500 chars) |
 | `order` / `status` | Orden y estado |
 
----
+</details>
 
-### `testimonials` — Testimonios
+<details>
+<summary><strong>testimonials — Testimonios</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `name` | Nombre de la persona |
 | `profile` | Perfil libre (ej: Estudiante, Docente, Médico) |
 | `testimonial` | Texto del testimonio (máx. 600 chars) |
 | `rating` | Calificación de 1 a 5 estrellas |
 | `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
----
+</details>
 
-### `news` — Noticias
+<details>
+<summary><strong>news — Noticias</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `title` | Título de la noticia (máx. 150 chars) |
 | `excerpt` | Resumen para el listado (máx. 300 chars) |
 | `content` | Contenido completo con formato (RichEditor) |
 | `image` | Imagen principal (relación 16:9) |
 | `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
----
+</details>
 
-### `banners` — Banners del sitio
+<details>
+<summary><strong>banners — Banners del sitio (2 tipos)</strong></summary>
+
 Existen dos tipos que no se mezclan:
-- **Principal** (`main`): página de inicio, mínimo 1920×960 px
-- **Secundario** (`secondary`): páginas internas, mínimo 1905×496 px. Solo uno por página.
+- **Principal** (`main`): página de inicio, mínimo 1920×960 px.
+- **Secundario** (`secondary`): páginas internas, mínimo 1905×496 px. Solo uno activo por página.
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `title` / `title_color` | Texto y color del título |
 | `subtitle` / `subtitle_color` | Texto y color del subtítulo |
 | `type` | `main` o `secondary` |
 | `page` | Página asignada (solo `secondary`): `about_us`, `what_we_do`, `research`, `news`, etc. |
 | `image` | Imagen (validada por dimensiones mínimas según tipo) |
-| `status` | Activo/Inactivo |
+| `status` | Activo / Inactivo |
 | `order` | Orden de visualización |
-| `button_link` / `button_color` | Botón de acción opcional |
+| `button_link` / `button_color` | Botón de acción (opcional) |
 
----
+</details>
 
-### `home_cards` — Tarjetas de la página de inicio (máx. 6)
+<details>
+<summary><strong>home_cards — Tarjetas de la página de inicio (máx. 6)</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `title` | Título de la tarjeta (máx. 40 chars) |
 | `description` | Descripción breve (máx. 200 chars) |
 | `button_text` | Texto del botón (default: "Ver más") |
@@ -353,29 +465,30 @@ Existen dos tipos que no se mezclan:
 | `url` | Enlace web (si `type = url`) |
 | `order` / `estado` | Orden y estado |
 
----
+</details>
 
-### `formal_education_sections` — Educación Formal
+<details>
+<summary><strong>formal_education_sections — Educación Formal</strong></summary>
 
 Secciones de contenido del módulo de Educación Formal. Pertenecen al área `educacion-comunicacion`.
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `area_id` | FK → `areas.id` |
-| `section` | Sección: `generalities`, `modalities`, `procedures`, `intern_commitments`, `institute_commitments` |
+| `section` | `generalities`, `modalities`, `procedures`, `intern_commitments`, `institute_commitments` |
 | `title` | Título único dentro de la sección (máx. 50 chars) |
 | `description` | Contenido con formato (RichEditor) |
 | `image` / `pdf_file` / `url` | Multimedia opcional |
 | `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
----
+</details>
 
-### `courses` — Cursos
-Cursos del área de Educación y Comunicación. Soporta Soft Deletes.
+<details>
+<summary><strong>courses — Cursos (con Soft Delete)</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `area_id` | FK → `areas.id` |
 | `title` | Título único (máx. 50 chars) |
 | `short_description` | Descripción para tarjeta de vista previa (máx. 200 chars) |
@@ -387,14 +500,15 @@ Cursos del área de Educación y Comunicación. Soporta Soft Deletes.
 | `registration_link` | URL del formulario de inscripción |
 | `duration_hours` | Duración en horas (opcional) |
 | `order` | Orden de visualización |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
----
+</details>
 
-### `educational_materials` — Materiales Educativos
+<details>
+<summary><strong>educational_materials — Materiales Educativos</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `area_id` | FK → `areas.id` |
 | `category` | `early_childhood` o `school_adolescence` |
 | `type` | `guides_manuals` o `games` |
@@ -405,14 +519,15 @@ Cursos del área de Educación y Comunicación. Soporta Soft Deletes.
 | `gallery_image_1` … `gallery_image_5` | Galería (hasta 5 imágenes) |
 | `pdf_file` | Documento PDF (opcional) |
 | `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
----
+</details>
 
-### `publications` — Publicaciones académicas
+<details>
+<summary><strong>publications — Publicaciones académicas</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `area_id` | FK → `areas.id` (siempre Investigación) |
 | `title` | Título único (máx. 50 chars) |
 | `subtitle` | Subtítulo (opcional, máx. 100 chars) |
@@ -421,16 +536,17 @@ Cursos del área de Educación y Comunicación. Soporta Soft Deletes.
 | `external_link` | URL de la publicación externa |
 | `status` | `active` o `inactive` |
 | `order` | Orden de visualización |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
----
+</details>
 
-### `research_group` — Grupo de Investigación (singleton)
+<details>
+<summary><strong>research_group — Grupo de Investigación (Singleton)</strong></summary>
 
 Solo puede existir un registro. El modelo lanza una excepción si se intenta crear un segundo.
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `area_id` | FK → `areas.id` (siempre Investigación) |
 | `name` | Nombre del grupo |
 | `description` | Descripción completa (RichEditor) |
@@ -440,92 +556,102 @@ Solo puede existir un registro. El modelo lanza una excepción si se intenta cre
 | `research_line_2` | Segunda línea de investigación (requerida) |
 | `research_line_3` | Tercera línea de investigación (opcional) |
 | `active` | Estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
-> `total_publications` es un **accessor calculado** (no columna): cuenta las publicaciones activas del área asociada.
+> `total_publications` es un **accessor calculado** (sin columna en BD): cuenta las publicaciones activas del área asociada.
 
----
+</details>
 
-### `health_promotion_categories` — Categorías de Salud (máx. 4)
+<details>
+<summary><strong>health_promotion_categories — Categorías de Salud (máx. 4)</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `area_id` | FK → `areas.id` (siempre Proyección Social) |
 | `category` | Clave interna: `early_childhood`, `childhood`, `women`, `workers` |
 | `display_name` | Nombre visible en el sitio |
 | `image` | Imagen representativa (16:9) |
 | `pdf_file` | PDF general de la categoría (opcional) |
 | `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
-**Categorías base (sembradas con seeder):**
-1. Primera Infancia (`early_childhood`)
-2. Niñez (`childhood`)
-3. Mujer (`women`)
-4. Trabajadores (`workers`)
+**Categorías sembradas con seeder:**
 
----
+| # | Nombre | Clave |
+|:---:|:---|:---|
+| 1 | Primera Infancia | `early_childhood` |
+| 2 | Niñez | `childhood` |
+| 3 | Mujer | `women` |
+| 4 | Trabajadores | `workers` |
 
-### `health_promotion_items` — Ítems de Salud
+</details>
 
-Viñetas de contenido que pertenecen a cada categoría de salud.
+<details>
+<summary><strong>health_promotion_items — Ítems de Salud</strong></summary>
+
+Viñetas de contenido pertenecientes a cada categoría de salud.
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `category_id` | FK → `health_promotion_categories.id` |
 | `title` | Título del ítem (máx. 100 chars) |
 | `short_description` | Descripción breve (máx. 150 chars) |
 | `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
 
----
+</details>
 
-### `repository_categories` — Categorías del Repositorio
+<details>
+<summary><strong>repository_categories — Categorías del Repositorio</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `title` | Nombre de la categoría |
 | `description` | Descripción (opcional) |
 | `image` | Imagen representativa |
 | `order` / `status` | Orden y estado |
 
----
+</details>
 
-### `repository_documents` — Documentos del Repositorio
+<details>
+<summary><strong>repository_documents — Documentos del Repositorio</strong></summary>
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `repository_category_id` | FK → `repository_categories.id` |
 | `title` | Título del documento |
 | `authors` | Autor(es) (opcional) |
-| `topic` | Tema/etiqueta (opcional) |
+| `topic` | Tema / etiqueta (opcional) |
 | `description` | Descripción (opcional) |
 | `image` | Imagen de portada (opcional) |
 | `document` | Archivo PDF descargable (opcional) |
 | `order` / `status` | Orden y estado |
 
----
+</details>
 
-### `institutional_resources` — Recursos Institucionales
+<details>
+<summary><strong>institutional_resources — Recursos Institucionales (Soft Delete)</strong></summary>
 
-Un único modelo gestiona dos tipos de contenido. Soporta Soft Deletes. El orden se gestiona independientemente por tipo.
+Un único modelo gestiona dos tipos de contenido. El orden se gestiona independientemente por tipo.
 
 | Campo | Descripción |
-|---|---|
+|:---|:---|
 | `type` | `interest_link` (Link de Interés) o `partner` (Socio/Aliado) |
 | `title` | Título del link (solo `interest_link`) |
 | `url` | URL del enlace (solo `interest_link`) |
 | `name` | Nombre del socio/aliado (solo `partner`) |
 | `image` | Logo del socio (solo `partner`) |
 | `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría |
+| `created_by` / `updated_by` | Auditoría → `users.id` |
+
+</details>
 
 ---
 
 ## Grupos de navegación del panel
 
 | Grupo | Módulos incluidos |
-|---|---|
+|:---|:---|
 | *(Sin grupo — globales)* | Empresa, Equipo, Áreas, Valores, Testimonios, Noticias, Usuarios |
 | Contenido Web | Tarjetas Home, Banners |
 | Educación y Comunicación | Educación Formal, Cursos, Materiales Educativos |
@@ -540,69 +666,46 @@ Un único modelo gestiona dos tipos de contenido. Soporta Soft Deletes. El orden
 
 El CMS usa `spatie/laravel-permission` con integración directa para Filament. Los roles y permisos se gestionan desde el propio panel en la sección **Usuarios**.
 
-Los resources que implementan control de acceso granular definen:
+Los resources implementan control de acceso granular mediante los siguientes métodos:
 
-```php
-public static function canViewAny(): bool { /* verifica permiso 'listXxx' */ }
-public static function canCreate(): bool  { /* verifica permiso 'createXxx' */ }
-public static function canEdit($record): bool   { /* verifica permiso 'editXxx' */ }
-public static function canDelete($record): bool { /* verifica permiso 'deleteXxx' */ }
-public static function shouldRegisterNavigation(): bool { /* oculta del menú si no tiene acceso */ }
-```
+| Método | Permiso requerido | Efecto |
+|:---|:---|:---|
+| `canViewAny()` | `listXxx` | Permite ver el listado del módulo |
+| `canCreate()` | `createXxx` | Permite crear nuevos registros |
+| `canEdit($record)` | `editXxx` | Permite editar registros existentes |
+| `canDelete($record)` | `deleteXxx` | Permite eliminar registros |
+| `shouldRegisterNavigation()` | Basado en `canViewAny()` | Oculta el módulo del menú si no tiene acceso |
 
-El rol `SuperAdmin` siempre tiene acceso completo a todos los módulos.
+> El rol **`SuperAdmin`** siempre tiene acceso completo a todos los módulos sin restricciones.
 
 ---
 
 ## Seeders
 
-Al ejecutar `php artisan migrate --seed` se crean automáticamente los datos base:
+Al ejecutar `php artisan migrate --seed` se crean automáticamente los datos base necesarios para que el sistema funcione:
 
-| Seeder | Qué siembra |
-|---|---|
-| `AreaSeeder` | Las 3 áreas: Educación y Comunicación, Investigación, Proyección Social |
-| `HealthPromotionCategorySeeder` | Las 4 categorías: Primera Infancia, Niñez, Mujer, Trabajadores |
+| Seeder | Qué siembra | Dependencias |
+|:---|:---|:---|
+| `AreaSeeder` | Las 3 áreas organizacionales | Ninguna |
+| `HealthPromotionCategorySeeder` | Las 4 categorías de salud | Requiere `AreaSeeder` (usa el área `proyeccion-social`) |
 
-> **Nota**: El orden de ejecución es obligatorio. `AreaSeeder` debe ir antes de `HealthPromotionCategorySeeder` porque las categorías de salud dependen de que exista el área `proyeccion-social`.
-
----
-
-## Validaciones estándar del campo Orden
-
-Todos los campos `order` de los formularios siguen el mismo patrón:
-
-- **Requerido** — no puede quedar vacío
-- **Entero positivo** — solo números enteros mayores a 0 (1, 2, 3...)
-- **Único** — no puede repetirse con otro registro del mismo modelo
-- **Auto-asignado** — el valor por defecto es `(max('order') ?? 0) + 1`
-- **Reordenable** — las tablas permiten arrastrar filas para cambiar el orden visualmente
+> El orden de ejecución es obligatorio: `AreaSeeder` **debe ir antes** de `HealthPromotionCategorySeeder`.
 
 ---
 
 ## Comandos útiles
 
-```bash
-# Ejecutar migraciones pendientes
-php artisan migrate
-
-# Ver estado de todas las migraciones
-php artisan migrate:status
-
-# Revertir la última migración
-php artisan migrate:rollback
-
-# Limpiar caché de rutas y configuración
-php artisan route:clear && php artisan config:clear
-
-# Limpiar toda la caché
-php artisan optimize:clear
-
-# Crear enlace simbólico para storage (imágenes y PDFs públicos)
-php artisan storage:link
-
-# Crear un nuevo usuario del panel
-php artisan make:filament-user
-```
+| Comando | Descripción |
+|:---|:---|
+| `php artisan migrate` | Ejecutar migraciones pendientes |
+| `php artisan migrate --seed` | Migrar y sembrar los datos base |
+| `php artisan migrate:status` | Ver el estado de todas las migraciones |
+| `php artisan migrate:rollback` | Revertir la última migración |
+| `php artisan storage:link` | Crear enlace simbólico para archivos públicos (imágenes, PDFs) |
+| `php artisan make:filament-user` | Crear un nuevo usuario del panel |
+| `php artisan route:clear` | Limpiar caché de rutas |
+| `php artisan config:clear` | Limpiar caché de configuración |
+| `php artisan optimize:clear` | Limpiar toda la caché de la aplicación |
 
 ---
 
