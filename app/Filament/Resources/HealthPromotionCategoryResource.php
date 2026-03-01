@@ -61,13 +61,21 @@ class HealthPromotionCategoryResource extends Resource
                             ->required()
                             ->searchable()
                             ->unique(ignoreRecord: true)
-                            ->disabled(fn ($record) => $record !== null), // No se puede cambiar si ya existe
+                            ->disabled(fn ($record) => $record !== null) // No se puede cambiar si ya existe
+                            ->validationMessages([
+                                'required' => 'La categoría es obligatoria.',
+                                'unique'   => 'Esta categoría ya está registrada.',
+                            ]),
 
                         Forms\Components\TextInput::make('display_name')
                             ->label('Nombre a Mostrar')
                             ->required()
                             ->maxLength(100)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'El nombre a mostrar es obligatorio.',
+                                'max'      => 'El nombre no puede exceder los 100 caracteres.',
+                            ]),
 
                         Forms\Components\FileUpload::make('image')
                             ->label('Imagen de la Categoría')
@@ -79,7 +87,10 @@ class HealthPromotionCategoryResource extends Resource
                             ->imageResizeMode('cover')
                             ->imageCropAspectRatio('16:9')
                             ->helperText('Máximo 2MB. Formatos: JPG, PNG')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'La imagen de la categoría es obligatoria.',
+                            ]),
 
                         Forms\Components\FileUpload::make('pdf_file')
                             ->label('Archivo PDF (Opcional)')
@@ -94,7 +105,8 @@ class HealthPromotionCategoryResource extends Resource
                         Forms\Components\Toggle::make('active')
                             ->label('Activo')
                             ->default(true)
-                            ->required(),
+                            ->inline(false)
+                            ->helperText('Las categorías inactivas no se mostrarán en el sitio web'),
                     ])
                     ->columns(2),
 

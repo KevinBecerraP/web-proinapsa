@@ -4,34 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
-class Publication extends Model
+class News extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
 
-    protected $table = 'publications';
+    protected $table = 'news';
 
     protected $fillable = [
-        'area_id',
         'title',
-        'subtitle',
-        'short_description',
+        'excerpt',
+        'content',
         'image',
-        'external_link',
-        'status',
         'order',
+        'active',
         'created_by',
         'updated_by',
     ];
 
     protected $casts = [
-        'order' => 'integer',
+        'active' => 'boolean',
+        'order'  => 'integer',
     ];
 
     /**
-     * Boot model
+     * Boot: orden automático, auditoría y limpieza de imágenes
      */
     protected static function boot()
     {
@@ -52,27 +50,30 @@ class Publication extends Model
             if (auth()->check()) {
                 $model->updated_by = auth()->id();
             }
+
+            if ($model->isDirty('image') && $model->getOriginal('image')) {
+                Storage::disk('public')->delete($model->getOriginal('image'));
+            }
         });
 
         static::deleted(function ($model) {
+            if ($model->image) {
+                Storage::disk('public')->delete($model->image);
+            }
+
             static::where('order', '>', $model->order)->decrement('order');
         });
     }
 
     /**
-     * Relationships
+     * Auditoría
      */
-    public function area(): BelongsTo
-    {
-        return $this->belongsTo(Area::class);
-    }
-
-    public function createdBy(): BelongsTo
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function updatedBy(): BelongsTo
+    public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
@@ -82,38 +83,11 @@ class Publication extends Model
      */
     public function scopeActive($query)
     {
-        return $query->where('status', 'active');
-    }
-
-    public function scopeInactive($query)
-    {
-        return $query->where('status', 'inactive');
+        return $query->where('active', true);
     }
 
     public function scopeOrdered($query)
     {
         return $query->orderBy('order', 'asc');
     }
-
-    /**
-     * Accessors
-     */
-    public function getStatusLabelAttribute(): string
-    {
-        return match($this->status) {
-            'active' => 'Activo',
-            'inactive' => 'Inactivo',
-            default => $this->status,
-        };
-    }
-
-    public function getStatusBadgeColorAttribute(): string
-    {
-        return match($this->status) {
-            'active' => 'success',
-            'inactive' => 'danger',
-            default => 'gray',
-        };
-    }
-
 }

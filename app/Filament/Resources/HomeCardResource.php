@@ -154,15 +154,15 @@ class HomeCardResource extends Resource
                                     ->required()
                                     ->minValue(1)
                                     ->integer()
-                                    ->default(fn () => HomeCard::max('order') + 1 ?? 1)
+                                    ->default(fn () => (HomeCard::max('order') ?? 0) + 1)
                                     ->prefixIcon('heroicon-o-arrows-up-down')
-                                    ->helperText('Número entero mayor a 0 y único. Se asigna automáticamente.')
+                                    ->helperText('Posición de visualización. Se asigna automáticamente.')
                                     ->unique(ignoreRecord: true)
                                     ->validationMessages([
-                                        'unique' => 'Este número de orden ya está asignado a otra tarjeta. Elige otro.',
-                                        'min' => 'El orden debe ser mayor a 0. No se permiten valores negativos ni cero.',
-                                        'integer' => 'El orden debe ser un número entero (Ej: 1, 2, 3).',
                                         'required' => 'El orden es obligatorio.',
+                                        'unique'   => 'Este número de orden ya está en uso. Elige otro.',
+                                        'min'      => 'El orden debe ser mayor a 0.',
+                                        'integer'  => 'El orden debe ser un número entero (1, 2, 3...).',
                                     ]),
 
                                 Forms\Components\Toggle::make('estado')

@@ -47,6 +47,12 @@ class Company extends Model
         'vision_image',
         'latitude',
         'longitude',
+        'trajectory_title',
+        'trajectory_description',
+        'trajectory_image',
+        'methodology_title',
+        'methodology_description',
+        'methodology_image',
     ];
 
     /**
@@ -115,6 +121,20 @@ class Company extends Model
                     Storage::disk('public')->delete($company->getOriginal('vision_image'));
                 }
             }
+
+            // Imagen de trayectoria
+            if ($company->isDirty('trajectory_image')) {
+                if ($company->getOriginal('trajectory_image')) {
+                    Storage::disk('public')->delete($company->getOriginal('trajectory_image'));
+                }
+            }
+
+            // Imagen de metodología
+            if ($company->isDirty('methodology_image')) {
+                if ($company->getOriginal('methodology_image')) {
+                    Storage::disk('public')->delete($company->getOriginal('methodology_image'));
+                }
+            }
         });
 
         // Antes de eliminar, borrar todos los archivos
@@ -148,6 +168,16 @@ class Company extends Model
             // Imagen de visión
             if ($company->vision_image) {
                 Storage::disk('public')->delete($company->vision_image);
+            }
+
+            // Imagen de trayectoria
+            if ($company->trajectory_image) {
+                Storage::disk('public')->delete($company->trajectory_image);
+            }
+
+            // Imagen de metodología
+            if ($company->methodology_image) {
+                Storage::disk('public')->delete($company->methodology_image);
             }
         });
     }

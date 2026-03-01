@@ -41,13 +41,20 @@ class HealthPromotionItemResource extends Resource
                             ->searchable()
                             ->preload()
                             ->helperText('Selecciona la categoría a la que pertenece este ítem')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'La categoría es obligatoria.',
+                            ]),
 
                         Forms\Components\TextInput::make('title')
                             ->label('Título')
                             ->required()
                             ->maxLength(100)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'El título del ítem es obligatorio.',
+                                'max'      => 'El título no puede exceder los 100 caracteres.',
+                            ]),
 
                         Forms\Components\Textarea::make('short_description')
                             ->label('Descripción Corta')
@@ -55,12 +62,17 @@ class HealthPromotionItemResource extends Resource
                             ->maxLength(150)
                             ->rows(3)
                             ->helperText('Máximo 150 caracteres')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'La descripción es obligatoria.',
+                                'max'      => 'La descripción no puede exceder los 150 caracteres.',
+                            ]),
 
                         Forms\Components\Toggle::make('active')
                             ->label('Activo')
                             ->default(true)
-                            ->required(),
+                            ->inline(false)
+                            ->helperText('Los ítems inactivos no se mostrarán en el sitio web'),
                     ])
                     ->columns(2),
             ]);

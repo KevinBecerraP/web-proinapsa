@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ResearchGroup extends Model
 {
@@ -58,6 +59,11 @@ class ResearchGroup extends Model
     public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function researchLines(): HasMany
+    {
+        return $this->hasMany(ResearchLine::class)->orderBy('order');
     }
 
     public function createdBy(): BelongsTo

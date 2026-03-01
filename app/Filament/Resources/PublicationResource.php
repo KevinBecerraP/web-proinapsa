@@ -46,19 +46,31 @@ class PublicationResource extends Resource
                             ->required()
                             ->maxLength(50)
                             ->unique(ignoreRecord: true)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'El título de la publicación es obligatorio.',
+                                'max'      => 'El título no puede exceder los 50 caracteres.',
+                                'unique'   => 'Ya existe una publicación con este título.',
+                            ]),
 
                         Forms\Components\TextInput::make('subtitle')
                             ->label('Subtítulo')
                             ->maxLength(100)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'max' => 'El subtítulo no puede exceder los 100 caracteres.',
+                            ]),
 
                         Forms\Components\Textarea::make('short_description')
                             ->label('Descripción Corta')
                             ->required()
                             ->maxLength(300)
                             ->rows(3)
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'La descripción corta es obligatoria.',
+                                'max'      => 'La descripción no puede exceder los 300 caracteres.',
+                            ]),
 
                         Forms\Components\FileUpload::make('image')
                             ->label('Imagen')
@@ -69,7 +81,10 @@ class PublicationResource extends Resource
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
                             ->imageResizeMode('cover')
                             ->helperText('Máximo 2MB. Formatos: JPG, PNG')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'La imagen de la publicación es obligatoria.',
+                            ]),
 
                         Forms\Components\TextInput::make('external_link')
                             ->label('Link Externo')
@@ -77,7 +92,11 @@ class PublicationResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->helperText('URL de la publicación externa')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'El link externo es obligatorio.',
+                                'max'      => 'El link no puede exceder los 255 caracteres.',
+                            ]),
 
                         Forms\Components\Select::make('status')
                             ->label('Estado')
@@ -86,27 +105,13 @@ class PublicationResource extends Resource
                                 'inactive' => 'Inactivo',
                             ])
                             ->required()
-                            ->default('active'),
+                            ->default('active')
+                            ->validationMessages([
+                                'required' => 'El estado es obligatorio.',
+                            ]),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Líneas de Investigación')
-                    ->schema([
-                        Forms\Components\TextInput::make('research_line_1')
-                            ->label('Línea de Investigación 1')
-                            ->required()
-                            ->maxLength(100),
-
-                        Forms\Components\TextInput::make('research_line_2')
-                            ->label('Línea de Investigación 2')
-                            ->required()
-                            ->maxLength(100),
-
-                        Forms\Components\TextInput::make('research_line_3')
-                            ->label('Línea de Investigación 3 (Opcional)')
-                            ->maxLength(100),
-                    ])
-                    ->columns(3),
             ]);
     }
 
@@ -135,11 +140,6 @@ class PublicationResource extends Resource
                     ->label('Estado')
                     ->badge()
                     ->color(fn ($record) => $record->status_badge_color),
-
-                Tables\Columns\TextColumn::make('research_line_1')
-                    ->label('Línea 1')
-                    ->limit(20)
-                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado')

@@ -41,40 +41,28 @@ class ValuesResource extends Resource
                                     ->maxLength(255)
                                     ->placeholder('Ej: Integridad')
                                     ->prefixIcon('heroicon-o-tag')
-                                    ->columnSpan(1),
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'required' => 'El título del valor es obligatorio.',
+                                        'max'      => 'El título no puede exceder los 255 caracteres.',
+                                    ]),
 
                                 Forms\Components\TextInput::make('order')
                                     ->label('Orden')
-                                    ->type('number')
-                                    ->default(function () {
-                                        $maxOrder = Values::max('order');
-                                        return $maxOrder ? $maxOrder + 1 : 1;
-                                    })
-                                    ->placeholder('Se asignará automáticamente si se deja vacío')
-                                    ->prefixIcon('heroicon-o-numbered-list')
-                                    ->helperText('Orden de visualización (debe ser único). Si no se especifica, se asignará el siguiente disponible.')
-                                    ->extraInputAttributes(['min' => 1, 'step' => 1])
-                                    ->integer()
+                                    ->numeric()
+                                    ->required()
                                     ->minValue(1)
-                                    ->unique(
-                                        table: 'values',
-                                        column: 'order',
-                                        ignoreRecord: true
-                                    )
+                                    ->integer()
+                                    ->default(fn () => (Values::max('order') ?? 0) + 1)
+                                    ->prefixIcon('heroicon-o-arrows-up-down')
+                                    ->helperText('Posición de visualización. Se asigna automáticamente.')
+                                    ->unique(ignoreRecord: true)
                                     ->validationMessages([
-                                        'unique' => 'Ya existe un valor con este orden. Por favor, elige otro número.',
-                                        'integer' => 'El orden debe ser un número entero positivo (1, 2, 3...).',
-                                        'min' => 'El orden debe ser al menos 1.',
+                                        'required' => 'El orden es obligatorio.',
+                                        'unique'   => 'Este número de orden ya está en uso. Elige otro.',
+                                        'min'      => 'El orden debe ser mayor a 0.',
+                                        'integer'  => 'El orden debe ser un número entero (1, 2, 3...).',
                                     ])
-                                    ->dehydrateStateUsing(function ($state) {
-                                        // Si está vacío, asignar el siguiente disponible
-                                        if (empty($state) || $state === '' || $state === null) {
-                                            $maxOrder = Values::max('order');
-                                            return $maxOrder ? $maxOrder + 1 : 1;
-                                        }
-                                        // Convertir a entero para eliminar ceros a la izquierda
-                                        return (int)$state;
-                                    })
                                     ->columnSpan(1),
 
                                 Forms\Components\Textarea::make('description')

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
 
 class Team extends Model
@@ -58,6 +59,14 @@ class Team extends Model
                 Storage::disk('public')->delete($team->image);
             }
         });
+    }
+
+    /**
+     * Get the area this team member coordinates.
+     */
+    public function coordinatorOf(): HasOne
+    {
+        return $this->hasOne(Area::class, 'coordinator_id');
     }
 
     /**

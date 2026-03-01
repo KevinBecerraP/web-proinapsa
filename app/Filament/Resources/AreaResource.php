@@ -48,7 +48,12 @@ class AreaResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->placeholder('Ej: Educación y Comunicación')
                             ->prefixIcon('heroicon-o-tag')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'El nombre del área es obligatorio.',
+                                'max'      => 'El nombre no puede exceder los 100 caracteres.',
+                                'unique'   => 'Ya existe un área con este nombre.',
+                            ]),
 
                         Forms\Components\TextInput::make('slug')
                             ->label('Slug')
@@ -87,11 +92,25 @@ class AreaResource extends Resource
                             ->prefixIcon('heroicon-o-sparkles')
                             ->columnSpanFull(),
 
+                        Forms\Components\Select::make('coordinator_id')
+                            ->label('Coordinador')
+                            ->relationship('coordinator', 'name')
+                            ->required()
+                            ->searchable()
+                            ->preload()
+                            ->placeholder('Selecciona el coordinador del área')
+                            ->helperText('El coordinador debe ser un miembro del equipo. Es obligatorio para guardar el área.')
+                            ->prefixIcon('heroicon-o-user-circle')
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'El coordinador del área es obligatorio.',
+                            ]),
+
                         Forms\Components\Toggle::make('active')
                             ->label('Activo')
                             ->default(true)
                             ->inline(false)
-                            ->required(),
+                            ->helperText('Las áreas inactivas no se mostrarán en el sitio web'),
                     ])
                     ->columns(2)
                     ->collapsible(),

@@ -140,23 +140,23 @@ class BannerResource extends Resource
 
                                 Forms\Components\TextInput::make('order')
                                     ->label('Orden')
-                                    ->type('number')
-                                    ->default(0)
-                                    ->placeholder('0')
-                                    ->prefixIcon('heroicon-o-bars-3')
-                                    ->helperText('Orden de visualización (debe ser único)')
-                                    ->extraInputAttributes(['min' => 0, 'step' => 1])
+                                    ->numeric()
                                     ->required()
+                                    ->minValue(1)
                                     ->integer()
-                                    ->minValue(0)
+                                    ->default(fn () => (Banner::max('order') ?? 0) + 1)
+                                    ->prefixIcon('heroicon-o-arrows-up-down')
+                                    ->helperText('Posición de visualización. Se asigna automáticamente.')
                                     ->unique(
                                         table: 'banners',
                                         column: 'order',
                                         ignoreRecord: true
                                     )
                                     ->validationMessages([
-                                        'unique' => 'Ya existe un banner con este orden. Por favor, elige otro número.',
-                                        'integer' => 'El orden debe ser un número entero sin ceros a la izquierda.',
+                                        'required' => 'El orden es obligatorio.',
+                                        'unique'   => 'Este número de orden ya está en uso. Elige otro.',
+                                        'min'      => 'El orden debe ser mayor a 0.',
+                                        'integer'  => 'El orden debe ser un número entero (1, 2, 3...).',
                                     ])
                                     ->columnSpan(1),
                             ]),
@@ -164,15 +164,17 @@ class BannerResource extends Resource
                         Forms\Components\Select::make('page')
                             ->label('Página del Banner')
                             ->options([
-                                'about_us' => 'Quiénes Somos',
-                                'what_we_do' => 'Qué Hacemos',
-                                'social_projection' => 'Área Proyección Social',
-                                'education_communication' => 'Educación Comunicación',
-                                'research' => 'Investigación',
-                                'repository' => 'Repositorio',
-                                'news' => 'Noticias',
-                                'contact_us' => 'Contáctenos',
-                                'default' => 'Por Defecto',
+                                'about_us'               => 'Quiénes Somos',
+                                'what_we_do'             => 'Qué Hacemos',
+                                'education_communication'=> 'Educación y Comunicación',
+                                'social_projection'      => 'Proyección Social',
+                                'research'               => 'Investigación',
+                                'publications'           => 'Publicaciones',
+                                'research_group'         => 'Grupo de Investigación',
+                                'repository'             => 'Repositorios',
+                                'news'                   => 'Noticias',
+                                'contact_us'             => 'Contáctenos',
+                                'default'                => 'Por Defecto',
                             ])
                             ->prefixIcon('heroicon-o-document')
                             ->searchable()
@@ -315,7 +317,20 @@ class BannerResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('page')
                     ->label('Página')
-                    ->formatStateUsing(fn($state): string => $state?->label() ?? '-')
+                    ->formatStateUsing(fn($state): string => match($state) {
+                        'about_us'                => 'Quiénes Somos',
+                        'what_we_do'              => 'Qué Hacemos',
+                        'education_communication' => 'Educación y Comunicación',
+                        'social_projection'       => 'Proyección Social',
+                        'research'                => 'Investigación',
+                        'publications'            => 'Publicaciones',
+                        'research_group'          => 'Grupo de Investigación',
+                        'repository'              => 'Repositorios',
+                        'news'                    => 'Noticias',
+                        'contact_us'              => 'Contáctenos',
+                        'default'                 => 'Por Defecto',
+                        default                   => '-',
+                    })
                     ->badge()
                     ->color('warning')
                     ->visible(fn($record) => $record?->type === 'secondary'),

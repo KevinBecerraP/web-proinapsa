@@ -94,14 +94,28 @@ class RepositoryCategoryResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->placeholder('Ej: Guías de Salud, Manuales Educativos')
-                            ->prefixIcon('heroicon-o-bookmark'),
+                            ->prefixIcon('heroicon-o-bookmark')
+                            ->validationMessages([
+                                'required' => 'El título de la categoría es obligatorio.',
+                                'max'      => 'El título no puede exceder los 255 caracteres.',
+                            ]),
 
                         Forms\Components\TextInput::make('order')
                             ->label('Orden')
                             ->numeric()
-                            ->default(0)
                             ->required()
-                            ->prefixIcon('heroicon-o-arrows-up-down'),
+                            ->minValue(1)
+                            ->integer()
+                            ->default(fn () => (RepositoryCategory::max('order') ?? 0) + 1)
+                            ->prefixIcon('heroicon-o-arrows-up-down')
+                            ->helperText('Posición de visualización. Se asigna automáticamente.')
+                            ->unique(ignoreRecord: true)
+                            ->validationMessages([
+                                'required' => 'El orden es obligatorio.',
+                                'unique'   => 'Este número de orden ya está en uso. Elige otro.',
+                                'min'      => 'El orden debe ser mayor a 0.',
+                                'integer'  => 'El orden debe ser un número entero (1, 2, 3...).',
+                            ]),
 
                         Forms\Components\Textarea::make('description')
                             ->label('Descripción')
@@ -127,6 +141,7 @@ class RepositoryCategoryResource extends Resource
                         Forms\Components\Toggle::make('status')
                             ->label('Categoría Activa')
                             ->default(true)
+                            ->inline(false)
                             ->helperText('Si está activa, será visible en el repositorio'),
                     ])->collapsible(),
             ]);

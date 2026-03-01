@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -20,6 +21,7 @@ class Area extends Model
         'icon',
         'order',
         'active',
+        'coordinator_id',
         'created_by',
         'updated_by',
     ];
@@ -65,6 +67,11 @@ class Area extends Model
     /**
      * Relationships
      */
+    public function coordinator(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'coordinator_id');
+    }
+
     public function formalEducationSections(): HasMany
     {
         return $this->hasMany(FormalEducationSection::class);

@@ -93,6 +93,61 @@ class ResearchGroupResource extends Resource
                     ])
                     ->columns(2),
 
+                Forms\Components\Section::make('Líneas de Investigación')
+                    ->description('Temáticas principales en las que trabaja el grupo. Mínimo 2, sin límite máximo.')
+                    ->icon('heroicon-o-academic-cap')
+                    ->schema([
+                        Forms\Components\Repeater::make('researchLines')
+                            ->relationship()
+                            ->label('')
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->label('Línea de Investigación')
+                                    ->required()
+                                    ->maxLength(200)
+                                    ->placeholder('Ej: Salud Pública')
+                                    ->prefixIcon('heroicon-o-academic-cap')
+                                    ->columnSpan(2)
+                                    ->validationMessages([
+                                        'required' => 'El título de la línea es obligatorio.',
+                                        'max'      => 'No puede exceder los 200 caracteres.',
+                                    ]),
+
+                                Forms\Components\Toggle::make('active')
+                                    ->label('Activa')
+                                    ->default(true)
+                                    ->inline(false)
+                                    ->helperText('Las líneas inactivas no se mostrarán en el sitio web')
+                                    ->columnSpan(1),
+
+                                Forms\Components\Textarea::make('description')
+                                    ->label('Descripción (Opcional)')
+                                    ->maxLength(300)
+                                    ->rows(2)
+                                    ->placeholder('Breve descripción de esta línea de investigación...')
+                                    ->live(onBlur: true)
+                                    ->hint(function ($state) {
+                                        $length = strlen($state ?? '');
+                                        return $length . ' / 300 caracteres';
+                                    })
+                                    ->hintColor(function ($state) {
+                                        $remaining = 300 - strlen($state ?? '');
+                                        if ($remaining < 30) return 'danger';
+                                        if ($remaining < 60) return 'warning';
+                                        return 'gray';
+                                    })
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(3)
+                            ->minItems(2)
+                            ->reorderable('order')
+                            ->addActionLabel('+ Agregar línea de investigación')
+                            ->defaultItems(2)
+                            ->collapsible()
+                            ->cloneable(),
+                    ])
+                    ->collapsible(),
+
                 Forms\Components\Section::make('Estadísticas')
                     ->schema([
                         Forms\Components\Placeholder::make('total_publications')
@@ -163,6 +218,6 @@ class ResearchGroupResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with('area');
+        return parent::getEloquentQuery()->with(['area', 'researchLines']);
     }
 }

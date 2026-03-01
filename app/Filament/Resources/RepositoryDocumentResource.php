@@ -96,14 +96,21 @@ class RepositoryDocumentResource extends Resource
                             ->required()
                             ->searchable()
                             ->preload()
-                            ->prefixIcon('heroicon-o-folder-open'),
+                            ->prefixIcon('heroicon-o-folder-open')
+                            ->validationMessages([
+                                'required' => 'La categoría es obligatoria.',
+                            ]),
 
                         Forms\Components\TextInput::make('title')
                             ->label('Título')
                             ->required()
                             ->maxLength(255)
                             ->placeholder('Ej: Guía de Prevención')
-                            ->prefixIcon('heroicon-o-bookmark'),
+                            ->prefixIcon('heroicon-o-bookmark')
+                            ->validationMessages([
+                                'required' => 'El título del documento es obligatorio.',
+                                'max'      => 'El título no puede exceder los 255 caracteres.',
+                            ]),
 
                         Forms\Components\TextInput::make('authors')
                             ->label('Autoría')
@@ -126,9 +133,19 @@ class RepositoryDocumentResource extends Resource
                         Forms\Components\TextInput::make('order')
                             ->label('Orden')
                             ->numeric()
-                            ->default(0)
                             ->required()
-                            ->prefixIcon('heroicon-o-arrows-up-down'),
+                            ->minValue(1)
+                            ->integer()
+                            ->default(fn () => (RepositoryDocument::max('order') ?? 0) + 1)
+                            ->prefixIcon('heroicon-o-arrows-up-down')
+                            ->helperText('Posición de visualización. Se asigna automáticamente.')
+                            ->unique(ignoreRecord: true)
+                            ->validationMessages([
+                                'required' => 'El orden es obligatorio.',
+                                'unique'   => 'Este número de orden ya está en uso. Elige otro.',
+                                'min'      => 'El orden debe ser mayor a 0.',
+                                'integer'  => 'El orden debe ser un número entero (1, 2, 3...).',
+                            ]),
                     ])->columns(2)->collapsible(),
 
                 Forms\Components\Section::make('Archivos')
@@ -157,6 +174,7 @@ class RepositoryDocumentResource extends Resource
                         Forms\Components\Toggle::make('status')
                             ->label('Documento Activo')
                             ->default(true)
+                            ->inline(false)
                             ->helperText('Si está activo, será visible en el repositorio'),
                     ])->collapsible(),
             ]);

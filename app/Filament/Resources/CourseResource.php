@@ -48,14 +48,23 @@ class CourseResource extends Resource
                                     ->required()
                                     ->maxLength(50)
                                     ->unique(ignoreRecord: true)
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'El título del curso es obligatorio.',
+                                        'max'      => 'El título no puede exceder los 50 caracteres.',
+                                        'unique'   => 'Ya existe un curso con este título.',
+                                    ]),
 
                                 Forms\Components\Textarea::make('short_description')
                                     ->label('Descripción Corta')
                                     ->required()
                                     ->maxLength(200)
                                     ->rows(3)
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'La descripción corta es obligatoria.',
+                                        'max'      => 'La descripción no puede exceder los 200 caracteres.',
+                                    ]),
 
                                 Forms\Components\FileUpload::make('main_image')
                                     ->label('Imagen Principal')
@@ -67,7 +76,10 @@ class CourseResource extends Resource
                                     ->imageResizeMode('cover')
                                     ->imageCropAspectRatio('16:9')
                                     ->helperText('Máximo 2MB. Formatos: JPG, PNG')
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'La imagen principal es obligatoria.',
+                                    ]),
                             ]),
 
                         Forms\Components\Tabs\Tab::make('Información Completa')
@@ -75,6 +87,9 @@ class CourseResource extends Resource
                                 Forms\Components\RichEditor::make('full_description')
                                     ->label('Descripción Completa')
                                     ->required()
+                                    ->validationMessages([
+                                        'required' => 'La descripción completa es obligatoria.',
+                                    ])
                                     ->toolbarButtons([
                                         'bold',
                                         'italic',
@@ -133,7 +148,10 @@ class CourseResource extends Resource
                                         'inactive' => 'Inactivo',
                                     ])
                                     ->required()
-                                    ->default('active'),
+                                    ->default('active')
+                                    ->validationMessages([
+                                        'required' => 'El estado del curso es obligatorio.',
+                                    ]),
 
                                 Forms\Components\TextInput::make('registration_link')
                                     ->label('Link de Inscripción')
@@ -141,7 +159,11 @@ class CourseResource extends Resource
                                     ->required()
                                     ->maxLength(255)
                                     ->helperText('URL del formulario de inscripción')
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'El link de inscripción es obligatorio.',
+                                        'max'      => 'El link no puede exceder los 255 caracteres.',
+                                    ]),
 
                                 Forms\Components\TextInput::make('duration_hours')
                                     ->label('Duración (horas)')

@@ -3,21 +3,28 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeamResource\Pages;
-use App\Filament\Resources\TeamResource\RelationManagers;
 use App\Models\Team;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class TeamResource extends Resource
 {
     protected static ?string $model = Team::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
+
+    protected static ?string $navigationLabel = 'Equipo / Team';
+
+    protected static ?string $modelLabel = 'Miembro del Equipo';
+
+    protected static ?string $pluralModelLabel = 'Equipo';
+
+    protected static ?string $navigationGroup = 'Institucional';
+
+    protected static ?int $navigationSort = 41;
 
     public static function form(Form $form): Form
     {
@@ -35,7 +42,11 @@ class TeamResource extends Resource
                                     ->maxLength(255)
                                     ->placeholder('Ej: Juan Pérez García')
                                     ->prefixIcon('heroicon-o-user')
-                                    ->columnSpan(1),
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'required' => 'El nombre es obligatorio.',
+                                        'max'      => 'El nombre no puede exceder los 255 caracteres.',
+                                    ]),
 
                                 Forms\Components\TextInput::make('position')
                                     ->label('Cargo')
@@ -43,7 +54,11 @@ class TeamResource extends Resource
                                     ->maxLength(255)
                                     ->placeholder('Ej: Director General')
                                     ->prefixIcon('heroicon-o-briefcase')
-                                    ->columnSpan(1),
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'required' => 'El cargo es obligatorio.',
+                                        'max'      => 'El cargo no puede exceder los 255 caracteres.',
+                                    ]),
 
                                 Forms\Components\Textarea::make('description')
                                     ->label('Descripción')
@@ -52,7 +67,11 @@ class TeamResource extends Resource
                                     ->maxLength(200)
                                     ->placeholder('Describe la experiencia y habilidades del miembro del equipo...')
                                     ->helperText('Breve descripción profesional (máximo 200 caracteres)')
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'La descripción es obligatoria.',
+                                        'max'      => 'La descripción no puede exceder los 200 caracteres.',
+                                    ]),
                             ]),
                     ])->collapsible(),
 
@@ -75,7 +94,10 @@ class TeamResource extends Resource
                             ->downloadable()
                             ->openable()
                             ->helperText('📐 Dimensión final: 393 × 390 px - La imagen se redimensionará automáticamente sin recortar. Formatos: JPG, PNG. Máximo: 2MB')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'La fotografía del miembro es obligatoria.',
+                            ]),
                     ])->collapsible(),
 
                 Forms\Components\Section::make('Estado')
@@ -83,7 +105,7 @@ class TeamResource extends Resource
                     ->icon('heroicon-o-cog-6-tooth')
                     ->schema([
                         Forms\Components\Toggle::make('status')
-                            ->label('Estado')
+                            ->label('Visible en el sitio')
                             ->default(true)
                             ->inline(false)
                             ->helperText('Activa o desactiva la visualización de este miembro en el sitio web')
@@ -96,48 +118,93 @@ class TeamResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Foto')
+                    ->circular()
+                    ->size(50),
+
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('image'),
-                Tables\Columns\TextColumn::make('position')
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('status')
-                    ->boolean(),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label('Nombre')
+                    ->searchable()
                     ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->weight('bold'),
+
+                Tables\Columns\TextColumn::make('position')
+                    ->label('Cargo')
+                    ->searchable()
+                    ->sortable()
+                    ->badge()
+                    ->color('gray'),
+
+                Tables\Columns\TextColumn::make('description')
+                    ->label('Descripción')
+                    ->limit(50)
+                    ->toggleable(),
+
+                Tables\Columns\IconColumn::make('status')
+                    ->label('Visible')
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
+
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Creado')
+                    ->dateTime('d/m/Y')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('status')
+                    ->label('Visibilidad')
+                    ->placeholder('Todos')
+                    ->trueLabel('Solo visibles')
+                    ->falseLabel('Solo ocultos'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-eye')
+                    ->tooltip('Ver detalles'),
+
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-pencil-square')
+                    ->tooltip('Editar miembro'),
+
+                Tables\Actions\DeleteAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->tooltip('Eliminar miembro')
+                    ->requiresConfirmation()
+                    ->modalHeading('¿Eliminar miembro del equipo?')
+                    ->modalDescription('Esta acción NO se puede deshacer.')
+                    ->modalSubmitActionLabel('Sí, eliminar')
+                    ->modalCancelActionLabel('Cancelar'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                    Tables\Actions\DeleteBulkAction::make()
+                        ->requiresConfirmation()
+                        ->modalHeading('¿Eliminar miembros seleccionados?')
+                        ->modalDescription('Esta acción NO se puede deshacer.')
+                        ->modalSubmitActionLabel('Sí, eliminar')
+                        ->modalCancelActionLabel('Cancelar'),
+                ])
+                    ->label('Acciones')
+                    ->icon('heroicon-o-ellipsis-vertical')
+                    ->color('gray'),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTeams::route('/'),
+            'index'  => Pages\ListTeams::route('/'),
             'create' => Pages\CreateTeam::route('/create'),
-            'edit' => Pages\EditTeam::route('/{record}/edit'),
+            'edit'   => Pages\EditTeam::route('/{record}/edit'),
         ];
     }
 }

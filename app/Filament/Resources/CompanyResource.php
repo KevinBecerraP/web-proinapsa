@@ -398,6 +398,122 @@ class CompanyResource extends Resource
                             ->columnSpanFull(),
                     ])->collapsible(),
 
+                Forms\Components\Section::make('Trayectoria')
+                    ->description('Línea de tiempo e historia de la institución')
+                    ->icon('heroicon-o-clock')
+                    ->schema([
+                        Forms\Components\TextInput::make('trajectory_title')
+                            ->label('Título de la Trayectoria')
+                            ->maxLength(255)
+                            ->placeholder('Ej: Nuestra Historia')
+                            ->prefixIcon('heroicon-o-document-text')
+                            ->columnSpanFull(),
+
+                        Forms\Components\Textarea::make('trajectory_description')
+                            ->label('Descripción de la Trayectoria')
+                            ->rows(4)
+                            ->maxLength(500)
+                            ->placeholder('Describe la trayectoria e historia de la institución...')
+                            ->live(onBlur: true)
+                            ->hint(function ($state) {
+                                $length = strlen($state ?? '');
+                                return $length . ' / 500 caracteres';
+                            })
+                            ->hintColor(function ($state) {
+                                $length = strlen($state ?? '');
+                                $remaining = 500 - $length;
+                                if ($remaining < 50) return 'danger';
+                                if ($remaining < 100) return 'warning';
+                                return 'gray';
+                            })
+                            ->validationMessages([
+                                'max' => 'La descripción no puede exceder los 500 caracteres.',
+                            ])
+                            ->columnSpanFull(),
+
+                        Forms\Components\FileUpload::make('trajectory_image')
+                            ->label('Imagen de Trayectoria')
+                            ->image()
+                            ->imageEditor()
+                            ->directory('company/trajectory')
+                            ->maxSize(2048)
+                            ->downloadable()
+                            ->openable()
+                            ->helperText('Imagen representativa de la línea de tiempo. Formatos: JPG, PNG. Máximo: 2MB')
+                            ->columnSpanFull(),
+                    ])->collapsible(),
+
+                Forms\Components\Section::make('Metodología')
+                    ->description('Descripción del enfoque y metodología de trabajo')
+                    ->icon('heroicon-o-beaker')
+                    ->schema([
+                        Forms\Components\TextInput::make('methodology_title')
+                            ->label('Título de la Metodología')
+                            ->required()
+                            ->maxLength(255)
+                            ->placeholder('Ej: Nuestra Metodología')
+                            ->prefixIcon('heroicon-o-document-text')
+                            ->validationMessages([
+                                'required' => 'El título de la metodología es obligatorio.',
+                                'max'      => 'El título no puede exceder los 255 caracteres.',
+                            ])
+                            ->columnSpanFull(),
+
+                        Forms\Components\RichEditor::make('methodology_description')
+                            ->label('Descripción de la Metodología')
+                            ->required()
+                            ->toolbarButtons([
+                                'bold',
+                                'italic',
+                                'underline',
+                                'h2',
+                                'h3',
+                                'bulletList',
+                                'orderedList',
+                                'link',
+                            ])
+                            ->live(onBlur: true)
+                            ->hint(function ($state) {
+                                $length = strlen(strip_tags($state ?? ''));
+                                return $length . ' / 800 caracteres';
+                            })
+                            ->hintColor(function ($state) {
+                                $length = strlen(strip_tags($state ?? ''));
+                                $remaining = 800 - $length;
+                                if ($remaining < 80) return 'danger';
+                                if ($remaining < 160) return 'warning';
+                                return 'gray';
+                            })
+                            ->rules([
+                                function () {
+                                    return function (string $attribute, $value, $fail) {
+                                        if (strlen(strip_tags($value ?? '')) > 800) {
+                                            $fail('La descripción no puede exceder los 800 caracteres de texto visible.');
+                                        }
+                                    };
+                                },
+                            ])
+                            ->validationMessages([
+                                'required' => 'La descripción de la metodología es obligatoria.',
+                            ])
+                            ->columnSpanFull(),
+
+                        Forms\Components\FileUpload::make('methodology_image')
+                            ->label('Imagen de la Metodología')
+                            ->required()
+                            ->image()
+                            ->imageEditor()
+                            ->directory('company/methodology')
+                            ->maxSize(2048)
+                            ->downloadable()
+                            ->openable()
+                            ->helperText('Imagen ilustrativa de la metodología. Formatos: JPG, PNG. Máximo: 2MB')
+                            ->validationMessages([
+                                'required' => 'La imagen de la metodología es obligatoria.',
+                            ])
+                            ->columnSpanFull(),
+                    ])->collapsible(),
+
                 Forms\Components\Section::make('Geolocalización')
                     ->description('Coordenadas de ubicación de la empresa')
                     ->icon('heroicon-o-map')

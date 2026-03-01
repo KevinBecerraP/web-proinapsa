@@ -56,7 +56,10 @@ class FormalEducationSectionResource extends Resource
                                     ->prefixIcon('heroicon-o-folder-open')
                                     ->placeholder('Selecciona la sección')
                                     ->helperText('Cada sección representa un apartado diferente de educación formal')
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'La sección es obligatoria.',
+                                    ]),
 
                                 Forms\Components\TextInput::make('title')
                                     ->label('Título')
@@ -68,7 +71,12 @@ class FormalEducationSectionResource extends Resource
                                     ->placeholder('Ej: Introducción a la educación formal')
                                     ->prefixIcon('heroicon-o-document-text')
                                     ->helperText('Máximo 50 caracteres. Debe ser único dentro de la sección')
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'El título es obligatorio.',
+                                        'max'      => 'El título no puede exceder los 50 caracteres.',
+                                        'unique'   => 'Ya existe un registro con este título en la misma sección.',
+                                    ]),
                             ])
                             ->columns(2),
 
@@ -78,6 +86,9 @@ class FormalEducationSectionResource extends Resource
                                 Forms\Components\RichEditor::make('description')
                                     ->label('Descripción')
                                     ->required()
+                                    ->validationMessages([
+                                        'required' => 'La descripción es obligatoria.',
+                                    ])
                                     ->toolbarButtons([
                                         'bold',
                                         'italic',

@@ -50,7 +50,10 @@ class EducationalMaterialResource extends Resource
                                         'school_adolescence' => 'Escolar y Adolescencia',
                                     ])
                                     ->required()
-                                    ->searchable(),
+                                    ->searchable()
+                                    ->validationMessages([
+                                        'required' => 'La categoría es obligatoria.',
+                                    ]),
 
                                 Forms\Components\Select::make('type')
                                     ->label('Tipo')
@@ -59,7 +62,10 @@ class EducationalMaterialResource extends Resource
                                         'games' => 'Juegos',
                                     ])
                                     ->required()
-                                    ->searchable(),
+                                    ->searchable()
+                                    ->validationMessages([
+                                        'required' => 'El tipo de material es obligatorio.',
+                                    ]),
                             ])
                             ->columns(3),
 
@@ -72,14 +78,23 @@ class EducationalMaterialResource extends Resource
                                     ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, $get) {
                                         return $rule->where('category', $get('category'));
                                     })
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'El título del material es obligatorio.',
+                                        'max'      => 'El título no puede exceder los 50 caracteres.',
+                                        'unique'   => 'Ya existe un material con este título en la misma categoría.',
+                                    ]),
 
                                 Forms\Components\Textarea::make('short_description')
                                     ->label('Descripción Corta')
                                     ->required()
                                     ->maxLength(200)
                                     ->rows(3)
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'La descripción corta es obligatoria.',
+                                        'max'      => 'La descripción no puede exceder los 200 caracteres.',
+                                    ]),
 
                                 Forms\Components\FileUpload::make('main_image')
                                     ->label('Imagen Principal')
@@ -90,7 +105,10 @@ class EducationalMaterialResource extends Resource
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->imageResizeMode('cover')
                                     ->helperText('Máximo 2MB. Formatos: JPG, PNG')
-                                    ->columnSpanFull(),
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'La imagen principal es obligatoria.',
+                                    ]),
                             ]),
 
                         Forms\Components\Tabs\Tab::make('Contenido Completo')
@@ -98,6 +116,9 @@ class EducationalMaterialResource extends Resource
                                 Forms\Components\RichEditor::make('full_description')
                                     ->label('Descripción Completa')
                                     ->required()
+                                    ->validationMessages([
+                                        'required' => 'La descripción completa es obligatoria.',
+                                    ])
                                     ->toolbarButtons([
                                         'bold',
                                         'italic',
@@ -165,7 +186,8 @@ class EducationalMaterialResource extends Resource
                                 Forms\Components\Toggle::make('active')
                                     ->label('Activo')
                                     ->default(true)
-                                    ->required(),
+                                    ->inline(false)
+                                    ->helperText('Los materiales inactivos no se mostrarán en el sitio web'),
                             ]),
                     ])
                     ->columnSpanFull(),
