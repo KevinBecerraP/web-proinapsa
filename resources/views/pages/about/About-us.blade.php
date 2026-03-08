@@ -1,17 +1,17 @@
-@extends('layouts.app')
+@extends('layouts.app-secondary')
 
 @section('title', 'Inicio')
 
-@section('content') 
-<!-- Main content Start -->
+@section('content')
+    <!-- Main content Start -->
     <div class="main-content">
         <!-- Banner -->
         <div class="rs-breadcrumbs breadcrumbs-overlay">
             <div class="breadcrumbs-img">
-                <img src="assets/images/breadcrumbs/2.jpg" alt="Breadcrumbs Image">
+                <img src="{{ asset('images/breadcrumbs/2.jpg') }}" alt="Breadcrumbs Image">
             </div>
             <div class="breadcrumbs-text white-color">
-                <h1 class="page-title">Quiénes Somos</h1>
+                <h1 class="page-title">Sobre Nosotros</h1>
                 <ul>
                     <li>
                         <a class="active" href="">Home</a>
@@ -24,11 +24,11 @@
 
         <!-- vision -->
         <div id="rs-about" class="rs-about style1 pt-100 pb-100 md-pt-70 md-pb-70">
-            <div class="container" >
+            <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 order-last padding-0 md-pl-15 md-pr-15 md-mb-30">
                         <div class="img-part">
-                            <img class="" src="assets/images/about/about2orange.png" alt="About Image">
+                            <img class="" src="{{ asset('images/about/about2orange.png') }}" alt="About Image">
                         </div>
                     </div>
                     <div class="col-lg-6 pr-70 md-pr-15">
@@ -85,89 +85,101 @@
 
         <!-- aun no se para que se puede usa -->
         <!--<div id="rs-about" class="rs-about style3 pt-100 md-pt-70">
-                <div class="container">
-                    <div class="row y-middle">
-                        <div class="col-lg-4 lg-pr-0 md-mb-30">
-                            <div class="about-intro">
-                                <div class="sec-title">
-                                    <div class="sub-title orange">About Us</div>
-                                    <h2 class="title mb-21">The End Result of All True Learning</h2>
-                                    <div class="desc big">The key to success is to appreciate how people learn, understand the thought process that goes into instructional design, what works well, and a range of differen</div>
+                        <div class="container">
+                            <div class="row y-middle">
+                                <div class="col-lg-4 lg-pr-0 md-mb-30">
+                                    <div class="about-intro">
+                                        <div class="sec-title">
+                                            <div class="sub-title orange">About Us</div>
+                                            <h2 class="title mb-21">The End Result of All True Learning</h2>
+                                            <div class="desc big">The key to success is to appreciate how people learn, understand the thought process that goes into instructional design, what works well, and a range of differen</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-8 pl-83 md-pl-15">
+                                    <div class="row rs-counter couter-area">
+                                        <div class="col-md-4 sm-mb-30">
+                                            <div class="counter-item one">
+                                                <img class="count-img" src="assets/images/about/style3/icons/1.png" alt="">
+                                                <h2 class="number rs-count kplus">2</h2>
+                                                <h4 class="title mb-0">Students</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4 sm-mb-30">
+                                            <div class="counter-item two">
+                                                <img class="count-img" src="assets/images/about/style3/icons/2.png" alt="">
+                                                <h2 class="number rs-count">3.50</h2>
+                                                <h4 class="title mb-0">Average CGPA</h4>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="counter-item three">
+                                                <img class="count-img" src="assets/images/about/style3/icons/3.png" alt="">
+                                                <h2 class="number rs-count percent">95</h2>
+                                                <h4 class="title mb-0">Graduates</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-8 pl-83 md-pl-15">
-                            <div class="row rs-counter couter-area">
-                                <div class="col-md-4 sm-mb-30">
-                                    <div class="counter-item one">
-                                        <img class="count-img" src="assets/images/about/style3/icons/1.png" alt="">
-                                        <h2 class="number rs-count kplus">2</h2>
-                                        <h4 class="title mb-0">Students</h4>
-                                    </div>
+                    </div>
+                    <!-- Counter Section End -->
+
+        <!-- Valores -->
+        <div class="rs-faq-part orange-color pt-100 pb-100 md-pt-70 md-pb-70">
+            <div class="container">
+                <div class="content-part mb-50 md-mb-30">
+                    <div class="title mb-40 md-mb-15">
+                        <h3 class="text-part">Valores</h3>
+                    </div>
+                    <div id="accordion" class="accordion">
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="card-link" data-toggle="collapse" href="#collapseOne">What do you mean by item and
+                                    end product?</a>
+                            </div>
+                            <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                <div class="card-body">
+                                    Aenean massa. Cum sociis natoque penatibus et magnis dis partu rient to montes, nascetur
+                                    ridiculus mus. Donec quam felis, ultricies nec, pellen of the tesque services Donec quam
+                                    felis, ultricies nec, pellentesque eu, pretium quis,pede justo, of fringilla vel,
+                                    aliquet nec
                                 </div>
-                                <div class="col-md-4 sm-mb-30">
-                                    <div class="counter-item two">
-                                        <img class="count-img" src="assets/images/about/style3/icons/2.png" alt="">
-                                        <h2 class="number rs-count">3.50</h2>
-                                        <h4 class="title mb-0">Average CGPA</h4>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="card-link collapsed" data-toggle="collapse" href="#collapseTwo"
+                                    aria-expanded="false">What does non-exclusive mean?</a>
+                            </div>
+                            <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    Aenean massa. Cum sociis natoque penatibus et magnis dis partu rient to montes, nascetur
+                                    ridiculus mus. Donec quam felis, ultricies nec, pellen of the tesque services Donec quam
+                                    felis, ultricies nec, pellentesque eu, pretium quis,pede justo, of fringilla vel,
+                                    aliquet nec
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="counter-item three">
-                                        <img class="count-img" src="assets/images/about/style3/icons/3.png" alt="">
-                                        <h2 class="number rs-count percent">95</h2>
-                                        <h4 class="title mb-0">Graduates</h4>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="card-link collapsed" data-toggle="collapse" href="#collapseThree"
+                                    aria-expanded="false">What are some examples of permitted end products?</a>
+                            </div>
+                            <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                <div class="card-body">
+                                    Aenean massa. Cum sociis natoque penatibus et magnis dis partu rient to montes, nascetur
+                                    ridiculus mus. Donec quam felis, ultricies nec, pellen of the tesque services Donec quam
+                                    felis, ultricies nec, pellentesque eu, pretium quis,pede justo, of fringilla vel,
+                                    aliquet nec.
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <!-- Counter Section End -->
-
-        <!-- Valores -->
-        <div class="rs-faq-part orange-color pt-100 pb-100 md-pt-70 md-pb-70">
-                 <div class="container">
-                     <div class="content-part mb-50 md-mb-30">
-                         <div class="title mb-40 md-mb-15">
-                             <h3 class="text-part">Valores</h3>
-                         </div>
-                         <div id="accordion" class="accordion">
-                            <div class="card">
-                                <div class="card-header">
-                                    <a class="card-link" data-toggle="collapse" href="#collapseOne">What do you mean by item and end product?</a>
-                                </div>
-                                <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                                    <div class="card-body">
-                                     Aenean massa. Cum sociis natoque penatibus et magnis dis partu rient to montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellen of the tesque services Donec quam felis, ultricies nec, pellentesque eu, pretium quis,pede justo, of fringilla vel, aliquet nec
-                                    </div>
-                                </div>
-                            </div>
-                             <div class="card">
-                                 <div class="card-header">
-                                     <a class="card-link collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false">What does non-exclusive mean?</a>
-                                 </div>
-                                 <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                                     <div class="card-body">
-                                         Aenean massa. Cum sociis natoque penatibus et magnis dis partu rient to montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellen of the tesque services Donec quam felis, ultricies nec, pellentesque eu, pretium quis,pede justo, of fringilla vel, aliquet nec
-                                     </div>
-                                 </div>
-                             </div>
-                             <div class="card">
-                                 <div class="card-header">
-                                     <a class="card-link collapsed" data-toggle="collapse" href="#collapseThree" aria-expanded="false">What are some examples of permitted end products?</a>
-                                 </div>
-                                 <div id="collapseThree" class="collapse" data-parent="#accordion">
-                                     <div class="card-body">
-                                         Aenean massa. Cum sociis natoque penatibus et magnis dis partu rient to montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellen of the tesque services Donec quam felis, ultricies nec, pellentesque eu, pretium quis,pede justo, of fringilla vel, aliquet nec.
-                                     </div>
-                                 </div>
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-            </div>
+        </div>
 
 
         <!-- Video Proinapsa -->
@@ -288,226 +300,226 @@
 
         <!-- Testimonial Section Start -->
         <!--<div class="rs-testimonial style3 orange-color pt-90 md-pt-70">
-                <div class="container">
-                    <div class="sec-title mb-60 md-mb-30 text-center">
-                        <div class="sub-title orange">Student Reviews</div>
-                        <h2 class="title mb-0">What Our Students Says</h2>
+                        <div class="container">
+                            <div class="sec-title mb-60 md-mb-30 text-center">
+                                <div class="sub-title orange">Student Reviews</div>
+                                <h2 class="title mb-0">What Our Students Says</h2>
+                            </div>
+                            <div class="rs-carousel owl-carousel" data-loop="true" data-items="2" data-margin="30" data-autoplay="true" data-hoverpause="true" data-autoplay-timeout="5000" data-smart-speed="800" data-dots="true" data-nav="false" data-nav-speed="false" data-center-mode="false" data-mobile-device="1" data-mobile-device-nav="false" data-mobile-device-dots="false" data-ipad-device="2" data-ipad-device-nav="false" data-ipad-device-dots="false" data-ipad-device2="2" data-ipad-device-nav2="false" data-ipad-device-dots2="false" data-md-device="2" data-md-device-nav="false" data-md-device-dots="true">
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/1.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/2.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/3.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/4.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/5.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/6.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/7.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/8.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/9.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="testi-item">
+                                    <div class="row y-middle no-gutter">
+                                        <div class="col-md-4">
+                                            <div class="user-info">
+                                                <img src="assets/images/testimonial/style3/10.png" alt="">
+                                                <h4 class="name">Saiko Najran</h4>
+                                                <span class="designation">Student</span>
+                                                <ul class="ratings">
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                    <li><i class="fa fa-star"></i></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="rs-carousel owl-carousel" data-loop="true" data-items="2" data-margin="30" data-autoplay="true" data-hoverpause="true" data-autoplay-timeout="5000" data-smart-speed="800" data-dots="true" data-nav="false" data-nav-speed="false" data-center-mode="false" data-mobile-device="1" data-mobile-device-nav="false" data-mobile-device-dots="false" data-ipad-device="2" data-ipad-device-nav="false" data-ipad-device-dots="false" data-ipad-device2="2" data-ipad-device-nav2="false" data-ipad-device-dots2="false" data-md-device="2" data-md-device-nav="false" data-md-device-dots="true">
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/1.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/2.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/3.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/4.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/5.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/6.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/7.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/8.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/9.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="testi-item">
-                            <div class="row y-middle no-gutter">
-                                <div class="col-md-4">
-                                    <div class="user-info">
-                                        <img src="assets/images/testimonial/style3/10.png" alt="">
-                                        <h4 class="name">Saiko Najran</h4>
-                                        <span class="designation">Student</span>
-                                        <ul class="ratings">
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                            <li><i class="fa fa-star"></i></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="desc">The charms of pleasure of the moment so blinded by desire that they cannot foresee the pain and trouble that are bound ensue and equal blame belongs to those who fail in their duty.</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Testimonial Section End -->
+                    <!-- Testimonial Section End -->
 
         <!-- Blog Section Start -->
         <div id="rs-blog" class="rs-blog orange-color style1 modify1 pt-85 pb-100 md-pt-70 md-pb-70">
