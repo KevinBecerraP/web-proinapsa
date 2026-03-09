@@ -39,9 +39,7 @@ class Company extends Model
         'slogan',
         'mission_title',
         'mission_description',
-        'mission_image_1',
-        'mission_image_2',
-        'mission_image_3',
+        'mission_image',
         'vision_title',
         'vision_description',
         'vision_image',
@@ -98,20 +96,10 @@ class Company extends Model
                 }
             }
 
-            // Imágenes de misión
-            if ($company->isDirty('mission_image_1')) {
-                if ($company->getOriginal('mission_image_1')) {
-                    Storage::disk('public')->delete($company->getOriginal('mission_image_1'));
-                }
-            }
-            if ($company->isDirty('mission_image_2')) {
-                if ($company->getOriginal('mission_image_2')) {
-                    Storage::disk('public')->delete($company->getOriginal('mission_image_2'));
-                }
-            }
-            if ($company->isDirty('mission_image_3')) {
-                if ($company->getOriginal('mission_image_3')) {
-                    Storage::disk('public')->delete($company->getOriginal('mission_image_3'));
+            // Imagen de misión
+            if ($company->isDirty('mission_image')) {
+                if ($company->getOriginal('mission_image')) {
+                    Storage::disk('public')->delete($company->getOriginal('mission_image'));
                 }
             }
 
@@ -154,15 +142,9 @@ class Company extends Model
                 Storage::disk('public')->delete($company->privacy_policy_pdf);
             }
 
-            // Imágenes de misión
-            if ($company->mission_image_1) {
-                Storage::disk('public')->delete($company->mission_image_1);
-            }
-            if ($company->mission_image_2) {
-                Storage::disk('public')->delete($company->mission_image_2);
-            }
-            if ($company->mission_image_3) {
-                Storage::disk('public')->delete($company->mission_image_3);
+            // Imagen de misión
+            if ($company->mission_image) {
+                Storage::disk('public')->delete($company->mission_image);
             }
 
             // Imagen de visión
@@ -224,15 +206,11 @@ class Company extends Model
     }
 
     /**
-     * Get all mission images as an array.
+     * Get mission image URL.
      */
-    public function getMissionImages(): array
+    public function getMissionImageUrl(): ?string
     {
-        return array_filter([
-            $this->mission_image_1,
-            $this->mission_image_2,
-            $this->mission_image_3,
-        ]);
+        return $this->mission_image ? Storage::url($this->mission_image) : null;
     }
 
     /**
@@ -260,27 +238,11 @@ class Company extends Model
     }
 
     /**
-     * Get the full URL of mission image 1.
+     * Get the full URL of the mission image.
      */
-    public function getMissionImage1UrlAttribute()
+    public function getMissionImageUrlAttribute()
     {
-        return $this->mission_image_1 ? Storage::url($this->mission_image_1) : null;
-    }
-
-    /**
-     * Get the full URL of mission image 2.
-     */
-    public function getMissionImage2UrlAttribute()
-    {
-        return $this->mission_image_2 ? Storage::url($this->mission_image_2) : null;
-    }
-
-    /**
-     * Get the full URL of mission image 3.
-     */
-    public function getMissionImage3UrlAttribute()
-    {
-        return $this->mission_image_3 ? Storage::url($this->mission_image_3) : null;
+        return $this->mission_image ? Storage::url($this->mission_image) : null;
     }
 
     /**
@@ -344,12 +306,11 @@ class Company extends Model
     /**
      * Eliminar imagen de misión manualmente si es necesario
      */
-    public function deleteMissionImage(int $imageNumber)
+    public function deleteMissionImage()
     {
-        $field = "mission_image_{$imageNumber}";
-        if ($this->$field && Storage::disk('public')->exists($this->$field)) {
-            Storage::disk('public')->delete($this->$field);
-            $this->update([$field => null]);
+        if ($this->mission_image && Storage::disk('public')->exists($this->mission_image)) {
+            Storage::disk('public')->delete($this->mission_image);
+            $this->update(['mission_image' => null]);
             return true;
         }
         return false;

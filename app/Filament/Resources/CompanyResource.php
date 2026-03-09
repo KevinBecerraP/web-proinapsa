@@ -554,6 +554,7 @@ class CompanyResource extends Resource
                 Tables\Columns\ImageColumn::make('logo')
                     ->label('Logo')
                     ->circular(),
+                    
                 Tables\Columns\TextColumn::make('business_name')
                     ->label('Razón Social')
                     ->searchable()

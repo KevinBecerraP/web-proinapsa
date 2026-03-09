@@ -40,7 +40,7 @@ class AreaSeeder extends Seeder
         ];
 
         foreach ($areas as $area) {
-            Area::create($area);
+            Area::firstOrCreate(['slug' => $area['slug']], \Arr::except($area, ['slug']));
         }
     }
 }

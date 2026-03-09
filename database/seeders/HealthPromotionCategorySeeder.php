@@ -57,7 +57,7 @@ class HealthPromotionCategorySeeder extends Seeder
         ];
 
         foreach ($categories as $category) {
-            HealthPromotionCategory::create($category);
+            HealthPromotionCategory::firstOrCreate(['category' => $category['category']], \Arr::except($category, ['category']));
         }
 
         $this->command->info('✅ 4 categorías de Promoción de Salud creadas exitosamente.');
