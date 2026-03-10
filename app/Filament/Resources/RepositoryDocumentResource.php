@@ -156,14 +156,19 @@ class RepositoryDocumentResource extends Resource
                             ->label('Imagen/Portada')
                             ->image()
                             ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('393')
+                            ->imageResizeTargetHeight('390')
+                            ->required()
                             ->directory('repository/images')
                             ->nullable()
-                            ->helperText('Imagen representativa'),
+                            ->helperText('La imagen se redimensionará automáticamente a 393 × 390 px al subirla.'),
 
                         Forms\Components\FileUpload::make('document')
                             ->label('Documento PDF')
                             ->acceptedFileTypes(['application/pdf'])
                             ->directory('repository/documents')
+                            ->required()
                             ->nullable()
                             ->helperText('PDF de descarga gratuita'),
                     ])->columns(2)->collapsible(),
