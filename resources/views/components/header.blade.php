@@ -39,88 +39,24 @@
                                             </ul>
                                         </li>
 
-                                        <li class="menu-item-has-children">
-                                            <a href="#">Que Hacemos</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="quehacemos.html">metodología</a> </li>
-                                                <li><a href="course2.html">Areas</a>
-                                                    <ul class="sub-menu right">
-                                                        <li><a href="course2.html">Area de Proyección</a>
-                                                        <li><a href="course-single.html">Area de Educación y
-                                                                comunicación</a> </li>
-                                                        <li><a href="course4.html">Area de Investigación</a>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="course5.html">Courses Five</a> </li>
-                                                <li><a href="course-single.html">Courses Single</a> </li>
-                                            </ul>
+                                        <li class="menu-item">
+                                            <a href="{{ route('what-we-do.index') }}">Que hacemos?</a>
                                         </li>
 
-                                        <li class="menu-item-has-children">
-                                            <a href="#">Pages</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item-has-children right">
-                                                    <a href="#">Team</a>
-                                                    <ul class="sub-menu right">
-                                                        <li><a href="team.html">Team One</a></li>
-                                                        <li><a href="team2.html">Team Two</a></li>
-                                                        <li><a href="team-single.html">Team Single</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Event</a>
-                                                    <ul class="sub-menu right">
-                                                        <li><a href="events-style1.html">Event One</a></li>
-                                                        <li><a href="events-style2.html">Event Two</a></li>
-                                                        <li><a href="events-style3.html">Event Three</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Gallery</a>
-                                                    <ul class="sub-menu right">
-                                                        <li><a href="gallery-style1.html">Gallery One</a></li>
-                                                        <li><a href="gallery-style2.html">Gallery Two</a></li>
-                                                        <li><a href="gallery-style3.html">Gallery Three</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Shop</a>
-                                                    <ul class="sub-menu right">
-                                                        <li><a href="shop.html">Shop</a></li>
-                                                        <li><a href="shop-single.html">Shop Single</a></li>
-                                                        <li><a href="cart.html">Cart</a></li>
-                                                        <li><a href="checkout.html">Checkout</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Others</a>
-                                                    <ul class="sub-menu right">
-                                                        <li><a href="faq.html">FAQ</a></li>
-                                                        <li><a href="error.html">404 Page</a></li>
-                                                        <li><a href="login.html">Login</a></li>
-                                                        <li><a href="register.html">Register</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
+                                        <li class="menu-item">
+                                            <a href="{{ route('repository.index') }}">Repositorios</a>
                                         </li>
 
                                         <li class="menu-item">
                                             <a href="{{ route('news.index') }}">Noticias</a>
                                         </li>
 
-                                        <li class="menu-item-has-children">
-                                            <a href="#">Contact</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="contact.html">Contact One</a> </li>
-                                                <li><a href="contact2.html">Contact Two</a> </li>
-                                                <li><a href="contact3.html">Contact Three</a> </li>
-                                                <li><a href="contact4.html">Contact Four</a> </li>
-                                            </ul>
+                                        <li class="menu-item">
+                                            <a href="{{ route('news.index') }}">Contactanos</a>
                                         </li>
-                                    </ul> <!-- //.nav-menu -->
+                                    </ul>
                                 </nav>
-                            </div> <!-- //.main-menu -->
-
+                            </div>
                         </div>
                     </div>
                 </div>

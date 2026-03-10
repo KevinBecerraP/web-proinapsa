@@ -58,113 +58,23 @@
                                             </ul>
                                         </li>
 
-                                        <li class="menu-item-has-children">
-                                            <a href="#">Courses</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="course.html">Courses One</a> </li>
-                                                <li><a href="course2.html">Courses Two</a> </li>
-                                                <li><a href="course3.html">Courses Three</a> </li>
-                                                <li><a href="course4.html">Courses Four</a>
-                                                </li>
-                                                <li><a href="course5.html">Courses Five</a> </li>
-                                                <li><a href="course6.html">Courses Six</a> </li>
-                                                <li><a href="course-single.html">Courses Single</a> </li>
-                                                <div class="sub-menu-close"><i class="fa fa-times"
-                                                        aria-hidden="true"></i>Close</div>
-                                            </ul>
-                                            <span class="rs-menu-parent"><i class="fa fa-angle-down"
-                                                    aria-hidden="true"></i></span>
+
+                                        <li class="menu-item">
+                                            <a href="{{ route('what-we-do.index') }}">Que hacemos?</a>
                                         </li>
 
-                                        <li class="menu-item-has-children">
-                                            <a href="#">Pages</a>
-                                            <ul class="sub-menu">
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Team</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="team.html">Team One</a></li>
-                                                        <li><a href="team2.html">Team Two</a></li>
-                                                        <li><a href="team-single.html">Team Single</a></li>
-                                                        <div class="sub-menu-close"><i class="fa fa-times"
-                                                                aria-hidden="true"></i>Close</div>
-                                                    </ul>
-                                                    <span class="rs-menu-parent"><i class="fa fa-angle-down"
-                                                            aria-hidden="true"></i></span>
-                                                </li>
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Event</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="events-style1.html">Event One</a></li>
-                                                        <li><a href="events-style2.html">Event Two</a></li>
-                                                        <li><a href="events-style3.html">Event Three</a></li>
-                                                        <div class="sub-menu-close"><i class="fa fa-times"
-                                                                aria-hidden="true"></i>Close</div>
-                                                    </ul>
-                                                    <span class="rs-menu-parent"><i class="fa fa-angle-down"
-                                                            aria-hidden="true"></i></span>
-                                                </li>
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Gallery</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="gallery-style1.html">Gallery One</a></li>
-                                                        <li><a href="gallery-style2.html">Gallery Two</a></li>
-                                                        <li><a href="gallery-style3.html">Gallery Three</a></li>
-                                                        <div class="sub-menu-close"><i class="fa fa-times"
-                                                                aria-hidden="true"></i>Close</div>
-                                                    </ul>
-                                                    <span class="rs-menu-parent"><i class="fa fa-angle-down"
-                                                            aria-hidden="true"></i></span>
-                                                </li>
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Shop</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="shop.html">Shop</a></li>
-                                                        <li><a href="shop-single.html">Shop Single</a></li>
-                                                        <li><a href="cart.html">Cart</a></li>
-                                                        <li><a href="checkout.html">Checkout</a></li>
-                                                        <div class="sub-menu-close"><i class="fa fa-times"
-                                                                aria-hidden="true"></i>Close</div>
-                                                    </ul>
-                                                    <span class="rs-menu-parent"><i class="fa fa-angle-down"
-                                                            aria-hidden="true"></i></span>
-                                                </li>
-                                                <li class="menu-item-has-children">
-                                                    <a href="#">Others</a>
-                                                    <ul class="sub-menu">
-                                                        <li><a href="faq.html">FAQ</a></li>
-                                                        <li><a href="error.html">404 Page</a></li>
-                                                        <li><a href="login.html">Login</a></li>
-                                                        <li><a href="register.html">Register</a></li>
-                                                        <div class="sub-menu-close"><i class="fa fa-times"
-                                                                aria-hidden="true"></i>Close</div>
-                                                    </ul>
-                                                    <span class="rs-menu-parent"><i class="fa fa-angle-down"
-                                                            aria-hidden="true"></i></span>
-                                                </li>
-                                                <div class="sub-menu-close"><i class="fa fa-times"
-                                                        aria-hidden="true"></i>Close</div>
-                                            </ul>
-                                            <span class="rs-menu-parent"><i class="fa fa-angle-down"
-                                                    aria-hidden="true"></i></span>
+                                        <li class="menu-item">
+                                            <a href="{{ route('repository.index') }}">Repositorios</a>
                                         </li>
 
                                         <li class="menu-item">
                                             <a href="{{ route('news.index') }}">Noticias</a>
                                         </li>
 
-                                        <li class="menu-item-has-children">
-                                            <a href="#">Contact</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="contact.html">Contact One</a> </li>
-                                                <li><a href="contact2.html">Contact Two</a> </li>
-                                                <li><a href="contact3.html">Contact Three</a> </li>
-                                                <li><a href="contact4.html">Contact Four</a> </li>
-                                                <div class="sub-menu-close"><i class="fa fa-times"
-                                                        aria-hidden="true"></i>Close</div>
-                                            </ul>
-                                            <span class="rs-menu-parent"><i class="fa fa-angle-down"
-                                                    aria-hidden="true"></i></span>
+                                        <li class="menu-item">
+                                            <a href="{{ route('news.index') }}">Contactanos</a>
                                         </li>
+
                                     </ul> <!-- //.nav-menu -->
                                 </nav>
                             </div> <!-- //.main-menu -->
