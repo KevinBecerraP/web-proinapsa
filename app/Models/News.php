@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class News extends Model
 {
@@ -14,6 +15,7 @@ class News extends Model
 
     protected $fillable = [
         'title',
+        'slug',
         'excerpt',
         'content',
         'image',
@@ -36,6 +38,10 @@ class News extends Model
         parent::boot();
 
         static::creating(function ($model) {
+            if (empty($model->slug)) {
+                $model->slug = static::generateUniqueSlug($model->title);
+            }
+
             if (empty($model->order)) {
                 $maxOrder = static::max('order') ?? 0;
                 $model->order = $maxOrder + 1;
@@ -47,6 +53,10 @@ class News extends Model
         });
 
         static::updating(function ($model) {
+            if ($model->isDirty('title') && empty($model->slug)) {
+                $model->slug = static::generateUniqueSlug($model->title);
+            }
+
             if (auth()->check()) {
                 $model->updated_by = auth()->id();
             }
@@ -63,6 +73,16 @@ class News extends Model
 
             static::where('order', '>', $model->order)->decrement('order');
         });
+    }
+
+    /**
+     * Genera un slug único a partir de un texto
+     */
+    protected static function generateUniqueSlug(string $title): string
+    {
+        $slug = Str::slug($title);
+        $count = static::where('slug', 'like', $slug . '%')->count();
+        return $count > 0 ? $slug . '-' . ($count + 1) : $slug;
     }
 
     /**

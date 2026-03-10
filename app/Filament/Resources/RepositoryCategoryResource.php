@@ -100,6 +100,14 @@ class RepositoryCategoryResource extends Resource
                                 'max'      => 'El título no puede exceder los 255 caracteres.',
                             ]),
 
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug (URL)')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->prefixIcon('heroicon-o-link')
+                            ->helperText('Se genera automáticamente a partir del título.')
+                            ->columnSpanFull(),
+
                         Forms\Components\TextInput::make('order')
                             ->label('Orden')
                             ->numeric()

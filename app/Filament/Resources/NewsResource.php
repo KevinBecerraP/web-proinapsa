@@ -45,6 +45,14 @@ class NewsResource extends Resource
                                 'max'      => 'El título no puede exceder los 150 caracteres.',
                             ]),
 
+                        Forms\Components\TextInput::make('slug')
+                            ->label('Slug (URL)')
+                            ->disabled()
+                            ->dehydrated(false)
+                            ->prefixIcon('heroicon-o-link')
+                            ->helperText('Se genera automáticamente a partir del título.')
+                            ->columnSpanFull(),
+
                         Forms\Components\Textarea::make('excerpt')
                             ->label('Resumen')
                             ->required()
@@ -203,11 +211,6 @@ class NewsResource extends Resource
                     ->falseLabel('Solo inactivas'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label('')
-                    ->icon('heroicon-o-eye')
-                    ->tooltip('Ver detalles'),
-
                 Tables\Actions\EditAction::make()
                     ->label('')
                     ->icon('heroicon-o-pencil-square')

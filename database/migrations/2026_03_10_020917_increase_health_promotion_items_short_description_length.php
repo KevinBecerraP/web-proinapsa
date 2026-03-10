@@ -11,18 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->string('title', 150)->change();
+        Schema::table('health_promotion_items', function (Blueprint $table) {
+            $table->text('short_description')->nullable()->change();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->string('title', 50)->change();
+        Schema::table('health_promotion_items', function (Blueprint $table) {
+            $table->string('short_description', 150)->nullable()->change();
         });
     }
 };
