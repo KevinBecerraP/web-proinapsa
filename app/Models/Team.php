@@ -20,6 +20,7 @@ class Team extends Model
         'name',
         'image',
         'position',
+        'profesion',
         'description',
         'status',
     ];

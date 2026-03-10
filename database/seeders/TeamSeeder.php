@@ -14,6 +14,7 @@ class TeamSeeder extends Seeder
             [
                 'name'        => 'Dra. María Elena González Ruiz',
                 'position'    => 'Directora General',
+                'profesion'   => 'Psicóloga',
                 'description' => 'Psicóloga especialista en Salud Mental y Bienestar Comunitario con más de 20 años de experiencia en instituciones de educación y promoción de la salud. Lidera los procesos estratégicos del instituto con enfoque en el desarrollo integral de las comunidades.',
                 'image'       => 'placeholder.jpg',
                 'status'      => true,
@@ -21,6 +22,7 @@ class TeamSeeder extends Seeder
             [
                 'name'        => 'Esp. Carlos Alberto Martínez López',
                 'position'    => 'Coordinador de Investigación',
+                'profesion'   => 'Investigador en Salud Pública',
                 'description' => 'Investigador en salud pública con amplia trayectoria en el diseño y ejecución de proyectos de investigación sobre promoción de la salud en contextos comunitarios e institucionales. Magíster en Epidemiología.',
                 'image'       => 'placeholder.jpg',
                 'status'      => true,
@@ -28,6 +30,7 @@ class TeamSeeder extends Seeder
             [
                 'name'        => 'Lic. Ana Cristina Rodríguez Vargas',
                 'position'    => 'Coordinadora de Educación y Comunicación',
+                'profesion'   => 'Pedagoga y Comunicadora en Salud',
                 'description' => 'Especialista en pedagogía y comunicación para la salud, con experiencia en diseño de programas educativos y materiales didácticos para distintas poblaciones. Gestiona los procesos de formación formal y no formal del instituto.',
                 'image'       => 'placeholder.jpg',
                 'status'      => true,
@@ -35,6 +38,7 @@ class TeamSeeder extends Seeder
             [
                 'name'        => 'Lic. Laura Patricia Sánchez Moreno',
                 'position'    => 'Coordinadora de Proyección Social',
+                'profesion'   => 'Trabajadora Social',
                 'description' => 'Trabajadora social con enfoque en intervención comunitaria y promoción de derechos, especialmente en poblaciones vulnerables como primera infancia, niñez y mujeres. Coordina las estrategias de salud en territorio.',
                 'image'       => 'placeholder.jpg',
                 'status'      => true,
@@ -42,6 +46,7 @@ class TeamSeeder extends Seeder
             [
                 'name'        => 'Psic. Juan David Pérez Hernández',
                 'position'    => 'Psicólogo Institucional',
+                'profesion'   => 'Psicólogo',
                 'description' => 'Psicólogo clínico y organizacional con experiencia en atención individual y grupal. Enfocado en el bienestar emocional y la salud mental de los diferentes grupos poblacionales atendidos por el instituto.',
                 'image'       => 'placeholder.jpg',
                 'status'      => true,
@@ -49,6 +54,7 @@ class TeamSeeder extends Seeder
             [
                 'name'        => 'Ts. Diana Marcela López Castro',
                 'position'    => 'Trabajadora Social',
+                'profesion'   => 'Trabajadora Social',
                 'description' => 'Profesional en Trabajo Social especializada en intervención familiar y comunitaria, con énfasis en la promoción de entornos saludables y el fortalecimiento de redes de apoyo en comunidades rurales y urbanas.',
                 'image'       => 'placeholder.jpg',
                 'status'      => true,
@@ -56,6 +62,7 @@ class TeamSeeder extends Seeder
             [
                 'name'        => 'Enf. Roberto Andrés Castillo Mejía',
                 'position'    => 'Profesional de Salud Pública',
+                'profesion'   => 'Enfermero Profesional',
                 'description' => 'Enfermero profesional con especialización en Salud Pública y Promoción de la Salud. Lidera los programas de atención en salud para trabajadores y comunidades en general, con énfasis en prevención de enfermedades.',
                 'image'       => 'placeholder.jpg',
                 'status'      => true,
@@ -64,7 +71,7 @@ class TeamSeeder extends Seeder
 
         $createdTeams = [];
         foreach ($members as $member) {
-            $createdTeams[] = Team::firstOrCreate(['name' => $member['name']], \Arr::except($member, ['name']));
+            $createdTeams[] = Team::updateOrCreate(['name' => $member['name']], \Arr::except($member, ['name']));
         }
 
         // Asignar coordinadores a las áreas existentes

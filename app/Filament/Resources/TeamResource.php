@@ -60,6 +60,16 @@ class TeamResource extends Resource
                                         'max'      => 'El cargo no puede exceder los 255 caracteres.',
                                     ]),
 
+                                Forms\Components\TextInput::make('profesion')
+                                    ->label('Profesión')
+                                    ->maxLength(150)
+                                    ->placeholder('Ej: Psicóloga, Trabajadora Social')
+                                    ->prefixIcon('heroicon-o-academic-cap')
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'max' => 'La profesión no puede exceder los 150 caracteres.',
+                                    ]),
+
                                 Forms\Components\Textarea::make('description')
                                     ->label('Descripción')
                                     ->required()
@@ -135,6 +145,12 @@ class TeamResource extends Resource
                     ->sortable()
                     ->badge()
                     ->color('gray'),
+
+                Tables\Columns\TextColumn::make('profesion')
+                    ->label('Profesión')
+                    ->searchable()
+                    ->limit(30)
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('description')
                     ->label('Descripción')
