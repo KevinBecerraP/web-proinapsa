@@ -19,6 +19,7 @@ class Area extends Model
         'slug',
         'description',
         'icon',
+        'image',
         'order',
         'active',
         'coordinator_id',

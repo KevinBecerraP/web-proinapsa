@@ -81,10 +81,16 @@ class BannerResource extends Resource
                                 Forms\Components\TextInput::make('title')
                                     ->label('Título')
                                     ->required()
-                                    ->maxLength(255)
+                                    ->minLength(15)
+                                    ->maxLength(100)
                                     ->placeholder('Ej: Ofertas de Temporada')
                                     ->prefixIcon('heroicon-o-document-text')
-                                    ->columnSpan(1),
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'required' => 'El título del banner es obligatorio.',
+                                        'min'      => 'El título debe tener al menos 15 caracteres.',
+                                        'max'      => 'El título no puede exceder los 100 caracteres.',
+                                    ]),
 
                                 Forms\Components\ColorPicker::make('title_color')
                                     ->label('Color del Título')
@@ -96,10 +102,15 @@ class BannerResource extends Resource
 
                                 Forms\Components\TextInput::make('subtitle')
                                     ->label('Subtítulo')
-                                    ->maxLength(255)
+                                    ->minLength(15)
+                                    ->maxLength(60)
                                     ->placeholder('Ej: Hasta 50% de descuento')
                                     ->prefixIcon('heroicon-o-document-text')
-                                    ->columnSpan(1),
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'min' => 'El subtítulo debe tener al menos 15 caracteres.',
+                                        'max' => 'El subtítulo no puede exceder los 60 caracteres.',
+                                    ]),
 
                                 Forms\Components\ColorPicker::make('subtitle_color')
                                     ->label('Color del Subtítulo')
@@ -152,10 +163,12 @@ class BannerResource extends Resource
                                         column: 'order',
                                         ignoreRecord: true
                                     )
+                                    ->maxValue(999)
                                     ->validationMessages([
                                         'required' => 'El orden es obligatorio.',
                                         'unique'   => 'Este número de orden ya está en uso. Elige otro.',
                                         'min'      => 'El orden debe ser mayor a 0.',
+                                        'max'      => 'El orden no puede ser mayor a 999.',
                                         'integer'  => 'El orden debe ser un número entero (1, 2, 3...).',
                                     ])
                                     ->columnSpan(1),
@@ -248,12 +261,12 @@ class BannerResource extends Resource
                                             $height = $image[1];
 
                                             if ($type === 'main') {
-                                                if ($width < 1920 || $height < 960) {
-                                                    $fail("La imagen no cumple con las dimensiones para Banner Principal. Requerido: 1920 × 960 px. Actual: {$width} × {$height} px. Por favor, sube una nueva imagen.");
+                                                if ($width !== 1920 || $height !== 960) {
+                                                    $fail("La imagen debe tener exactamente 1920 × 960 px (Banner Principal). Dimensiones actuales: {$width} × {$height} px.");
                                                 }
                                             } elseif ($type === 'secondary') {
-                                                if ($width < 1905 || $height < 496) {
-                                                    $fail("La imagen no cumple con las dimensiones para Banner Secundario. Requerido: 1905 × 496 px. Actual: {$width} × {$height} px. Por favor, sube una nueva imagen.");
+                                                if ($width !== 1905 || $height !== 496) {
+                                                    $fail("La imagen debe tener exactamente 1905 × 496 px (Banner Secundario). Dimensiones actuales: {$width} × {$height} px.");
                                                 }
                                             }
                                         } catch (\Exception $e) {

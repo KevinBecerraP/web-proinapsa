@@ -41,6 +41,26 @@ class AreaResource extends Resource
                     ->description('Configuración general del área')
                     ->icon('heroicon-o-information-circle')
                     ->schema([
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Imagen del Área')
+                            ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->required()
+                            ->imageResizeTargetWidth('393')
+                            ->imageResizeTargetHeight('390')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                            ->maxSize(2048)
+                            ->directory('areas/images')
+                            ->nullable()
+                            ->helperText('Solo JPG o PNG. Máximo 2 MB. Se redimensionará automáticamente a 393 × 390 px.')
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'image'   => 'El archivo debe ser una imagen válida.',
+                                'mimes'   => 'Solo se permiten imágenes JPG o PNG.',
+                                'maxSize' => 'La imagen no puede superar los 2 MB.',
+                            ]),
+
                         Forms\Components\TextInput::make('name')
                             ->label('Nombre')
                             ->required()
@@ -177,31 +197,8 @@ class AreaResource extends Resource
                     ->label('')
                     ->icon('heroicon-o-pencil-square')
                     ->tooltip('Editar área'),
-
-                Tables\Actions\DeleteAction::make()
-                    ->label('')
-                    ->icon('heroicon-o-trash')
-                    ->color('danger')
-                    ->tooltip('Eliminar permanentemente')
-                    ->requiresConfirmation()
-                    ->modalHeading('¿Eliminar área?')
-                    ->modalDescription('Esta acción eliminará todos los registros relacionados. NO se puede deshacer.')
-                    ->modalSubmitActionLabel('Sí, eliminar')
-                    ->modalCancelActionLabel('Cancelar'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->requiresConfirmation()
-                        ->modalHeading('¿Eliminar áreas seleccionadas?')
-                        ->modalDescription('Esta acción NO se puede deshacer.')
-                        ->modalSubmitActionLabel('Sí, eliminar')
-                        ->modalCancelActionLabel('Cancelar'),
-                ])
-                    ->label('Acciones')
-                    ->icon('heroicon-o-ellipsis-vertical')
-                    ->color('gray'),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getPages(): array

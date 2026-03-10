@@ -104,12 +104,14 @@ class RepositoryDocumentResource extends Resource
                         Forms\Components\TextInput::make('title')
                             ->label('Título')
                             ->required()
-                            ->maxLength(255)
+                            ->minLength(3)
+                            ->maxLength(100)
                             ->placeholder('Ej: Guía de Prevención')
                             ->prefixIcon('heroicon-o-bookmark')
                             ->validationMessages([
                                 'required' => 'El título del documento es obligatorio.',
-                                'max'      => 'El título no puede exceder los 255 caracteres.',
+                                'min'      => 'El título debe tener al menos 3 caracteres.',
+                                'max'      => 'El título no puede exceder los 100 caracteres.',
                             ]),
 
                         Forms\Components\TextInput::make('authors')
@@ -126,15 +128,22 @@ class RepositoryDocumentResource extends Resource
 
                         Forms\Components\Textarea::make('description')
                             ->label('Descripción')
+                            ->required()
                             ->rows(3)
+                            ->maxLength(600)
                             ->placeholder('Descripción del documento...')
-                            ->columnSpanFull(),
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'La descripción del documento es obligatoria.',
+                                'max'      => 'La descripción no puede exceder los 600 caracteres.',
+                            ]),
 
                         Forms\Components\TextInput::make('order')
                             ->label('Orden')
                             ->numeric()
                             ->required()
                             ->minValue(1)
+                            ->maxValue(999)
                             ->integer()
                             ->default(fn () => (RepositoryDocument::max('order') ?? 0) + 1)
                             ->prefixIcon('heroicon-o-arrows-up-down')
@@ -144,6 +153,7 @@ class RepositoryDocumentResource extends Resource
                                 'required' => 'El orden es obligatorio.',
                                 'unique'   => 'Este número de orden ya está en uso. Elige otro.',
                                 'min'      => 'El orden debe ser mayor a 0.',
+                                'max'      => 'El orden no puede ser mayor a 999.',
                                 'integer'  => 'El orden debe ser un número entero (1, 2, 3...).',
                             ]),
                     ])->columns(2)->collapsible(),
@@ -158,19 +168,33 @@ class RepositoryDocumentResource extends Resource
                             ->imageEditor()
                             ->imageResizeMode('cover')
                             ->imageResizeTargetWidth('393')
-                            ->imageResizeTargetHeight('390')
+                            ->imageResizeTargetHeight('393')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                            ->maxSize(2048)
                             ->required()
                             ->directory('repository/images')
                             ->nullable()
-                            ->helperText('La imagen se redimensionará automáticamente a 393 × 390 px al subirla.'),
+                            ->helperText('Solo JPG o PNG. Máximo 2 MB. Se redimensionará automáticamente a 393 × 393 px.')
+                            ->validationMessages([
+                                'required'  => 'La imagen de portada es obligatoria.',
+                                'image'     => 'El archivo debe ser una imagen válida.',
+                                'mimes'     => 'Solo se permiten imágenes JPG o PNG.',
+                                'maxSize'   => 'La imagen no puede superar los 2 MB.',
+                            ]),
 
                         Forms\Components\FileUpload::make('document')
                             ->label('Documento PDF')
                             ->acceptedFileTypes(['application/pdf'])
+                            ->maxSize(3072)
                             ->directory('repository/documents')
                             ->required()
                             ->nullable()
-                            ->helperText('PDF de descarga gratuita'),
+                            ->helperText('Solo PDF. Máximo 3 MB.')
+                            ->validationMessages([
+                                'required' => 'El documento PDF es obligatorio.',
+                                'mimes'    => 'Solo se permiten archivos en formato PDF.',
+                                'maxSize'  => 'El PDF no puede superar los 3 MB.',
+                            ]),
                     ])->columns(2)->collapsible(),
 
                 Forms\Components\Section::make('Estado')
