@@ -52,6 +52,9 @@ class DatabaseSeeder extends Seeder
         // 12. Cursos (depende de áreas)
         $this->call(CourseSeeder::class);
 
+        // 13. Grupos de materiales educativos (4 grupos fijos)
+        $this->call(EducationalMaterialGroupSeeder::class);
+
         // 14. Publicaciones (depende de áreas)
         $this->call(PublicationSeeder::class);
 

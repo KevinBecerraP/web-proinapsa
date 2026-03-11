@@ -31,133 +31,96 @@ class FormalEducationSectionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Tabs::make('Tabs')
-                    ->tabs([
-                        Forms\Components\Tabs\Tab::make('Información General')
-                            ->icon('heroicon-o-information-circle')
-                            ->schema([
-                                // Campo oculto para área (siempre Educación y Comunicación)
-                                Forms\Components\Hidden::make('area_id')
-                                    ->default(fn () => \App\Models\Area::where('slug', 'educacion-comunicacion')->first()?->id)
-                                    ->required(),
+                Forms\Components\Section::make('Sección')
+                    ->description('Selecciona a qué sección de educación formal corresponde este registro')
+                    ->icon('heroicon-o-folder-open')
+                    ->schema([
+                        Forms\Components\Hidden::make('area_id')
+                            ->default(fn () => \App\Models\Area::where('slug', 'educacion-comunicacion')->first()?->id)
+                            ->required(),
 
-                                Forms\Components\Select::make('section')
-                                    ->label('Sección')
-                                    ->options([
-                                        'generalities' => '📋 Generalidades',
-                                        'modalities' => '🎓 Modalidades',
-                                        'procedures' => '📝 Procedimientos',
-                                        'intern_commitments' => '👨‍🎓 Compromisos del Pasante',
-                                        'institute_commitments' => '🏛️ Compromisos del Instituto',
-                                    ])
-                                    ->required()
-                                    ->searchable()
-                                    ->native(false)
-                                    ->prefixIcon('heroicon-o-folder-open')
-                                    ->placeholder('Selecciona la sección')
-                                    ->helperText('Cada sección representa un apartado diferente de educación formal')
-                                    ->columnSpanFull()
-                                    ->validationMessages([
-                                        'required' => 'La sección es obligatoria.',
-                                    ]),
-
-                                Forms\Components\TextInput::make('title')
-                                    ->label('Título')
-                                    ->required()
-                                    ->maxLength(50)
-                                    ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, $get) {
-                                        return $rule->where('section', $get('section'));
-                                    })
-                                    ->placeholder('Ej: Introducción a la educación formal')
-                                    ->prefixIcon('heroicon-o-document-text')
-                                    ->helperText('Máximo 50 caracteres. Debe ser único dentro de la sección')
-                                    ->columnSpanFull()
-                                    ->validationMessages([
-                                        'required' => 'El título es obligatorio.',
-                                        'max'      => 'El título no puede exceder los 50 caracteres.',
-                                        'unique'   => 'Ya existe un registro con este título en la misma sección.',
-                                    ]),
+                        Forms\Components\Select::make('section')
+                            ->label('Sección')
+                            ->options([
+                                'generalities'          => '📋 Generalidades',
+                                'modalities'            => '🎓 Modalidades',
+                                'procedures'            => '📝 Procedimientos',
+                                'intern_commitments'    => '👨‍🎓 Compromisos del Pasante',
+                                'institute_commitments' => '🏛️ Compromisos del Instituto',
                             ])
-                            ->columns(2),
+                            ->required()
+                            ->native(false)
+                            ->prefixIcon('heroicon-o-tag')
+                            ->placeholder('Selecciona la sección')
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'La sección es obligatoria.',
+                            ]),
+                    ])->collapsible(),
 
-                        Forms\Components\Tabs\Tab::make('Contenido')
-                            ->icon('heroicon-o-pencil-square')
-                            ->schema([
-                                Forms\Components\RichEditor::make('description')
-                                    ->label('Descripción')
-                                    ->required()
-                                    ->validationMessages([
-                                        'required' => 'La descripción es obligatoria.',
-                                    ])
-                                    ->toolbarButtons([
-                                        'bold',
-                                        'italic',
-                                        'underline',
-                                        'h2',
-                                        'h3',
-                                        'bulletList',
-                                        'orderedList',
-                                        'link',
-                                    ])
-                                    ->placeholder('Escribe el contenido detallado de esta sección...')
-                                    ->helperText('Usa los botones de formato para estructurar el contenido')
-                                    ->columnSpanFull(),
+                Forms\Components\Section::make('Archivos')
+                    ->description('Ícono PNG y PDF de la sección')
+                    ->icon('heroicon-o-paper-clip')
+                    ->schema([
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Ícono')
+                            ->image()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('35')
+                            ->imageResizeTargetHeight('40')
+                            ->directory('formal-education/icons')
+                            ->acceptedFileTypes(['image/png'])
+                            ->maxSize(1024)
+                            ->nullable()
+                            ->helperText('Solo PNG. Máximo 1 MB. Se redimensionará automáticamente a 35 × 40 px.')
+                            ->validationMessages([
+                                'image'   => 'El archivo debe ser una imagen válida.',
+                                'mimes'   => 'Solo se permiten archivos PNG.',
+                                'maxSize' => 'El ícono no puede superar 1 MB.',
                             ]),
 
-                        Forms\Components\Tabs\Tab::make('Multimedia')
-                            ->icon('heroicon-o-photo')
-                            ->schema([
-                                Forms\Components\FileUpload::make('image')
-                                    ->label('Imagen')
-                                    ->image()
-                                    ->directory('formal-education/images')
-                                    ->maxSize(2048)
-                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                    ->imageResizeMode('cover')
-                                    ->imageCropAspectRatio('16:9')
-                                    ->imageEditor()
-                                    ->imageEditorAspectRatios([
-                                        '16:9',
-                                        '4:3',
-                                        '1:1',
-                                    ])
-                                    ->helperText('📸 Formatos: JPG, PNG | Tamaño máximo: 2MB')
-                                    ->columnSpanFull(),
-
-                                Forms\Components\FileUpload::make('pdf_file')
-                                    ->label('Archivo PDF')
-                                    ->directory('formal-education/pdfs')
-                                    ->maxSize(3072)
-                                    ->acceptedFileTypes(['application/pdf'])
-                                    ->helperText('📄 Solo archivos PDF | Tamaño máximo: 3MB')
-                                    ->openable()
-                                    ->downloadable()
-                                    ->previewable(false)
-                                    ->columnSpanFull(),
-
-                                Forms\Components\TextInput::make('url')
-                                    ->label('URL Externa (Opcional)')
-                                    ->url()
-                                    ->maxLength(255)
-                                    ->placeholder('https://ejemplo.com')
-                                    ->prefixIcon('heroicon-o-link')
-                                    ->helperText('🔗 Enlace externo relacionado con esta sección')
-                                    ->columnSpanFull(),
-                            ])
-                            ->columns(1),
-
-                        Forms\Components\Tabs\Tab::make('Estado')
-                            ->icon('heroicon-o-cog-6-tooth')
-                            ->schema([
-                                Forms\Components\Toggle::make('active')
-                                    ->label('Sección Activa')
-                                    ->default(true)
-                                    ->inline(false)
-                                    ->helperText('Desactiva esta opción para ocultar la sección temporalmente'),
+                        Forms\Components\FileUpload::make('pdf_file')
+                            ->label('Archivo PDF')
+                            ->directory('formal-education/pdfs')
+                            ->maxSize(3072)
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->openable()
+                            ->downloadable()
+                            ->helperText('Solo PDF. Máximo 3 MB.')
+                            ->validationMessages([
+                                'mimes'   => 'Solo se permiten archivos en formato PDF.',
+                                'maxSize' => 'El PDF no puede superar los 3 MB.',
                             ]),
-                    ])
-                    ->columnSpanFull()
-                    ->persistTabInQueryString(),
+                    ])->columns(2)->collapsible(),
+
+                Forms\Components\Section::make('Estado y Orden')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->schema([
+                        Forms\Components\Toggle::make('active')
+                            ->label('Sección Activa')
+                            ->default(true)
+                            ->inline(false)
+                            ->helperText('Si está inactiva, no se mostrará en el sitio web'),
+
+                        Forms\Components\TextInput::make('order')
+                            ->label('Orden')
+                            ->numeric()
+                            ->required()
+                            ->minValue(1)
+                            ->maxValue(999)
+                            ->integer()
+                            ->default(fn () => (FormalEducationSection::max('order') ?? 0) + 1)
+                            ->prefixIcon('heroicon-o-arrows-up-down')
+                            ->helperText('Posición de visualización (1–999).')
+                            ->unique(ignoreRecord: true)
+                            ->validationMessages([
+                                'required' => 'El orden es obligatorio.',
+                                'unique'   => 'Este número de orden ya está en uso. Elige otro.',
+                                'min'      => 'El orden debe ser mayor a 0.',
+                                'max'      => 'El orden no puede ser mayor a 999.',
+                                'integer'  => 'El orden debe ser un número entero (1, 2, 3...).',
+                            ]),
+                    ])->columns(2)->collapsible(),
             ]);
     }
 
@@ -166,58 +129,44 @@ class FormalEducationSectionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('order')
-                    ->label('Orden')
+                    ->label('#')
                     ->sortable()
+                    ->alignCenter()
                     ->badge()
                     ->color('primary'),
 
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Ícono')
+                    ->square()
+                    ->size(40),
+
                 Tables\Columns\TextColumn::make('section_label')
                     ->label('Sección')
-                    ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->where('section', 'like', "%{$search}%");
-                    })
-                    ->sortable(query: function (Builder $query, string $direction): Builder {
-                        return $query->orderBy('section', $direction);
-                    })
+                    ->searchable(query: fn (Builder $query, string $search) =>
+                        $query->where('section', 'like', "%{$search}%")
+                    )
+                    ->sortable(query: fn (Builder $query, string $direction) =>
+                        $query->orderBy('section', $direction)
+                    )
                     ->badge()
                     ->color('info'),
-
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Título')
-                    ->searchable()
-                    ->sortable()
-                    ->limit(30)
-                    ->weight('bold')
-                    ->icon('heroicon-o-document-text')
-                    ->iconColor('primary'),
-
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Imagen')
-                    ->circular()
-                    ->defaultImageUrl(url('/images/placeholder.png')),
 
                 Tables\Columns\IconColumn::make('pdf_file')
                     ->label('PDF')
                     ->boolean()
-                    ->trueIcon('heroicon-o-document-text')
-                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueIcon('heroicon-o-document-arrow-down')
+                    ->falseIcon('heroicon-o-x-mark')
                     ->trueColor('success')
-                    ->falseColor('gray'),
+                    ->falseColor('gray')
+                    ->getStateUsing(fn ($record) => !empty($record->pdf_file)),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')
                     ->boolean()
-                    ->sortable()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-x-circle')
                     ->trueColor('success')
                     ->falseColor('danger'),
-
-                Tables\Columns\TextColumn::make('created_at')
-                    ->label('Creado')
-                    ->dateTime('d/m/Y H:i')
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->defaultSort('order', 'asc')
             ->reorderable('order')
@@ -225,10 +174,10 @@ class FormalEducationSectionResource extends Resource
                 Tables\Filters\SelectFilter::make('section')
                     ->label('Sección')
                     ->options([
-                        'generalities' => 'Generalidades',
-                        'modalities' => 'Modalidades',
-                        'procedures' => 'Procedimientos',
-                        'intern_commitments' => 'Compromisos del Pasante',
+                        'generalities'          => 'Generalidades',
+                        'modalities'            => 'Modalidades',
+                        'procedures'            => 'Procedimientos',
+                        'intern_commitments'    => 'Compromisos del Pasante',
                         'institute_commitments' => 'Compromisos del Instituto',
                     ]),
 
@@ -239,11 +188,6 @@ class FormalEducationSectionResource extends Resource
                     ->falseLabel('Solo inactivos'),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()
-                    ->label('')
-                    ->icon('heroicon-o-eye')
-                    ->tooltip('Ver detalles'),
-
                 Tables\Actions\EditAction::make()
                     ->label('')
                     ->icon('heroicon-o-pencil-square')
@@ -253,39 +197,30 @@ class FormalEducationSectionResource extends Resource
                     ->label('')
                     ->icon('heroicon-o-trash')
                     ->color('danger')
-                    ->tooltip('Eliminar permanentemente')
+                    ->tooltip('Eliminar sección')
                     ->requiresConfirmation()
                     ->modalHeading('¿Eliminar sección?')
-                    ->modalDescription('Esta acción NO se puede deshacer.')
-                    ->modalSubmitActionLabel('Sí, eliminar')
-                    ->modalCancelActionLabel('Cancelar'),
+                    ->modalDescription('Esta acción NO se puede deshacer.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->requiresConfirmation()
-                        ->modalHeading('¿Eliminar secciones seleccionadas?')
-                        ->modalDescription('Esta acción NO se puede deshacer.')
-                        ->modalSubmitActionLabel('Sí, eliminar')
-                        ->modalCancelActionLabel('Cancelar'),
-                ])
-                    ->label('Acciones')
-                    ->icon('heroicon-o-ellipsis-vertical')
-                    ->color('gray'),
+                        ->requiresConfirmation(),
+                ]),
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListFormalEducationSections::route('/'),
+            'index'  => Pages\ListFormalEducationSections::route('/'),
             'create' => Pages\CreateFormalEducationSection::route('/create'),
-            'edit' => Pages\EditFormalEducationSection::route('/{record}/edit'),
+            'edit'   => Pages\EditFormalEducationSection::route('/{record}/edit'),
         ];
     }
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->with('area')->ordered();
+        return parent::getEloquentQuery()->ordered();
     }
 }

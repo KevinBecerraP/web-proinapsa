@@ -232,7 +232,7 @@ class BannerResource extends Resource
                                 fn(callable $get) =>
                                 $get('type') === 'main'
                                     ? '📐 Tamaño requerido: 1920 × 960 px (Principal) - Formatos: JPG, PNG. Máx: 2MB'
-                                    : '📐 Tamaño requerido: 1905 × 496 px (Secundario) - Formatos: JPG, PNG. Máx: 2MB'
+                                    : '📐 Tamaño requerido: 1920 × 500 px (Secundario) - Formatos: JPG, PNG. Máx: 2MB'
                             )
                             ->rules([
                                 function (callable $get) {
@@ -265,8 +265,8 @@ class BannerResource extends Resource
                                                     $fail("La imagen debe tener exactamente 1920 × 960 px (Banner Principal). Dimensiones actuales: {$width} × {$height} px.");
                                                 }
                                             } elseif ($type === 'secondary') {
-                                                if ($width !== 1905 || $height !== 496) {
-                                                    $fail("La imagen debe tener exactamente 1905 × 496 px (Banner Secundario). Dimensiones actuales: {$width} × {$height} px.");
+                                                if ($width !== 1920 || $height !== 500) {
+                                                    $fail("La imagen debe tener exactamente 1920 × 500 px (Banner Secundario). Dimensiones actuales: {$width} × {$height} px.");
                                                 }
                                             }
                                         } catch (\Exception $e) {

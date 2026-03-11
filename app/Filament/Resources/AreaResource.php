@@ -134,6 +134,45 @@ class AreaResource extends Resource
                     ])
                     ->columns(2)
                     ->collapsible(),
+
+                Forms\Components\Section::make('Descripciones — Educación y Comunicación')
+                    ->description('Estos campos solo aplican al área de Educación y Comunicación. Son los textos introductorios de cada subsección del sitio web.')
+                    ->icon('heroicon-o-academic-cap')
+                    ->schema([
+                        Forms\Components\Textarea::make('formal_education_description')
+                            ->label('Descripción — Educación Formal')
+                            ->rows(4)
+                            ->maxLength(1000)
+                            ->placeholder('Descripción introductoria de la educación formal...')
+                            ->columnSpanFull(),
+
+                        Forms\Components\Textarea::make('non_formal_education_description')
+                            ->label('Descripción — Educación No Formal (Cursos)')
+                            ->rows(4)
+                            ->maxLength(1000)
+                            ->placeholder('Descripción introductoria de la educación no formal y cursos...')
+                            ->columnSpanFull(),
+
+                        Forms\Components\Textarea::make('educational_materials_description')
+                            ->label('Descripción — Materiales de Educación y Comunicación')
+                            ->rows(4)
+                            ->maxLength(1000)
+                            ->placeholder('Descripción introductoria de los materiales educativos...')
+                            ->columnSpanFull(),
+
+                        Forms\Components\FileUpload::make('educational_materials_image')
+                            ->label('Imagen — Materiales de Educación y Comunicación')
+                            ->image()
+                            ->imageEditor()
+                            ->directory('areas/educational-materials')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                            ->maxSize(2048)
+                            ->nullable()
+                            ->helperText('Solo JPG o PNG. Máximo 2 MB.')
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsible()
+                    ->collapsed(),
             ]);
     }
 

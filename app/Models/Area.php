@@ -23,6 +23,10 @@ class Area extends Model
         'order',
         'active',
         'coordinator_id',
+        'formal_education_description',
+        'non_formal_education_description',
+        'educational_materials_description',
+        'educational_materials_image',
         'created_by',
         'updated_by',
     ];

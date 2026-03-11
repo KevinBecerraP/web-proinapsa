@@ -103,28 +103,13 @@ class CourseResource extends Resource
                                     ->columnSpanFull(),
 
                                 Forms\Components\FileUpload::make('gallery_image_1')
-                                    ->label('Imagen Galería 1')
+                                    ->label('Imagen de Galería')
                                     ->image()
                                     ->directory('courses/gallery')
                                     ->maxSize(2048)
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                    ->helperText('Opcional. Máximo 2MB'),
-
-                                Forms\Components\FileUpload::make('gallery_image_2')
-                                    ->label('Imagen Galería 2')
-                                    ->image()
-                                    ->directory('courses/gallery')
-                                    ->maxSize(2048)
-                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                    ->helperText('Opcional. Máximo 2MB'),
-
-                                Forms\Components\FileUpload::make('gallery_image_3')
-                                    ->label('Imagen Galería 3')
-                                    ->image()
-                                    ->directory('courses/gallery')
-                                    ->maxSize(2048)
-                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                    ->helperText('Opcional. Máximo 2MB'),
+                                    ->helperText('Opcional. Solo JPG o PNG. Máximo 2MB')
+                                    ->columnSpanFull(),
 
                                 Forms\Components\FileUpload::make('pdf_file')
                                     ->label('Archivo PDF')
@@ -136,7 +121,7 @@ class CourseResource extends Resource
                                     ->downloadable()
                                     ->columnSpanFull(),
                             ])
-                            ->columns(3),
+                            ->columns(1),
 
                         Forms\Components\Tabs\Tab::make('Configuración')
                             ->schema([

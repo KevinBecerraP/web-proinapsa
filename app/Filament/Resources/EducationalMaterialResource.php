@@ -31,166 +31,117 @@ class EducationalMaterialResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Tabs::make('Tabs')
-                    ->tabs([
-                        Forms\Components\Tabs\Tab::make('Clasificación')
-                            ->schema([
-                                Forms\Components\Select::make('area_id')
-                                    ->label('Área')
-                                    ->relationship('area', 'name')
-                                    ->default(fn () => \App\Models\Area::where('slug', 'educacion-comunicacion')->first()?->id)
-                                    ->required()
-                                    ->disabled()
-                                    ->dehydrated(),
+                Forms\Components\Section::make('Clasificación')
+                    ->description('Categoría y tipo del material educativo')
+                    ->icon('heroicon-o-tag')
+                    ->schema([
+                        Forms\Components\Select::make('area_id')
+                            ->label('Área')
+                            ->relationship('area', 'name')
+                            ->default(fn () => \App\Models\Area::where('slug', 'educacion-comunicacion')->first()?->id)
+                            ->required()
+                            ->disabled()
+                            ->dehydrated(),
 
-                                Forms\Components\Select::make('category')
-                                    ->label('Categoría')
-                                    ->options([
-                                        'early_childhood' => 'Primera Infancia',
-                                        'school_adolescence' => 'Escolar y Adolescencia',
-                                    ])
-                                    ->required()
-                                    ->searchable()
-                                    ->validationMessages([
-                                        'required' => 'La categoría es obligatoria.',
-                                    ]),
-
-                                Forms\Components\Select::make('type')
-                                    ->label('Tipo')
-                                    ->options([
-                                        'guides_manuals' => 'Guías y Manuales',
-                                        'games' => 'Juegos',
-                                    ])
-                                    ->required()
-                                    ->searchable()
-                                    ->validationMessages([
-                                        'required' => 'El tipo de material es obligatorio.',
-                                    ]),
+                        Forms\Components\Select::make('category')
+                            ->label('Categoría')
+                            ->options([
+                                'early_childhood'    => 'Primera Infancia',
+                                'school_adolescence' => 'Escolar y Adolescencia',
                             ])
-                            ->columns(3),
-
-                        Forms\Components\Tabs\Tab::make('Vista Previa')
-                            ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->label('Título')
-                                    ->required()
-                                    ->maxLength(50)
-                                    ->unique(ignoreRecord: true, modifyRuleUsing: function ($rule, $get) {
-                                        return $rule->where('category', $get('category'));
-                                    })
-                                    ->columnSpanFull()
-                                    ->validationMessages([
-                                        'required' => 'El título del material es obligatorio.',
-                                        'max'      => 'El título no puede exceder los 50 caracteres.',
-                                        'unique'   => 'Ya existe un material con este título en la misma categoría.',
-                                    ]),
-
-                                Forms\Components\Textarea::make('short_description')
-                                    ->label('Descripción Corta')
-                                    ->required()
-                                    ->maxLength(200)
-                                    ->rows(3)
-                                    ->columnSpanFull()
-                                    ->validationMessages([
-                                        'required' => 'La descripción corta es obligatoria.',
-                                        'max'      => 'La descripción no puede exceder los 200 caracteres.',
-                                    ]),
-
-                                Forms\Components\FileUpload::make('main_image')
-                                    ->label('Imagen Principal')
-                                    ->image()
-                                    ->directory('educational-materials/images')
-                                    ->required()
-                                    ->maxSize(2048)
-                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                    ->imageResizeMode('cover')
-                                    ->helperText('Máximo 2MB. Formatos: JPG, PNG')
-                                    ->columnSpanFull()
-                                    ->validationMessages([
-                                        'required' => 'La imagen principal es obligatoria.',
-                                    ]),
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'La categoría es obligatoria.',
                             ]),
 
-                        Forms\Components\Tabs\Tab::make('Contenido Completo')
-                            ->schema([
-                                Forms\Components\RichEditor::make('full_description')
-                                    ->label('Descripción Completa')
-                                    ->required()
-                                    ->validationMessages([
-                                        'required' => 'La descripción completa es obligatoria.',
-                                    ])
-                                    ->toolbarButtons([
-                                        'bold',
-                                        'italic',
-                                        'underline',
-                                        'h2',
-                                        'h3',
-                                        'bulletList',
-                                        'orderedList',
-                                        'link',
-                                    ])
-                                    ->columnSpanFull(),
+                        Forms\Components\Select::make('type')
+                            ->label('Tipo')
+                            ->options([
+                                'guides_manuals' => 'Guías y Manuales',
+                                'games'          => 'Juegos',
+                            ])
+                            ->required()
+                            ->validationMessages([
+                                'required' => 'El tipo de material es obligatorio.',
+                            ]),
+                    ])->columns(3)->collapsible(),
 
-                                Forms\Components\Fieldset::make('Galería de Imágenes')
-                                    ->schema([
-                                        Forms\Components\FileUpload::make('gallery_image_1')
-                                            ->label('Imagen 1')
-                                            ->image()
-                                            ->directory('educational-materials/gallery')
-                                            ->maxSize(2048)
-                                            ->acceptedFileTypes(['image/jpeg', 'image/png']),
-
-                                        Forms\Components\FileUpload::make('gallery_image_2')
-                                            ->label('Imagen 2')
-                                            ->image()
-                                            ->directory('educational-materials/gallery')
-                                            ->maxSize(2048)
-                                            ->acceptedFileTypes(['image/jpeg', 'image/png']),
-
-                                        Forms\Components\FileUpload::make('gallery_image_3')
-                                            ->label('Imagen 3')
-                                            ->image()
-                                            ->directory('educational-materials/gallery')
-                                            ->maxSize(2048)
-                                            ->acceptedFileTypes(['image/jpeg', 'image/png']),
-
-                                        Forms\Components\FileUpload::make('gallery_image_4')
-                                            ->label('Imagen 4')
-                                            ->image()
-                                            ->directory('educational-materials/gallery')
-                                            ->maxSize(2048)
-                                            ->acceptedFileTypes(['image/jpeg', 'image/png']),
-
-                                        Forms\Components\FileUpload::make('gallery_image_5')
-                                            ->label('Imagen 5')
-                                            ->image()
-                                            ->directory('educational-materials/gallery')
-                                            ->maxSize(2048)
-                                            ->acceptedFileTypes(['image/jpeg', 'image/png']),
-                                    ])
-                                    ->columns(5),
-
-                                Forms\Components\FileUpload::make('pdf_file')
-                                    ->label('Archivo PDF')
-                                    ->directory('educational-materials/pdfs')
-                                    ->maxSize(3072)
-                                    ->acceptedFileTypes(['application/pdf'])
-                                    ->helperText('Opcional. Máximo 3MB')
-                                    ->openable()
-                                    ->downloadable()
-                                    ->columnSpanFull(),
+                Forms\Components\Section::make('Información del Material')
+                    ->description('Datos que se mostrarán en el sitio web')
+                    ->icon('heroicon-o-document-text')
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->label('Título')
+                            ->required()
+                            ->maxLength(100)
+                            ->placeholder('Ej: Guía de Prevención Temprana')
+                            ->prefixIcon('heroicon-o-bookmark')
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'required' => 'El título del material es obligatorio.',
+                                'max'      => 'El título no puede exceder los 100 caracteres.',
                             ]),
 
-                        Forms\Components\Tabs\Tab::make('Estado')
-                            ->schema([
-                                Forms\Components\Toggle::make('active')
-                                    ->label('Activo')
-                                    ->default(true)
-                                    ->inline(false)
-                                    ->helperText('Los materiales inactivos no se mostrarán en el sitio web'),
+                        Forms\Components\Textarea::make('short_description')
+                            ->label('Descripción')
+                            ->required()
+                            ->maxLength(300)
+                            ->rows(4)
+                            ->placeholder('Descripción del material educativo...')
+                            ->columnSpanFull()
+                            ->helperText('Máximo 300 caracteres.')
+                            ->validationMessages([
+                                'required' => 'La descripción es obligatoria.',
+                                'max'      => 'La descripción no puede exceder los 300 caracteres.',
                             ]),
-                    ])
-                    ->columnSpanFull(),
+                    ])->collapsible(),
+
+                Forms\Components\Section::make('Archivos')
+                    ->description('Imagen y PDF del material')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
+                        Forms\Components\FileUpload::make('main_image')
+                            ->label('Imagen')
+                            ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('cover')
+                            ->imageResizeTargetWidth('393')
+                            ->imageResizeTargetHeight('390')
+                            ->directory('educational-materials/images')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                            ->maxSize(2048)
+                            ->required()
+                            ->helperText('Solo JPG o PNG. Máximo 2 MB. Se redimensionará automáticamente a 393 × 390 px.')
+                            ->validationMessages([
+                                'required' => 'La imagen del material es obligatoria.',
+                                'image'    => 'El archivo debe ser una imagen válida.',
+                                'mimes'    => 'Solo se permiten imágenes JPG o PNG.',
+                                'maxSize'  => 'La imagen no puede superar los 2 MB.',
+                            ]),
+
+                        Forms\Components\FileUpload::make('pdf_file')
+                            ->label('Archivo PDF')
+                            ->directory('educational-materials/pdfs')
+                            ->maxSize(3072)
+                            ->acceptedFileTypes(['application/pdf'])
+                            ->openable()
+                            ->downloadable()
+                            ->helperText('Opcional. Solo PDF. Máximo 3 MB.')
+                            ->validationMessages([
+                                'mimes'   => 'Solo se permiten archivos en formato PDF.',
+                                'maxSize' => 'El PDF no puede superar los 3 MB.',
+                            ]),
+                    ])->columns(2)->collapsible(),
+
+                Forms\Components\Section::make('Estado')
+                    ->icon('heroicon-o-cog-6-tooth')
+                    ->schema([
+                        Forms\Components\Toggle::make('active')
+                            ->label('Material Activo')
+                            ->default(true)
+                            ->inline(false)
+                            ->helperText('Si está inactivo, no se mostrará en el sitio web'),
+                    ])->collapsible(),
             ]);
     }
 
@@ -206,7 +157,8 @@ class EducationalMaterialResource extends Resource
 
                 Tables\Columns\ImageColumn::make('main_image')
                     ->label('Imagen')
-                    ->circular(),
+                    ->square()
+                    ->size(50),
 
                 Tables\Columns\TextColumn::make('category_label')
                     ->label('Categoría')
@@ -222,13 +174,16 @@ class EducationalMaterialResource extends Resource
                     ->label('Título')
                     ->searchable()
                     ->sortable()
-                    ->limit(30)
+                    ->limit(35)
                     ->weight('bold'),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')
                     ->boolean()
-                    ->sortable(),
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
 
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Creado')
@@ -242,7 +197,7 @@ class EducationalMaterialResource extends Resource
                 Tables\Filters\SelectFilter::make('category')
                     ->label('Categoría')
                     ->options([
-                        'early_childhood' => 'Primera Infancia',
+                        'early_childhood'    => 'Primera Infancia',
                         'school_adolescence' => 'Escolar y Adolescencia',
                     ]),
 
@@ -250,16 +205,26 @@ class EducationalMaterialResource extends Resource
                     ->label('Tipo')
                     ->options([
                         'guides_manuals' => 'Guías y Manuales',
-                        'games' => 'Juegos',
+                        'games'          => 'Juegos',
                     ]),
 
                 Tables\Filters\TernaryFilter::make('active')
                     ->label('Activo'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label('')
+                    ->icon('heroicon-o-pencil-square')
+                    ->tooltip('Editar material'),
+
                 Tables\Actions\DeleteAction::make()
-                    ->requiresConfirmation(),
+                    ->label('')
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->tooltip('Eliminar material')
+                    ->requiresConfirmation()
+                    ->modalHeading('¿Eliminar material educativo?')
+                    ->modalDescription('Esta acción NO se puede deshacer.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -272,9 +237,9 @@ class EducationalMaterialResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEducationalMaterials::route('/'),
+            'index'  => Pages\ListEducationalMaterials::route('/'),
             'create' => Pages\CreateEducationalMaterial::route('/create'),
-            'edit' => Pages\EditEducationalMaterial::route('/{record}/edit'),
+            'edit'   => Pages\EditEducationalMaterial::route('/{record}/edit'),
         ];
     }
 

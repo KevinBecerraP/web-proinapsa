@@ -16,11 +16,8 @@ class FormalEducationSection extends Model
     protected $fillable = [
         'area_id',
         'section',
-        'title',
-        'description',
         'image',
         'pdf_file',
-        'url',
         'order',
         'active',
         'created_by',
