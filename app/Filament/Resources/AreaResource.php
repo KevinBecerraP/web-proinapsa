@@ -144,21 +144,18 @@ class AreaResource extends Resource
                         // --- Educación Formal ---
                         Forms\Components\Fieldset::make('Educación Formal')
                             ->schema([
-                                Forms\Components\FileUpload::make('formal_education_icon')
-                                    ->label('Ícono')
+                                Forms\Components\FileUpload::make('formal_education_image')
+                                    ->label('Imagen')
                                     ->image()
+                                    ->imageEditor()
                                     ->imageResizeMode('force')
-                                    ->imageResizeTargetWidth('74')
-                                    ->imageResizeTargetHeight('119')
-                                    ->acceptedFileTypes(['image/png'])
+                                    ->imageResizeTargetWidth('1024')
+                                    ->imageResizeTargetHeight('577')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->maxSize(2048)
                                     ->nullable()
-                                    ->directory('areas/icons')
-                                    ->helperText('Solo PNG. Máx. 2 MB. Se redimensionará a 74 × 119 px.')
-                                    ->validationMessages([
-                                        'mimes'   => 'Solo se permiten archivos PNG.',
-                                        'maxSize' => 'El ícono no puede superar 2 MB.',
-                                    ]),
+                                    ->directory('areas/education')
+                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 1024 × 577 px.'),
 
                                 Forms\Components\ColorPicker::make('formal_education_color')
                                     ->label('Color de tarjeta')
@@ -177,21 +174,18 @@ class AreaResource extends Resource
                         // --- Educación No Formal ---
                         Forms\Components\Fieldset::make('Educación No Formal (Cursos)')
                             ->schema([
-                                Forms\Components\FileUpload::make('non_formal_education_icon')
-                                    ->label('Ícono')
+                                Forms\Components\FileUpload::make('non_formal_education_image')
+                                    ->label('Imagen')
                                     ->image()
+                                    ->imageEditor()
                                     ->imageResizeMode('force')
-                                    ->imageResizeTargetWidth('74')
-                                    ->imageResizeTargetHeight('119')
-                                    ->acceptedFileTypes(['image/png'])
+                                    ->imageResizeTargetWidth('1024')
+                                    ->imageResizeTargetHeight('577')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->maxSize(2048)
                                     ->nullable()
-                                    ->directory('areas/icons')
-                                    ->helperText('Solo PNG. Máx. 2 MB. Se redimensionará a 74 × 119 px.')
-                                    ->validationMessages([
-                                        'mimes'   => 'Solo se permiten archivos PNG.',
-                                        'maxSize' => 'El ícono no puede superar 2 MB.',
-                                    ]),
+                                    ->directory('areas/education')
+                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 1024 × 577 px.'),
 
                                 Forms\Components\ColorPicker::make('non_formal_education_color')
                                     ->label('Color de tarjeta')
@@ -210,21 +204,18 @@ class AreaResource extends Resource
                         // --- Materiales de Educación y Comunicación ---
                         Forms\Components\Fieldset::make('Materiales de Educación y Comunicación')
                             ->schema([
-                                Forms\Components\FileUpload::make('educational_materials_icon')
-                                    ->label('Ícono')
+                                Forms\Components\FileUpload::make('educational_materials_image')
+                                    ->label('Imagen')
                                     ->image()
+                                    ->imageEditor()
                                     ->imageResizeMode('force')
-                                    ->imageResizeTargetWidth('74')
-                                    ->imageResizeTargetHeight('119')
-                                    ->acceptedFileTypes(['image/png'])
+                                    ->imageResizeTargetWidth('1024')
+                                    ->imageResizeTargetHeight('577')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->maxSize(2048)
                                     ->nullable()
-                                    ->directory('areas/icons')
-                                    ->helperText('Solo PNG. Máx. 2 MB. Se redimensionará a 74 × 119 px.')
-                                    ->validationMessages([
-                                        'mimes'   => 'Solo se permiten archivos PNG.',
-                                        'maxSize' => 'El ícono no puede superar 2 MB.',
-                                    ]),
+                                    ->directory('areas/education')
+                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 1024 × 577 px.'),
 
                                 Forms\Components\ColorPicker::make('educational_materials_color')
                                     ->label('Color de tarjeta')
