@@ -74,13 +74,13 @@ class TeamResource extends Resource
                                     ->label('Descripción')
                                     ->required()
                                     ->rows(3)
-                                    ->maxLength(200)
+                                    ->maxLength(1000)
                                     ->placeholder('Describe la experiencia y habilidades del miembro del equipo...')
-                                    ->helperText('Breve descripción profesional (máximo 200 caracteres)')
+                                    ->helperText('Breve descripción profesional (máximo 1000 caracteres)')
                                     ->columnSpanFull()
                                     ->validationMessages([
                                         'required' => 'La descripción es obligatoria.',
-                                        'max'      => 'La descripción no puede exceder los 200 caracteres.',
+                                        'max'      => 'La descripción no puede exceder los 1000 caracteres.',
                                     ]),
                             ]),
                     ])->collapsible(),
@@ -152,10 +152,6 @@ class TeamResource extends Resource
                     ->limit(30)
                     ->toggleable(),
 
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Descripción')
-                    ->limit(50)
-                    ->toggleable(),
 
                 Tables\Columns\IconColumn::make('status')
                     ->label('Visible')
