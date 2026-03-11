@@ -84,12 +84,13 @@ class FormalEducationSectionResource extends Resource
                             ->directory('formal-education/icons')
                             ->acceptedFileTypes(['image/png'])
                             ->maxSize(1024)
-                            ->nullable()
+                            ->required()
                             ->helperText('Solo PNG. Máximo 1 MB. Se redimensionará automáticamente a 35 × 40 px.')
                             ->validationMessages([
-                                'image'   => 'El archivo debe ser una imagen válida.',
-                                'mimes'   => 'Solo se permiten archivos PNG.',
-                                'maxSize' => 'El ícono no puede superar 1 MB.',
+                                'required' => 'El ícono es obligatorio.',
+                                'image'    => 'El archivo debe ser una imagen válida.',
+                                'mimes'    => 'Solo se permiten archivos PNG.',
+                                'maxSize'  => 'El ícono no puede superar 1 MB.',
                             ]),
 
                         Forms\Components\FileUpload::make('pdf_file')
@@ -97,12 +98,14 @@ class FormalEducationSectionResource extends Resource
                             ->directory('formal-education/pdfs')
                             ->maxSize(3072)
                             ->acceptedFileTypes(['application/pdf'])
+                            ->required()
                             ->openable()
                             ->downloadable()
                             ->helperText('Solo PDF. Máximo 3 MB.')
                             ->validationMessages([
-                                'mimes'   => 'Solo se permiten archivos en formato PDF.',
-                                'maxSize' => 'El PDF no puede superar los 3 MB.',
+                                'required' => 'El archivo PDF es obligatorio.',
+                                'mimes'    => 'Solo se permiten archivos en formato PDF.',
+                                'maxSize'  => 'El PDF no puede superar los 3 MB.',
                             ]),
                     ])->columns(2)->collapsible(),
 
@@ -190,6 +193,7 @@ class FormalEducationSectionResource extends Resource
                         'generalities'          => 'Generalidades',
                         'modalities'            => 'Modalidades',
                         'procedures'            => 'Procedimientos',
+                        'access_conditions'     => 'Condiciones para Acceder',
                         'intern_commitments'    => 'Compromisos del Pasante',
                         'institute_commitments' => 'Compromisos del Instituto',
                     ]),
