@@ -104,12 +104,25 @@ class FormalEducationSection extends Model
     public function getSectionLabelAttribute(): string
     {
         return match($this->section) {
-            'generalities' => 'Generalidades',
-            'modalities' => 'Modalidades',
-            'procedures' => 'Procedimientos',
-            'intern_commitments' => 'Compromisos del Pasante',
+            'generalities'          => 'Generalidades',
+            'modalities'            => 'Modalidades',
+            'procedures'            => 'Procedimientos',
+            'access_conditions'     => 'Condiciones para Acceder',
+            'intern_commitments'    => 'Compromisos del Pasante',
             'institute_commitments' => 'Compromisos del Instituto',
-            default => $this->section,
+            default                 => $this->section,
         };
+    }
+
+    public static function getAllSections(): array
+    {
+        return [
+            'generalities',
+            'modalities',
+            'procedures',
+            'access_conditions',
+            'intern_commitments',
+            'institute_commitments',
+        ];
     }
 }

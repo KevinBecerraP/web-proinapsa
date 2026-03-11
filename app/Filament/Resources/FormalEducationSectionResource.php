@@ -27,6 +27,12 @@ class FormalEducationSectionResource extends Resource
 
     protected static ?int $navigationSort = 10;
 
+    // Solo se puede crear si aún no existen las 6 secciones
+    public static function canCreate(): bool
+    {
+        return FormalEducationSection::count() < 6;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -41,20 +47,27 @@ class FormalEducationSectionResource extends Resource
 
                         Forms\Components\Select::make('section')
                             ->label('Sección')
-                            ->options([
-                                'generalities'          => '📋 Generalidades',
-                                'modalities'            => '🎓 Modalidades',
-                                'procedures'            => '📝 Procedimientos',
-                                'intern_commitments'    => '👨‍🎓 Compromisos del Pasante',
-                                'institute_commitments' => '🏛️ Compromisos del Instituto',
-                            ])
+                            ->options(function () {
+                                $all = [
+                                    'generalities'          => '📋 Generalidades',
+                                    'modalities'            => '🎓 Modalidades',
+                                    'procedures'            => '📝 Procedimientos',
+                                    'access_conditions'     => '✅ Condiciones para Acceder',
+                                    'intern_commitments'    => '👨‍🎓 Compromisos del Pasante',
+                                    'institute_commitments' => '🏛️ Compromisos del Instituto',
+                                ];
+                                // En edición se muestran todas; en creación solo las disponibles
+                                return $all;
+                            })
                             ->required()
                             ->native(false)
                             ->prefixIcon('heroicon-o-tag')
                             ->placeholder('Selecciona la sección')
                             ->columnSpanFull()
+                            ->unique(table: 'formal_education_sections', column: 'section', ignoreRecord: true)
                             ->validationMessages([
                                 'required' => 'La sección es obligatoria.',
+                                'unique'   => 'Ya existe un registro para esta sección. Solo se permite uno por sección.',
                             ]),
                     ])->collapsible(),
 

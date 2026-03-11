@@ -81,14 +81,12 @@ class BannerResource extends Resource
                                 Forms\Components\TextInput::make('title')
                                     ->label('Título')
                                     ->required()
-                                    ->minLength(15)
                                     ->maxLength(100)
                                     ->placeholder('Ej: Ofertas de Temporada')
                                     ->prefixIcon('heroicon-o-document-text')
                                     ->columnSpan(1)
                                     ->validationMessages([
                                         'required' => 'El título del banner es obligatorio.',
-                                        'min'      => 'El título debe tener al menos 15 caracteres.',
                                         'max'      => 'El título no puede exceder los 100 caracteres.',
                                     ]),
 
@@ -102,13 +100,14 @@ class BannerResource extends Resource
 
                                 Forms\Components\TextInput::make('subtitle')
                                     ->label('Subtítulo')
-                                    ->minLength(15)
                                     ->maxLength(60)
+                                    ->live()
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 60 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') >= 55 ? 'warning' : 'gray')
                                     ->placeholder('Ej: Hasta 50% de descuento')
                                     ->prefixIcon('heroicon-o-document-text')
                                     ->columnSpan(1)
                                     ->validationMessages([
-                                        'min' => 'El subtítulo debe tener al menos 15 caracteres.',
                                         'max' => 'El subtítulo no puede exceder los 60 caracteres.',
                                     ]),
 
@@ -152,7 +151,8 @@ class BannerResource extends Resource
                                 Forms\Components\TextInput::make('order')
                                     ->label('Orden')
                                     ->numeric()
-                                    ->required()
+                                    ->visible(fn(callable $get) => $get('type') === 'main')
+                                    ->required(fn(callable $get) => $get('type') === 'main')
                                     ->minValue(1)
                                     ->integer()
                                     ->default(fn () => (Banner::max('order') ?? 0) + 1)
@@ -350,7 +350,8 @@ class BannerResource extends Resource
                 Tables\Columns\TextColumn::make('order')
                     ->label('Orden')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->placeholder('-'),
                 Tables\Columns\IconColumn::make('status')
                     ->label('Estado')
                     ->boolean(),
