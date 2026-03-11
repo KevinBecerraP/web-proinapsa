@@ -140,6 +140,7 @@ class AreaResource extends Resource
                 Forms\Components\Section::make('Descripciones — Educación y Comunicación')
                     ->description('Estos campos solo aplican al área de Educación y Comunicación. Son los textos introductorios de cada subsección del sitio web.')
                     ->icon('heroicon-o-academic-cap')
+                    ->visible(fn ($record) => $record?->slug === 'educacion-comunicacion')
                     ->schema([
                         // --- Educación Formal ---
                         Forms\Components\Fieldset::make('Educación Formal')
