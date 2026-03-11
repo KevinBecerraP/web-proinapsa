@@ -24,6 +24,7 @@ Sistema de gestión de contenido **(CMS)** para el sitio web institucional del *
 - [Sistema de roles y permisos](#sistema-de-roles-y-permisos)
 - [Seeders](#seeders)
 - [Comandos útiles](#comandos-útiles)
+- [Historial de cambios](#historial-de-cambios)
 
 ---
 
@@ -37,6 +38,7 @@ Sistema de gestión de contenido **(CMS)** para el sitio web institucional del *
 | Base de datos | MySQL | ≥ 8.0 | Motor de base de datos relacional |
 | Autenticación API | Laravel Sanctum | ^3.3 | Tokens para integración con el frontend |
 | Roles y permisos | Spatie Roles & Permissions | ^2.3 | Control de acceso granular con integración Filament |
+| Procesamiento de imágenes | [Intervention Image](https://image.intervention.io) | ^3.11 | Redimensionado y recorte automático de imágenes al subir |
 | Assets | Vite + Tailwind CSS | — | Compilación y estilos del panel |
 
 ---
@@ -49,13 +51,13 @@ El sistema cuenta con **18 módulos** de gestión de contenido. La siguiente tab
 |:---|:---|:---:|:---:|:---:|:---:|:---:|:---:|
 | Empresa | `companies` | Singleton | — | — | Sí | — | — |
 | Equipo | `teams` | — | — | Sí | Sí | — | — |
-| Áreas | `areas` | 3 | Sí | Sí | — | Sí | — |
+| Áreas | `areas` | 3 | Sí | Sí | Sí | Sí | — |
 | Valores Corporativos | `values` | — | Sí | Sí | — | — | — |
 | Testimonios | `testimonials` | — | Sí | Sí | — | Sí | — |
 | Noticias | `news` | — | Sí | Sí | Sí | Sí | — |
-| Banners | `banners` | — | Sí | Sí | Sí | — | — |
+| Banners | `banners` | — | Sí (solo main) | Sí | Sí | — | — |
 | Tarjetas Home | `home_cards` | 6 | Sí | Sí | PDF / URL | — | — |
-| Educación Formal | `formal_education_sections` | — | Sí | Sí | Sí | Sí | — |
+| Educación Formal | `formal_education_sections` | 6 (1 por tipo) | Sí | Sí | Sí + PDF | Sí | — |
 | Cursos | `courses` | — | Sí | 3 estados | Sí | Sí | Sí |
 | Materiales Educativos | `educational_materials` | — | Sí | Sí | Sí | Sí | — |
 | Publicaciones | `publications` | — | Sí | Sí | Sí | Sí | — |
@@ -72,10 +74,12 @@ El sistema cuenta con **18 módulos** de gestión de contenido. La siguiente tab
 
 | Requisito | Versión mínima | Notas |
 |:---|:---:|:---|
-| PHP | 8.1 | Extensiones requeridas: `mbstring`, `xml`, `curl`, `pdo_mysql` |
+| PHP | 8.1 | Extensiones requeridas: `mbstring`, `xml`, `curl`, `pdo_mysql`, `gd` o `imagick` |
 | Composer | 2.x | Gestión de dependencias PHP |
 | Node.js | 18 | Compilación de assets con Vite |
 | MySQL | 8.0 | Motor de base de datos relacional |
+
+> **Nota:** La extensión `gd` o `imagick` de PHP es necesaria para que `intervention/image` pueda redimensionar imágenes automáticamente al subirlas.
 
 ---
 
@@ -184,6 +188,9 @@ institutoproinapsa-cms/
 │       └── DatabaseSeeder.php
 │
 └── storage/app/public/             ← Archivos subidos (imágenes, PDFs)
+    ├── areas/
+    │   ├── images/                 ← Imagen principal del área (393×390 px)
+    │   └── education/              ← Imágenes de sub-secciones (1024×577 px)
     ├── banners/
     ├── company/
     ├── courses/
@@ -242,7 +249,7 @@ Todos los campos `order` del sistema siguen el mismo patrón de validación:
 
 | Regla | Detalle |
 |:---|:---|
-| Requerido | No puede quedar vacío |
+| Requerido | No puede quedar vacío (solo para banners de tipo `main`) |
 | Entero positivo | Solo valores > 0 (1, 2, 3…) |
 | Único | No puede repetirse con otro registro del mismo modelo |
 | Auto-asignado | Valor por defecto: `(max('order') ?? 0) + 1` |
@@ -263,7 +270,9 @@ static::updating(fn($m) => $m->updated_by = auth()->id());
 | **Límite máximo** | `canCreate()` retorna `false` al alcanzar el tope configurado | `HomeCard` (6), `Area` (3), `HealthPromotionCategory` (4) |
 | **Limpieza de archivos** | Elimina del storage archivos antiguos al actualizar o eliminar un registro | `Company`, `News` y otros |
 | **Soft Deletes** | Registros marcados con `deleted_at` en vez de borrarse físicamente | `Course`, `Institutional` |
-| **Campos condicionales** | Campos que se muestran u ocultan según el valor de otro (`->live()` + `->visible()`) | `Banner` (página por tipo), `HomeCard` (PDF vs URL) |
+| **Campos condicionales** | Campos que se muestran u ocultan según el valor de otro (`->live()` + `->visible()`) | `Banner` (subtítulo y orden por tipo), `HomeCard` (PDF vs URL), `Area` (sub-secciones solo para educación) |
+| **Campos de solo lectura** | Campos deshabilitados (`->disabled()->dehydrated()`) — visibles pero no editables, se siguen guardando | `Area` (nombre y slug fijos) |
+| **Contador de caracteres en vivo** | Contador de caracteres actualizado en tiempo real con `->live()->hint()` | `Banner` (subtítulo, máx. 60 chars) |
 | **Accessors dinámicos** | Valores calculados sin columna en base de datos | `ResearchGroup::getTotalPublicationsAttribute()` |
 | **Reordenamiento drag & drop** | `->reorderable('order')` con `getEloquentQuery()->ordered()` | Todos los módulos con campo `order` |
 
@@ -316,7 +325,7 @@ repository_categories
 | 7 | `news` | Noticias | Ilimitado | `users` (auditoría) |
 | 8 | `banners` | Banners main y secondary | Ilimitado | — |
 | 9 | `home_cards` | Tarjetas de la página de inicio | Máx. 6 | — |
-| 10 | `formal_education_sections` | Contenido de educación formal | Ilimitado | `areas` |
+| 10 | `formal_education_sections` | Contenido de educación formal | Máx. 6 (uno por tipo) | `areas` |
 | 11 | `courses` | Cursos | Ilimitado | `areas` |
 | 12 | `educational_materials` | Materiales educativos | Ilimitado | `areas` |
 | 13 | `publications` | Publicaciones académicas | Ilimitado | `areas` |
@@ -362,9 +371,11 @@ repository_categories
 |:---|:---|
 | `name` | Nombre completo del integrante |
 | `position` | Cargo |
-| `description` | Descripción profesional breve (máx. 200 chars) |
+| `description` | Descripción profesional (máx. 1000 chars — no se muestra en el listado de la tabla) |
 | `image` | Fotografía del integrante (393×390 px) |
 | `status` | Activo / Inactivo |
+
+> La columna `description` se omite en el listado de la tabla del panel para mantener la vista compacta. Solo es visible al abrir el formulario de edición.
 
 </details>
 
@@ -373,15 +384,32 @@ repository_categories
 
 Los módulos de contenido (cursos, publicaciones, etc.) pertenecen a un área. Cada área tiene un coordinador asignado desde el equipo.
 
-| Campo | Descripción |
-|:---|:---|
-| `name` | Nombre del área |
-| `slug` | Identificador URL (`educacion-comunicacion`, `investigacion`, `proyeccion-social`) |
-| `description` | Descripción con formato (RichEditor) |
-| `icon` | Heroicon name (ej: `heroicon-o-academic-cap`) |
-| `coordinator_id` | FK → `teams.id` (coordinador del área, obligatorio) |
-| `order` / `active` | Orden y estado |
-| `created_by` / `updated_by` | Auditoría → `users.id` |
+| Campo | Tipo | Descripción |
+|:---|:---:|:---|
+| `name` | `string(100)` | Nombre del área — **solo lectura**, fijado al crear |
+| `slug` | `string(100)` | Identificador URL — **solo lectura**, fijado al crear |
+| `description` | `text` | Descripción con formato (RichEditor) |
+| `icon` | `string(100)` | Heroicon name (ej: `heroicon-o-academic-cap`) |
+| `image` | `string` | Imagen principal del área (393×390 px, JPG/PNG, máx. 2 MB) |
+| `coordinator_id` | `FK → teams.id` | Coordinador del área (obligatorio) |
+| `order` / `active` | — | Orden y estado |
+| `created_by` / `updated_by` | `FK → users.id` | Auditoría |
+
+**Campos adicionales — solo para el área `educacion-comunicacion`:**
+
+Estos campos se muestran en el formulario **únicamente** cuando el área tiene el slug `educacion-comunicacion`. Gestionan el contenido introductorio de las tres sub-secciones de esa área.
+
+| Campo | Tipo | Descripción |
+|:---|:---:|:---|
+| `formal_education_image` | `string` | Imagen de Educación Formal (1024×577 px, JPG/PNG, máx. 2 MB) |
+| `formal_education_color` | `string(20)` | Color de fondo de la tarjeta de Educación Formal (hex, ej: `#3B82F6`) |
+| `formal_education_description` | `text` | Texto introductorio de Educación Formal (máx. 1000 chars) |
+| `non_formal_education_image` | `string` | Imagen de Educación No Formal (1024×577 px, JPG/PNG, máx. 2 MB) |
+| `non_formal_education_color` | `string(20)` | Color de fondo de la tarjeta de Educación No Formal |
+| `non_formal_education_description` | `text` | Texto introductorio de Educación No Formal (máx. 1000 chars) |
+| `educational_materials_image` | `string` | Imagen de Materiales Educativos (1024×577 px, JPG/PNG, máx. 2 MB) |
+| `educational_materials_color` | `string(20)` | Color de fondo de la tarjeta de Materiales Educativos |
+| `educational_materials_description` | `text` | Texto introductorio de Materiales Educativos (máx. 1000 chars) |
 
 **Áreas sembradas con seeder:**
 
@@ -390,6 +418,8 @@ Los módulos de contenido (cursos, publicaciones, etc.) pertenecen a un área. C
 | 1 | Educación y Comunicación | `educacion-comunicacion` |
 | 2 | Investigación | `investigacion` |
 | 3 | Proyección Social | `proyeccion-social` |
+
+> Los campos `name` y `slug` están marcados como **solo lectura** (`->disabled()->dehydrated()`) para garantizar que los slugs del sistema nunca cambien, ya que el frontend los usa para enrutar a las páginas de cada área.
 
 </details>
 
@@ -436,19 +466,32 @@ Los módulos de contenido (cursos, publicaciones, etc.) pertenecen a un área. C
 <summary><strong>banners — Banners del sitio (2 tipos)</strong></summary>
 
 Existen dos tipos que no se mezclan:
-- **Principal** (`main`): página de inicio, mínimo 1920×960 px.
-- **Secundario** (`secondary`): páginas internas, mínimo 1905×496 px. Solo uno activo por página.
+- **Principal** (`main`): página de inicio, dimensiones exactas 1920×960 px.
+- **Secundario** (`secondary`): páginas internas, dimensiones exactas 1920×500 px. Solo uno activo por página.
+
+**Comportamiento condicional del formulario:**
+
+| Campo | Banner Principal (`main`) | Banner Secundario (`secondary`) |
+|:---|:---:|:---:|
+| `title` | Requerido (máx. 100 chars) | Requerido (máx. 100 chars) |
+| `title_color` | Requerido | Requerido |
+| `subtitle` | Opcional (máx. 60 chars, con contador en vivo) | **Oculto** |
+| `subtitle_color` | Requerido | **Oculto** |
+| `order` | Requerido (posición de aparición en el carrusel) | **Oculto** |
+| `page` | **Oculto** | Requerido (página destino, única por página) |
 
 | Campo | Descripción |
 |:---|:---|
 | `title` / `title_color` | Texto y color del título |
-| `subtitle` / `subtitle_color` | Texto y color del subtítulo |
+| `subtitle` / `subtitle_color` | Texto y color del subtítulo (solo para banners principales; con contador en vivo hasta 60 chars) |
 | `type` | `main` o `secondary` |
 | `page` | Página asignada (solo `secondary`): `about_us`, `what_we_do`, `research`, `news`, etc. |
-| `image` | Imagen (validada por dimensiones mínimas según tipo) |
+| `image` | Imagen con validación de dimensiones exactas según tipo |
 | `status` | Activo / Inactivo |
-| `order` | Orden de visualización |
-| `button_link` / `button_color` | Botón de acción (opcional) |
+| `order` | Orden en el carrusel (solo banners principales) |
+| `button_link` / `button_color` | Botón de acción (opcional; el color solo aparece si hay enlace) |
+
+> **Orden del formulario:** el bloque *Configuración* (estado, tipo, orden/página) aparece siempre **antes** que *Información del Banner*, para que el tipo quede claro antes de completar el contenido.
 
 </details>
 
@@ -468,19 +511,34 @@ Existen dos tipos que no se mezclan:
 </details>
 
 <details>
-<summary><strong>formal_education_sections — Educación Formal</strong></summary>
+<summary><strong>formal_education_sections — Educación Formal (máx. 6 secciones)</strong></summary>
 
-Secciones de contenido del módulo de Educación Formal. Pertenecen al área `educacion-comunicacion`.
+Secciones de contenido del módulo de Educación Formal. Pertenecen al área `educacion-comunicacion`. Existe **exactamente un registro por tipo de sección** — el campo `section` tiene restricción de unicidad.
 
 | Campo | Descripción |
 |:---|:---|
 | `area_id` | FK → `areas.id` |
-| `section` | `generalities`, `modalities`, `procedures`, `intern_commitments`, `institute_commitments` |
+| `section` | Tipo de sección (ver tabla de valores abajo) |
 | `title` | Título único dentro de la sección (máx. 50 chars) |
 | `description` | Contenido con formato (RichEditor) |
-| `image` / `pdf_file` / `url` | Multimedia opcional |
+| `image` | Ícono o imagen representativa — **obligatorio** (JPG/PNG) |
+| `pdf_file` | PDF adjunto — **obligatorio** |
+| `url` | Enlace externo (opcional) |
 | `order` / `active` | Orden y estado |
 | `created_by` / `updated_by` | Auditoría → `users.id` |
+
+**Tipos de sección disponibles:**
+
+| Valor | Etiqueta visible |
+|:---|:---|
+| `generalities` | Generalidades |
+| `modalities` | Modalidades |
+| `procedures` | Trámites |
+| `intern_commitments` | Compromisos del Estudiante |
+| `institute_commitments` | Compromisos del Instituto |
+| `access_conditions` | Condiciones para Acceder |
+
+> El filtro de la tabla permite filtrar registros por cualquiera de estos seis tipos.
 
 </details>
 
@@ -706,6 +764,39 @@ Al ejecutar `php artisan migrate --seed` se crean automáticamente los datos bas
 | `php artisan route:clear` | Limpiar caché de rutas |
 | `php artisan config:clear` | Limpiar caché de configuración |
 | `php artisan optimize:clear` | Limpiar toda la caché de la aplicación |
+
+---
+
+## Historial de cambios
+
+### v1.1.0 — 2026-03-10
+
+#### Dependencias
+- Se añadió **`intervention/image ^3.11`** a `composer.json`. Esta librería es requerida para que los campos `FileUpload` con `imageResizeMode('force')` puedan redimensionar imágenes automáticamente al subirlas.
+
+#### Banners (`BannerResource` + tabla `banners`)
+- **Orden del formulario corregido:** la sección *Configuración* (estado, tipo, orden, página) ahora aparece **antes** de *Información del Banner*, lo que permite al usuario elegir el tipo de banner antes de completar su contenido.
+- **Subtítulo y color del subtítulo ocultos en banners secundarios:** los campos `subtitle` y `subtitle_color` solo son visibles cuando el tipo de banner es `main`. Al cambiar a `secondary`, desaparecen del formulario.
+- **Campo `order` condicional:** solo se muestra y se requiere para banners de tipo `main`. Los banners secundarios no usan campo de orden.
+- **Contador de caracteres en vivo en `subtitle`:** muestra `X / 60 caracteres` en tiempo real. Cambia a color advertencia cuando quedan menos de 5 caracteres disponibles.
+- **Eliminado el mínimo de caracteres** en `title` (antes requería 15 chars mínimo) y en `subtitle` (antes requería 15 chars mínimo).
+
+#### Áreas (`AreaResource` + tabla `areas`)
+- **Nombre y slug de solo lectura:** los campos `name` y `slug` del área ahora se muestran como campos deshabilitados (`->disabled()->dehydrated()`). Son visibles pero no editables, garantizando que los slugs que usa el frontend nunca cambien.
+- **Campos de sub-sección visibles solo para `educacion-comunicacion`:** la sección *Descripciones — Educación y Comunicación* (con los campos de Educación Formal, No Formal y Materiales) solo aparece en el formulario cuando el área tiene el slug `educacion-comunicacion`. En las otras dos áreas esta sección se oculta completamente.
+- **Imágenes de sub-sección:** los tres campos de imagen de sub-sección (`formal_education_image`, `non_formal_education_image`, `educational_materials_image`) aceptan JPG y PNG, admiten hasta 2 MB, y se redimensionan automáticamente a **1024 × 577 px** (antes eran íconos PNG de 74 × 119 px).
+- **Colores de tarjeta:** se añadieron tres campos `ColorPicker` (`formal_education_color`, `non_formal_education_color`, `educational_materials_color`) para configurar el color de fondo de las tarjetas de cada sub-sección.
+- **Nuevas migraciones:**
+  - `2026_03_10_000008` — agrega las columnas `formal_education_image`, `non_formal_education_image`, `formal_education_color`, `non_formal_education_color`, `educational_materials_color` a la tabla `areas`.
+  - `2026_03_10_000009` — renombra las columnas anteriores para que coincidan con los nombres definitivos usados en el código (corrección de inconsistencia entre migraciones).
+
+#### Equipo (`TeamResource`)
+- **Descripción eliminada del listado:** la columna `description` ya no aparece en la tabla del panel. Solo es visible al abrir el formulario de un integrante.
+- **Límite de descripción aumentado:** el campo `description` ahora acepta hasta **1000 caracteres** (antes el límite era 200).
+
+#### Educación Formal (`FormalEducationSectionResource`)
+- **Nueva sección `access_conditions`:** se añadió la opción *Condiciones para Acceder* al selector de tipo de sección. Ahora existen 6 tipos posibles, uno por sección de contenido.
+- **Ícono y PDF obligatorios:** los campos `image` (ícono/imagen de sección) y `pdf_file` son ahora campos requeridos. Antes eran opcionales.
 
 ---
 
