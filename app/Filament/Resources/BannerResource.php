@@ -72,55 +72,6 @@ class BannerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Información del Banner')
-                    ->description('Contenido principal y textos del banner')
-                    ->icon('heroicon-o-photo')
-                    ->schema([
-                        Forms\Components\Grid::make(2)
-                            ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->label('Título')
-                                    ->required()
-                                    ->maxLength(100)
-                                    ->placeholder('Ej: Ofertas de Temporada')
-                                    ->prefixIcon('heroicon-o-document-text')
-                                    ->columnSpan(1)
-                                    ->validationMessages([
-                                        'required' => 'El título del banner es obligatorio.',
-                                        'max'      => 'El título no puede exceder los 100 caracteres.',
-                                    ]),
-
-                                Forms\Components\ColorPicker::make('title_color')
-                                    ->label('Color del Título')
-                                    ->required()
-                                    ->default('#000000')
-                                    ->placeholder('#000000')
-                                    ->prefixIcon('heroicon-o-paint-brush')
-                                    ->columnSpan(1),
-
-                                Forms\Components\TextInput::make('subtitle')
-                                    ->label('Subtítulo')
-                                    ->maxLength(60)
-                                    ->live()
-                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 60 caracteres')
-                                    ->hintColor(fn ($state) => strlen($state ?? '') >= 55 ? 'warning' : 'gray')
-                                    ->placeholder('Ej: Hasta 50% de descuento')
-                                    ->prefixIcon('heroicon-o-document-text')
-                                    ->columnSpan(1)
-                                    ->validationMessages([
-                                        'max' => 'El subtítulo no puede exceder los 60 caracteres.',
-                                    ]),
-
-                                Forms\Components\ColorPicker::make('subtitle_color')
-                                    ->label('Color del Subtítulo')
-                                    ->required()
-                                    ->default('#000000')
-                                    ->placeholder('#000000')
-                                    ->prefixIcon('heroicon-o-paint-brush')
-                                    ->columnSpan(1),
-                            ]),
-                    ])->collapsible(),
-
                 Forms\Components\Section::make('Configuración')
                     ->description('Estado, tipo y orden del banner')
                     ->icon('heroicon-o-cog-6-tooth')
@@ -207,6 +158,57 @@ class BannerResource extends Resource
                             ])
                             ->helperText('Selecciona la página donde se mostrará este banner. Solo puede haber un banner por página.')
                             ->columnSpanFull(),
+                    ])->collapsible(),
+
+                Forms\Components\Section::make('Información del Banner')
+                    ->description('Contenido principal y textos del banner')
+                    ->icon('heroicon-o-photo')
+                    ->schema([
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->label('Título')
+                                    ->required()
+                                    ->maxLength(100)
+                                    ->placeholder('Ej: Ofertas de Temporada')
+                                    ->prefixIcon('heroicon-o-document-text')
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'required' => 'El título del banner es obligatorio.',
+                                        'max'      => 'El título no puede exceder los 100 caracteres.',
+                                    ]),
+
+                                Forms\Components\ColorPicker::make('title_color')
+                                    ->label('Color del Título')
+                                    ->required()
+                                    ->default('#000000')
+                                    ->placeholder('#000000')
+                                    ->prefixIcon('heroicon-o-paint-brush')
+                                    ->columnSpan(1),
+
+                                Forms\Components\TextInput::make('subtitle')
+                                    ->label('Subtítulo')
+                                    ->maxLength(60)
+                                    ->live()
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 60 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') >= 55 ? 'warning' : 'gray')
+                                    ->placeholder('Ej: Hasta 50% de descuento')
+                                    ->prefixIcon('heroicon-o-document-text')
+                                    ->visible(fn(callable $get) => $get('type') !== 'secondary')
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'max' => 'El subtítulo no puede exceder los 60 caracteres.',
+                                    ]),
+
+                                Forms\Components\ColorPicker::make('subtitle_color')
+                                    ->label('Color del Subtítulo')
+                                    ->required(fn(callable $get) => $get('type') !== 'secondary')
+                                    ->default('#000000')
+                                    ->placeholder('#000000')
+                                    ->prefixIcon('heroicon-o-paint-brush')
+                                    ->visible(fn(callable $get) => $get('type') !== 'secondary')
+                                    ->columnSpan(1),
+                            ]),
                     ])->collapsible(),
 
                 Forms\Components\Section::make('Imagen del Banner')

@@ -68,6 +68,8 @@ class AreaResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->placeholder('Ej: Educación y Comunicación')
                             ->prefixIcon('heroicon-o-tag')
+                            ->disabled()
+                            ->dehydrated()
                             ->columnSpanFull()
                             ->validationMessages([
                                 'required' => 'El nombre del área es obligatorio.',
@@ -139,37 +141,104 @@ class AreaResource extends Resource
                     ->description('Estos campos solo aplican al área de Educación y Comunicación. Son los textos introductorios de cada subsección del sitio web.')
                     ->icon('heroicon-o-academic-cap')
                     ->schema([
-                        Forms\Components\Textarea::make('formal_education_description')
-                            ->label('Descripción — Educación Formal')
-                            ->rows(4)
-                            ->maxLength(1000)
-                            ->placeholder('Descripción introductoria de la educación formal...')
-                            ->columnSpanFull(),
+                        // --- Educación Formal ---
+                        Forms\Components\Fieldset::make('Educación Formal')
+                            ->schema([
+                                Forms\Components\FileUpload::make('formal_education_icon')
+                                    ->label('Ícono')
+                                    ->image()
+                                    ->imageResizeMode('force')
+                                    ->imageResizeTargetWidth('74')
+                                    ->imageResizeTargetHeight('119')
+                                    ->acceptedFileTypes(['image/png'])
+                                    ->maxSize(2048)
+                                    ->nullable()
+                                    ->directory('areas/icons')
+                                    ->helperText('Solo PNG. Máx. 2 MB. Se redimensionará a 74 × 119 px.')
+                                    ->validationMessages([
+                                        'mimes'   => 'Solo se permiten archivos PNG.',
+                                        'maxSize' => 'El ícono no puede superar 2 MB.',
+                                    ]),
 
-                        Forms\Components\Textarea::make('non_formal_education_description')
-                            ->label('Descripción — Educación No Formal (Cursos)')
-                            ->rows(4)
-                            ->maxLength(1000)
-                            ->placeholder('Descripción introductoria de la educación no formal y cursos...')
-                            ->columnSpanFull(),
+                                Forms\Components\ColorPicker::make('formal_education_color')
+                                    ->label('Color de tarjeta')
+                                    ->placeholder('#000000')
+                                    ->prefixIcon('heroicon-o-paint-brush'),
 
-                        Forms\Components\Textarea::make('educational_materials_description')
-                            ->label('Descripción — Materiales de Educación y Comunicación')
-                            ->rows(4)
-                            ->maxLength(1000)
-                            ->placeholder('Descripción introductoria de los materiales educativos...')
-                            ->columnSpanFull(),
+                                Forms\Components\Textarea::make('formal_education_description')
+                                    ->label('Descripción')
+                                    ->rows(3)
+                                    ->maxLength(1000)
+                                    ->placeholder('Descripción introductoria de la educación formal...')
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2),
 
-                        Forms\Components\FileUpload::make('educational_materials_image')
-                            ->label('Imagen — Materiales de Educación y Comunicación')
-                            ->image()
-                            ->imageEditor()
-                            ->directory('areas/educational-materials')
-                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                            ->maxSize(2048)
-                            ->nullable()
-                            ->helperText('Solo JPG o PNG. Máximo 2 MB.')
-                            ->columnSpanFull(),
+                        // --- Educación No Formal ---
+                        Forms\Components\Fieldset::make('Educación No Formal (Cursos)')
+                            ->schema([
+                                Forms\Components\FileUpload::make('non_formal_education_icon')
+                                    ->label('Ícono')
+                                    ->image()
+                                    ->imageResizeMode('force')
+                                    ->imageResizeTargetWidth('74')
+                                    ->imageResizeTargetHeight('119')
+                                    ->acceptedFileTypes(['image/png'])
+                                    ->maxSize(2048)
+                                    ->nullable()
+                                    ->directory('areas/icons')
+                                    ->helperText('Solo PNG. Máx. 2 MB. Se redimensionará a 74 × 119 px.')
+                                    ->validationMessages([
+                                        'mimes'   => 'Solo se permiten archivos PNG.',
+                                        'maxSize' => 'El ícono no puede superar 2 MB.',
+                                    ]),
+
+                                Forms\Components\ColorPicker::make('non_formal_education_color')
+                                    ->label('Color de tarjeta')
+                                    ->placeholder('#000000')
+                                    ->prefixIcon('heroicon-o-paint-brush'),
+
+                                Forms\Components\Textarea::make('non_formal_education_description')
+                                    ->label('Descripción')
+                                    ->rows(3)
+                                    ->maxLength(1000)
+                                    ->placeholder('Descripción introductoria de la educación no formal y cursos...')
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2),
+
+                        // --- Materiales de Educación y Comunicación ---
+                        Forms\Components\Fieldset::make('Materiales de Educación y Comunicación')
+                            ->schema([
+                                Forms\Components\FileUpload::make('educational_materials_icon')
+                                    ->label('Ícono')
+                                    ->image()
+                                    ->imageResizeMode('force')
+                                    ->imageResizeTargetWidth('74')
+                                    ->imageResizeTargetHeight('119')
+                                    ->acceptedFileTypes(['image/png'])
+                                    ->maxSize(2048)
+                                    ->nullable()
+                                    ->directory('areas/icons')
+                                    ->helperText('Solo PNG. Máx. 2 MB. Se redimensionará a 74 × 119 px.')
+                                    ->validationMessages([
+                                        'mimes'   => 'Solo se permiten archivos PNG.',
+                                        'maxSize' => 'El ícono no puede superar 2 MB.',
+                                    ]),
+
+                                Forms\Components\ColorPicker::make('educational_materials_color')
+                                    ->label('Color de tarjeta')
+                                    ->placeholder('#000000')
+                                    ->prefixIcon('heroicon-o-paint-brush'),
+
+                                Forms\Components\Textarea::make('educational_materials_description')
+                                    ->label('Descripción')
+                                    ->rows(3)
+                                    ->maxLength(1000)
+                                    ->placeholder('Descripción introductoria de los materiales educativos...')
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2),
                     ])
                     ->collapsible()
                     ->collapsed(),
