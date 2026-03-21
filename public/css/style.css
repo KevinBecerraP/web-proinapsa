@@ -12477,20 +12477,20 @@ body .modal-backdrop {
 }
 .rs-faq-part.style1 .main-part .faq-content .accordion .card .card-header .card-link:after {
   position: absolute;
-  font-family: FontAwesome;
-  content: "\f1f7";
+  font-family: inherit;
+  content: "\2212";
   left: 25px;
   top: 50%;
   transform: translateY(-50%);
   text-align: center;
-  font-weight: 400;
+  font-weight: 700;
 }
 .rs-faq-part.style1 .main-part .faq-content .accordion .card .card-header .card-link.collapsed {
   background: #ffffff;
   color: #111111;
 }
 .rs-faq-part.style1 .main-part .faq-content .accordion .card .card-header .card-link.collapsed:after {
-  content: "\f0a2";
+  content: "\002B";
 }
 .rs-faq-part.style1 .main-part .faq-content .accordion .card .card-body {
   background: #ffffff;

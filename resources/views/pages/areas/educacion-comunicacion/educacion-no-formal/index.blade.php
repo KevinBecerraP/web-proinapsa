@@ -62,8 +62,8 @@
     <div class="rs-testimonial style3 orange-color pt-90 md-pt-70">
         <div class="container">
             <div class="sec-title mb-60 md-mb-30 text-center">
-                <div class="sub-title orange">Student Reviews</div>
-                <h2 class="title mb-0">What Our Students Says</h2>
+                <div class="sub-title orange">Aprende Con Nosotros</div>
+                <h2 class="title mb-0">Formación accesible para todos</h2>
             </div>
         </div>
     </div>
@@ -85,7 +85,8 @@
                                         <span><a class="categories" href="#">{{ $course->duration_hours }}
                                                 Horas</a></span>
                                     @endif
-                                    <h3 class="title"><a href="{{ route('course.show', $course->slug) }}">{{ $course->title }}</a></h3>
+                                    <h3 class="title"><a
+                                            href="{{ route('course.show', $course->slug) }}">{{ $course->title }}</a></h3>
                                     @if ($course->short_description)
                                         <p style="text-align: justify;">{{ $course->short_description }}</p>
                                     @endif

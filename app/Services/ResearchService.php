@@ -4,13 +4,14 @@ namespace App\Services;
 
 use App\Models\Area;
 use App\Models\Banner;
+use App\Models\Publication;
 
 class ResearchService
 {
     public function getAll(): array
     {
         $banner = Banner::active()
-            ->where('page', 'investigacion')
+            ->where('page', 'research')
             ->latest()
             ->first()
             ?? Banner::active()
@@ -23,11 +24,15 @@ class ResearchService
             ->where('slug', 'investigacion')
             ->with([
                 'researchGroup.researchLines',
-                'publications' => fn($q) => $q->active()->ordered(),
                 'coordinator',
             ])
             ->firstOrFail();
 
-        return compact('banner', 'area');
+        $publications = Publication::active()
+            ->where('area_id', $area->id)
+            ->ordered()
+            ->get();
+
+        return compact('banner', 'area', 'publications');
     }
 }
