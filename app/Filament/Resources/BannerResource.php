@@ -283,6 +283,7 @@ class BannerResource extends Resource
                 Forms\Components\Section::make('Botón de Acción')
                     ->description('Configuración del botón (opcional)')
                     ->icon('heroicon-o-cursor-arrow-rays')
+                    ->visible(fn(callable $get) => $get('type') !== 'secondary')
                     ->schema([
                         Forms\Components\Grid::make(2)
                             ->schema([
