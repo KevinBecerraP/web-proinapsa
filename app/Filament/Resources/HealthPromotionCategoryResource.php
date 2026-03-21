@@ -177,7 +177,7 @@ class HealthPromotionCategoryResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('order', 'asc')
+            ->defaultSort('created_at', 'desc')
             ->reorderable('order')
             ->filters([
                 Tables\Filters\SelectFilter::make('category')

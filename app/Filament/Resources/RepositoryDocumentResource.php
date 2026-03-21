@@ -271,7 +271,7 @@ class RepositoryDocumentResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('order', 'asc')
+            ->defaultSort('created_at', 'desc')
             ->reorderable('order')
             ->filters([
                 Tables\Filters\SelectFilter::make('repository_category_id')

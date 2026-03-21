@@ -155,11 +155,6 @@ class EducationalMaterialResource extends Resource
                     ->badge()
                     ->color('primary'),
 
-                Tables\Columns\ImageColumn::make('main_image')
-                    ->label('Imagen')
-                    ->square()
-                    ->size(50),
-
                 Tables\Columns\TextColumn::make('category_label')
                     ->label('Categoría')
                     ->badge()
@@ -191,7 +186,7 @@ class EducationalMaterialResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('order', 'asc')
+            ->defaultSort('created_at', 'desc')
             ->reorderable('order')
             ->filters([
                 Tables\Filters\SelectFilter::make('category')

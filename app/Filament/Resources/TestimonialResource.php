@@ -189,7 +189,7 @@ class TestimonialResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('order', 'asc')
+            ->defaultSort('created_at', 'desc')
             ->reorderable('order')
             ->filters([
                 Tables\Filters\TernaryFilter::make('active')

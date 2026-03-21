@@ -184,7 +184,7 @@ class FormalEducationSectionResource extends Resource
                     ->trueColor('success')
                     ->falseColor('danger'),
             ])
-            ->defaultSort('order', 'asc')
+            ->defaultSort('created_at', 'desc')
             ->reorderable('order')
             ->filters([
                 Tables\Filters\SelectFilter::make('section')
