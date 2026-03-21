@@ -174,10 +174,6 @@ class EducationalMaterialGroupResource extends Resource
                     ->badge()
                     ->color('primary'),
 
-                Tables\Columns\ImageColumn::make('icon')
-                    ->label('Ícono')
-                    ->square()
-                    ->size(40),
 
                 Tables\Columns\ColorColumn::make('color')
                     ->label('Color'),

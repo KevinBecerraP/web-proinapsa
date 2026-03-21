@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Str;
 
 class Course extends Model
 {
@@ -16,6 +17,7 @@ class Course extends Model
     protected $fillable = [
         'area_id',
         'title',
+        'slug',
         'short_description',
         'main_image',
         'full_description',
@@ -49,12 +51,20 @@ class Course extends Model
                 $model->order = $maxOrder + 1;
             }
 
+            if (empty($model->slug)) {
+                $model->slug = Str::slug($model->title);
+            }
+
             if (auth()->check()) {
                 $model->created_by = auth()->id();
             }
         });
 
         static::updating(function ($model) {
+            if ($model->isDirty('title')) {
+                $model->slug = Str::slug($model->title);
+            }
+
             if (auth()->check()) {
                 $model->updated_by = auth()->id();
             }

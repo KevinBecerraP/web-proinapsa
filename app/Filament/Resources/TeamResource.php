@@ -128,10 +128,6 @@ class TeamResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Foto')
-                    ->circular()
-                    ->size(50),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')

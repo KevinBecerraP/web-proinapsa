@@ -6,10 +6,12 @@ use App\Filament\Resources\CourseResource\Pages;
 use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class CourseResource extends Resource
 {
@@ -33,27 +35,78 @@ class CourseResource extends Resource
             ->schema([
                 Forms\Components\Tabs::make('Tabs')
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Vista Previa')
+                        Forms\Components\Tabs\Tab::make('Configuración')
                             ->schema([
+                                Forms\Components\Select::make('status')
+                                    ->label('Estado')
+                                    ->options([
+                                        'active'   => 'Activo',
+                                        'finished' => 'Finalizado',
+                                        'inactive' => 'Inactivo',
+                                    ])
+                                    ->required()
+                                    ->default('active')
+                                    ->validationMessages([
+                                        'required' => 'El estado del curso es obligatorio.',
+                                    ]),
+
+                                Forms\Components\TextInput::make('duration_hours')
+                                    ->label('Duración (horas)')
+                                    ->numeric()
+                                    ->minValue(1)
+                                    ->maxValue(1000)
+                                    ->suffix('hrs')
+                                    ->helperText('Opcional'),
+
+                                Forms\Components\TextInput::make('registration_link')
+                                    ->label('Link de Inscripción')
+                                    ->url()
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->helperText('URL del formulario de inscripción')
+                                    ->columnSpanFull()
+                                    ->validationMessages([
+                                        'required' => 'El link de inscripción es obligatorio.',
+                                        'max'      => 'El link no puede exceder los 255 caracteres.',
+                                    ]),
+
                                 Forms\Components\Select::make('area_id')
                                     ->label('Área')
                                     ->relationship('area', 'name')
                                     ->default(fn () => \App\Models\Area::where('slug', 'educacion-comunicacion')->first()?->id)
                                     ->required()
                                     ->disabled()
-                                    ->dehydrated(),
+                                    ->dehydrated()
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(2),
 
+                        Forms\Components\Tabs\Tab::make('Vista Previa')
+                            ->schema([
                                 Forms\Components\TextInput::make('title')
                                     ->label('Título')
                                     ->required()
                                     ->maxLength(50)
                                     ->unique(ignoreRecord: true)
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn (Set $set, ?string $state) =>
+                                        $set('slug', Str::slug($state ?? ''))
+                                    )
                                     ->columnSpanFull()
                                     ->validationMessages([
                                         'required' => 'El título del curso es obligatorio.',
                                         'max'      => 'El título no puede exceder los 50 caracteres.',
                                         'unique'   => 'Ya existe un curso con este título.',
                                     ]),
+
+                                Forms\Components\TextInput::make('slug')
+                                    ->label('Slug (URL)')
+                                    ->disabled()
+                                    ->dehydrated()
+                                    ->unique(ignoreRecord: true)
+                                    ->prefixIcon('heroicon-o-link')
+                                    ->helperText('Se genera automáticamente a partir del título.')
+                                    ->columnSpanFull(),
 
                                 Forms\Components\Textarea::make('short_description')
                                     ->label('Descripción Corta')
@@ -122,43 +175,6 @@ class CourseResource extends Resource
                                     ->columnSpanFull(),
                             ])
                             ->columns(1),
-
-                        Forms\Components\Tabs\Tab::make('Configuración')
-                            ->schema([
-                                Forms\Components\Select::make('status')
-                                    ->label('Estado')
-                                    ->options([
-                                        'active' => 'Activo',
-                                        'finished' => 'Finalizado',
-                                        'inactive' => 'Inactivo',
-                                    ])
-                                    ->required()
-                                    ->default('active')
-                                    ->validationMessages([
-                                        'required' => 'El estado del curso es obligatorio.',
-                                    ]),
-
-                                Forms\Components\TextInput::make('registration_link')
-                                    ->label('Link de Inscripción')
-                                    ->url()
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->helperText('URL del formulario de inscripción')
-                                    ->columnSpanFull()
-                                    ->validationMessages([
-                                        'required' => 'El link de inscripción es obligatorio.',
-                                        'max'      => 'El link no puede exceder los 255 caracteres.',
-                                    ]),
-
-                                Forms\Components\TextInput::make('duration_hours')
-                                    ->label('Duración (horas)')
-                                    ->numeric()
-                                    ->minValue(1)
-                                    ->maxValue(1000)
-                                    ->suffix('hrs')
-                                    ->helperText('Opcional'),
-                            ])
-                            ->columns(2),
                     ])
                     ->columnSpanFull(),
             ]);
@@ -173,10 +189,6 @@ class CourseResource extends Resource
                     ->sortable()
                     ->badge()
                     ->color('primary'),
-
-                Tables\Columns\ImageColumn::make('main_image')
-                    ->label('Imagen')
-                    ->circular(),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')

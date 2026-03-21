@@ -151,10 +151,6 @@ class FormalEducationSectionResource extends Resource
                     ->badge()
                     ->color('primary'),
 
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Ícono')
-                    ->square()
-                    ->size(40),
 
                 Tables\Columns\TextColumn::make('section_label')
                     ->label('Sección')

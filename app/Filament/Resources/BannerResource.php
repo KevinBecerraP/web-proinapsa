@@ -312,8 +312,6 @@ class BannerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Imagen'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable(),

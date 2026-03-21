@@ -155,12 +155,6 @@ class InstitutionalResource extends Resource
                     })
                     ->sortable(),
 
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Logo')
-                    ->circular()
-                    ->size(50)
-                    ->defaultImageUrl(url('/images/placeholder.png'))
-                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')

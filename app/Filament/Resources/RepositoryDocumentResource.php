@@ -218,10 +218,6 @@ class RepositoryDocumentResource extends Resource
                     ->sortable()
                     ->alignCenter(),
 
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Portada')
-                    ->square()
-                    ->size(50),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')

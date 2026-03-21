@@ -164,10 +164,6 @@ class RepositoryCategoryResource extends Resource
                     ->sortable()
                     ->alignCenter(),
 
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Imagen')
-                    ->circular()
-                    ->size(40),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')

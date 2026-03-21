@@ -131,10 +131,6 @@ class HealthPromotionCategoryResource extends Resource
                     ->badge()
                     ->color('primary'),
 
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Imagen')
-                    ->circular(),
-
                 Tables\Columns\TextColumn::make('category_label')
                     ->label('Categoría')
                     ->searchable(query: function (Builder $query, string $search): Builder {

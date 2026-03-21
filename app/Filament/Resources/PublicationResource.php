@@ -125,10 +125,6 @@ class PublicationResource extends Resource
                     ->badge()
                     ->color('primary'),
 
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Imagen')
-                    ->circular(),
-
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable()

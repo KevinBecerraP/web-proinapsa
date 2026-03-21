@@ -551,10 +551,6 @@ class CompanyResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('logo')
-                    ->label('Logo')
-                    ->circular(),
-                    
                 Tables\Columns\TextColumn::make('business_name')
                     ->label('Razón Social')
                     ->searchable()

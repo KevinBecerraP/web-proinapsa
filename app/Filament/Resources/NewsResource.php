@@ -164,10 +164,6 @@ class NewsResource extends Resource
                     ->badge()
                     ->color('primary'),
 
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Imagen')
-                    ->square()
-                    ->size(50),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
