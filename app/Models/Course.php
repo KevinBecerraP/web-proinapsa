@@ -22,8 +22,6 @@ class Course extends Model
         'main_image',
         'full_description',
         'gallery_image_1',
-        'gallery_image_2',
-        'gallery_image_3',
         'pdf_file',
         'status',
         'registration_link',
@@ -146,8 +144,6 @@ class Course extends Model
     {
         return array_filter([
             $this->gallery_image_1,
-            $this->gallery_image_2,
-            $this->gallery_image_3,
         ]);
     }
 }
