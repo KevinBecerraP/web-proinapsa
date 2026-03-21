@@ -126,11 +126,12 @@
                                 <img src="{{ Storage::url($area->non_formal_education_image) }}"
                                     alt="{{ $area->non_formal_education_image }}">
                                 <div class="dates">
-                                    Ver más
+                                    <a href="{{ route('area.educacion-no-formal') }}" style="color: inherit;">Ver más</a>
                                 </div>
                             </div>
                             <div class="content-part">
-                                <h4 class="title"><a href="#">Educación No Formal</a></h4>
+                                <h4 class="title"><a href="{{ route('area.educacion-no-formal') }}">Educación No
+                                        Formal</a></h4>
                             </div>
                         </div>
                     </div>
