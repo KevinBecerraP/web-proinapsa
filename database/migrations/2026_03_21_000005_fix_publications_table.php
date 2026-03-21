@@ -15,6 +15,9 @@ return new class extends Migration
             DB::table('publications')->update(['area_id' => $areaId]);
         }
 
+        // Truncar descripciones existentes que superen 150 caracteres
+        DB::statement('UPDATE publications SET short_description = LEFT(short_description, 150)');
+
         // Ajustar short_description a 150 chars y eliminar subtitle
         Schema::table('publications', function (Blueprint $table) {
             $table->string('short_description', 150)->change();
