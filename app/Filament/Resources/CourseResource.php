@@ -19,11 +19,11 @@ class CourseResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
 
-    protected static ?string $navigationLabel = 'Cursos';
+    protected static ?string $navigationLabel = 'Educación No Formal';
 
-    protected static ?string $modelLabel = 'Curso';
+    protected static ?string $modelLabel = 'Educación No Formal';
 
-    protected static ?string $pluralModelLabel = 'Cursos';
+    protected static ?string $pluralModelLabel = 'Educación No Formal';
 
     protected static ?string $navigationGroup = 'Educación y Comunicación';
 
