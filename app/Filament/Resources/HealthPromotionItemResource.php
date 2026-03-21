@@ -86,7 +86,7 @@ class HealthPromotionItemResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('category.category_label')
                     ->label('Categoría')
@@ -103,15 +103,13 @@ class HealthPromotionItemResource extends Resource
                     ->limit(40)
                     ->weight('bold'),
 
-                Tables\Columns\TextColumn::make('short_description')
-                    ->label('Descripción')
-                    ->limit(50)
-                    ->wrap()
-                    ->toggleable(),
-
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')
                     ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
@@ -136,8 +134,10 @@ class HealthPromotionItemResource extends Resource
                     ->falseLabel('Solo inactivos'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
                 Tables\Actions\DeleteAction::make()
+                    ->label('')
                     ->requiresConfirmation(),
             ])
             ->bulkActions([

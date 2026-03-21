@@ -165,6 +165,10 @@ class ResearchGroupResource extends Resource
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')
                     ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('updated_at')
@@ -177,7 +181,8 @@ class ResearchGroupResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
             ])
             ->bulkActions([
                 // No bulk actions for singleton

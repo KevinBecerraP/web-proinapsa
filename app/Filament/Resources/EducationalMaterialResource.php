@@ -153,7 +153,7 @@ class EducationalMaterialResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('category_label')
                     ->label('Categoría')

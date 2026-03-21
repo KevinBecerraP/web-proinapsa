@@ -129,7 +129,7 @@ class HealthPromotionCategoryResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('category_label')
                     ->label('Categoría')
@@ -165,6 +165,10 @@ class HealthPromotionCategoryResource extends Resource
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')
                     ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger')
                     ->sortable(),
 
                 Tables\Columns\TextColumn::make('created_at')
@@ -192,8 +196,10 @@ class HealthPromotionCategoryResource extends Resource
                     ->falseLabel('Solo inactivos'),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
                 Tables\Actions\DeleteAction::make()
+                    ->label('')
                     ->requiresConfirmation()
                     ->modalHeading('Eliminar Categoría')
                     ->modalDescription('¿Estás seguro? Esto eliminará todos los ítems relacionados.')

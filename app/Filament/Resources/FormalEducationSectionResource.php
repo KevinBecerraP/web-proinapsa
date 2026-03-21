@@ -149,7 +149,7 @@ class FormalEducationSectionResource extends Resource
                     ->sortable()
                     ->alignCenter()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
 
                 Tables\Columns\TextColumn::make('section_label')

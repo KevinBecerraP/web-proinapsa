@@ -130,7 +130,7 @@ class PublicationResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
@@ -162,12 +162,15 @@ class PublicationResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('view_link')
-                    ->label('Ver Publicación')
+                    ->label('')
                     ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->tooltip('Ver Publicación')
                     ->url(fn ($record) => $record->external_link)
                     ->openUrlInNewTab(),
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
                 Tables\Actions\DeleteAction::make()
+                    ->label('')
                     ->requiresConfirmation(),
             ])
             ->bulkActions([

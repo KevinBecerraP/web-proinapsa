@@ -355,7 +355,11 @@ class BannerResource extends Resource
                     ->placeholder('-'),
                 Tables\Columns\IconColumn::make('status')
                     ->label('Estado')
-                    ->boolean(),
+                    ->boolean()
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([

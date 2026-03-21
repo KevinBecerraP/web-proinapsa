@@ -143,7 +143,7 @@ class TestimonialResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
@@ -164,15 +164,6 @@ class TestimonialResource extends Resource
                     ->label('Calificación')
                     ->sortable()
                     ->formatStateUsing(fn (int $state): string => str_repeat('⭐', $state)),
-
-                Tables\Columns\TextColumn::make('testimonial')
-                    ->label('Testimonio')
-                    ->searchable()
-                    ->limit(60)
-                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
-                        $state = $column->getState();
-                        return strlen($state) > 60 ? $state : null;
-                    }),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')

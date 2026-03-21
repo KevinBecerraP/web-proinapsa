@@ -138,7 +138,7 @@ class InstitutionalResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('type')
                     ->label('Tipo')

@@ -155,7 +155,28 @@ class CourseResource extends Resource
                                     ->directory('courses/gallery')
                                     ->maxSize(2048)
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                    ->helperText('Opcional. Solo JPG o PNG. Máximo 2MB')
+                                    ->helperText('Opcional. Dimensiones: 1200 × 1600 px. Formatos: JPG, PNG. Máx 2MB')
+                                    ->rules([
+                                        function () {
+                                            return function (string $attribute, $value, $fail) {
+                                                if (!$value) return;
+                                                try {
+                                                    $image = is_string($value)
+                                                        ? getimagesize(storage_path('app/public/' . $value))
+                                                        : getimagesize($value->getRealPath());
+
+                                                    if (!$image) { $fail('No se pudo leer la imagen.'); return; }
+
+                                                    [$width, $height] = $image;
+                                                    if ($width !== 1200 || $height !== 1600) {
+                                                        $fail("La imagen debe tener exactamente 1200 × 1600 px. Dimensiones actuales: {$width} × {$height} px.");
+                                                    }
+                                                } catch (\Exception $e) {
+                                                    $fail('No se pudo validar las dimensiones: ' . $e->getMessage());
+                                                }
+                                            };
+                                        },
+                                    ])
                                     ->columnSpanFull(),
 
                                 Forms\Components\FileUpload::make('pdf_file')
@@ -182,7 +203,7 @@ class CourseResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
@@ -220,8 +241,10 @@ class CourseResource extends Resource
                     ]),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->label(''),
                 Tables\Actions\DeleteAction::make()
+                    ->label('')
                     ->requiresConfirmation(),
             ])
             ->bulkActions([

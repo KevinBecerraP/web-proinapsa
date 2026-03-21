@@ -172,7 +172,7 @@ class EducationalMaterialGroupResource extends Resource
                     ->sortable()
                     ->alignCenter()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
 
                 Tables\Columns\ColorColumn::make('color')

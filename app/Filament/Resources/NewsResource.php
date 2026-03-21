@@ -162,7 +162,7 @@ class NewsResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
 
                 Tables\Columns\TextColumn::make('title')
@@ -175,12 +175,6 @@ class NewsResource extends Resource
                         $state = $column->getState();
                         return strlen($state) > 50 ? $state : null;
                     }),
-
-                Tables\Columns\TextColumn::make('excerpt')
-                    ->label('Resumen')
-                    ->searchable()
-                    ->limit(60)
-                    ->toggleable(),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')

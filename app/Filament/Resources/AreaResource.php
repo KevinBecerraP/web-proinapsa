@@ -245,7 +245,7 @@ class AreaResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('primary'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')

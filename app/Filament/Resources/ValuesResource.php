@@ -119,27 +119,19 @@ class ValuesResource extends Resource
                     ->sortable()
                     ->alignCenter()
                     ->badge()
-                    ->color('info'),
+                    ->color('success'),
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
-                Tables\Columns\TextColumn::make('description')
-                    ->label('Descripción')
-                    ->searchable()
-                    ->limit(50)
-                    ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
-                        $state = $column->getState();
-                        if (strlen($state) <= 50) {
-                            return null;
-                        }
-                        return $state;
-                    }),
                 Tables\Columns\IconColumn::make('status')
                     ->label('Estado')
                     ->boolean()
-                    ->alignCenter(),
+                    ->trueIcon('heroicon-o-check-circle')
+                    ->falseIcon('heroicon-o-x-circle')
+                    ->trueColor('success')
+                    ->falseColor('danger'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Fecha de Creación')
                     ->dateTime()

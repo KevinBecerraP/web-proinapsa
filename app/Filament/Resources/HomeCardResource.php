@@ -183,7 +183,7 @@ class HomeCardResource extends Resource
                     ->label('Orden')
                     ->sortable()
                     ->badge()
-                    ->color('info'),
+                    ->color('success'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
