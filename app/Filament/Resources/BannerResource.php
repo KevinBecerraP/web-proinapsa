@@ -358,6 +358,7 @@ class BannerResource extends Resource
                     ->label('Estado')
                     ->boolean(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
                     ->label('Tipo')

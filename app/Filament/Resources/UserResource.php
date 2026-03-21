@@ -196,6 +196,7 @@ class UserResource extends Resource
                     ->dateTime('d/m/Y')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])

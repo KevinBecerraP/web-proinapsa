@@ -28,6 +28,11 @@ class EducationalMaterialGroupResource extends Resource
 
     protected static ?int $navigationSort = 11;
 
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
     public static function canCreate(): bool
     {
         return false;
@@ -206,7 +211,7 @@ class EducationalMaterialGroupResource extends Resource
                     ->trueColor('success')
                     ->falseColor('danger'),
             ])
-            ->defaultSort('order', 'asc')
+            ->defaultSort('created_at', 'desc')
             ->reorderable('order')
             ->actions([
                 Tables\Actions\EditAction::make()

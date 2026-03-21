@@ -228,7 +228,7 @@ class HomeCardResource extends Resource
                     ->dateTime('d/m/Y')
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('order', 'asc')
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('type')
                     ->label('Tipo')

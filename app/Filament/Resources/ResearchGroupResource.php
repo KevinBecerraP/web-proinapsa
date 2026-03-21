@@ -190,6 +190,7 @@ class ResearchGroupResource extends Resource
                     ->dateTime('d/m/Y H:i')
                     ->sortable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 //
             ])
