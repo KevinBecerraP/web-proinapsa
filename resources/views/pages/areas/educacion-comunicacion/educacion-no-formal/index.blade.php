@@ -59,70 +59,49 @@
         </div>
     </div>
 
-    <div id="rs-popular-courses" class="rs-popular-courses style6 gray-bg4 pt-40 pb-100 md-pt-70 md-pb-70">
+    <div class="rs-testimonial style3 orange-color pt-90 md-pt-70">
         <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-50">
-                    <div class="sec-title6">
-                        <span class="sub-title pb-10">Materiales Educativos</span>
-                        <h2 class="title title2">Explora nuestro material de aprendizaje</h2>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="gridFilter style2 modify1 mb-10" id="materialFilter">
-                        <button class="active" data-filter="*">Todos</button>
-                        <button data-filter="filter1" class="">Primera Infancia</button>
-                        <button data-filter="filter2" class="">Escolar y adolescencia</button>
-                    </div>
-                </div>
-            </div>
-            <div class="row d-flex align-items-stretch" id="materialsGrid">
-                @foreach ($materials as $material)
-                    @php
-                        $filterClass = $material->category === 'early_childhood' ? 'filter1' : 'filter2';
-                    @endphp
-                    <div class="col-lg-3 col-md-6 material-item {{ $filterClass }} mb-30">
-                        <div class="courses-item mb-30" style="height: 100%; display: flex; flex-direction: column;">
-                            <div class="img-part">
-                                <a href="#">
-                                    @if ($material->main_image)
-                                        <img src="{{ Storage::url($material->main_image) }}" alt="{{ $material->title }}">
-                                    @endif
-                                </a>
-                            </div>
-                            <div class="content-part"
-                                style="padding: 20px !important; display: flex; flex-direction: column; flex: 1;">
-                                <h3 class="title">{{ $material->title }}</h3>
-                                @if ($material->short_description)
-                                    <p class="desc" style="text-align: justify;">{{ $material->short_description }}</p>
-                                @endif
-                                @if ($material->pdf_file)
-                                    <a href="{{ Storage::url($material->pdf_file) }}" target="_blank" class="readon"
-                                        style="margin-top: auto;">Ver documento</a>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+            <div class="sec-title mb-60 md-mb-30 text-center">
+                <div class="sub-title orange">Student Reviews</div>
+                <h2 class="title mb-0">What Our Students Says</h2>
             </div>
         </div>
     </div>
 
-    <script>
-        document.querySelectorAll('#materialFilter button').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('#materialFilter button').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                var filter = this.getAttribute('data-filter');
-                document.querySelectorAll('#materialsGrid .material-item').forEach(function(item) {
-                    if (filter === '*' || item.classList.contains(filter)) {
-                        item.style.display = '';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                });
-            });
-        });
-    </script>
+    @if ($courses->isNotEmpty())
+        <div id="rs-popular-courses" class="rs-popular-courses style3 orange-color pt-100 pb-100 md-pt-70 md-pb-70">
+            <div class="container">
+                <div class="row">
+                    @foreach ($courses as $course)
+                        <div class="col-lg-4 col-md-6 col-sm-6 mb-40">
+                            <div class="courses-item">
+                                <div class="img-part">
+                                    @if ($course->main_image)
+                                        <img src="{{ Storage::url($course->main_image) }}" alt="{{ $course->title }}">
+                                    @endif
+                                </div>
+                                <div class="content-part">
+                                    @if ($course->duration_hours)
+                                        <span><a class="categories" href="#">{{ $course->duration_hours }}
+                                                Horas</a></span>
+                                    @endif
+                                    <h3 class="title"><a href="{{ route('course.show', $course->slug) }}">{{ $course->title }}</a></h3>
+                                    @if ($course->short_description)
+                                        <p style="text-align: justify;">{{ $course->short_description }}</p>
+                                    @endif
+                                    <div class="bottom-part">
+                                        <div class="btn-part">
+                                            <a href="{{ route('course.show', $course->slug) }}">Ver más<i
+                                                    class="flaticon-right-arrow"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    @endif
 
 @endsection

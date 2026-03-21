@@ -10,8 +10,8 @@ class NonFormalEducationController extends Controller
 
     public function index()
     {
-        ['banner' => $banner, 'area' => $area, 'materials' => $materials] = $this->service->getAll();
+        ['banner' => $banner, 'area' => $area, 'courses' => $courses] = $this->service->getAll();
 
-        return view('pages.areas.educacion-comunicacion.educacion-no-formal.index', compact('banner', 'area', 'materials'));
+        return view('pages.areas.educacion-comunicacion.educacion-no-formal.index', compact('banner', 'area', 'courses'));
     }
 }

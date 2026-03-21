@@ -5,8 +5,9 @@ namespace App\Services;
 use App\Models\Area;
 use App\Models\Banner;
 use App\Models\Course;
+use App\Models\EducationalMaterial;
 
-class NonFormalEducationService
+class EducationalMaterialsService
 {
     public function getAll(): array
     {
@@ -22,8 +23,15 @@ class NonFormalEducationService
 
         $area = Area::active()->where('slug', 'educacion-comunicacion')->firstOrFail();
 
-        $courses = Course::active()->oldest()->get();
+        $materials = EducationalMaterial::active()->ordered()
+            ->where('area_id', $area->id)
+            ->get();
 
-        return compact('banner', 'area', 'courses');
+        $courses = Course::active()
+            ->where('area_id', $area->id)
+            ->oldest()
+            ->get();
+
+        return compact('banner', 'area', 'materials', 'courses');
     }
 }
