@@ -28,6 +28,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandName('Instituto Proinapsa')
+            ->brandLogo(fn () => \App\Models\Company::first()?->logo
+                ? asset('storage/' . \App\Models\Company::first()->logo)
+                : null)
+            ->brandLogoHeight('2.5rem')
             ->colors([
                 'primary' => Color::Amber,
             ])

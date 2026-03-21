@@ -70,14 +70,8 @@ class CourseResource extends Resource
                                         'max'      => 'El link no puede exceder los 255 caracteres.',
                                     ]),
 
-                                Forms\Components\Select::make('area_id')
-                                    ->label('Área')
-                                    ->relationship('area', 'name')
-                                    ->default(fn () => \App\Models\Area::where('slug', 'educacion-comunicacion')->first()?->id)
-                                    ->required()
-                                    ->disabled()
-                                    ->dehydrated()
-                                    ->columnSpanFull(),
+                                Forms\Components\Hidden::make('area_id')
+                                    ->default(fn () => \App\Models\Area::where('slug', 'educacion-comunicacion')->first()?->id),
                             ])
                             ->columns(2),
 
