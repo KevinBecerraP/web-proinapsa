@@ -42,26 +42,13 @@ class ResearchGroupResource extends Resource
                 Forms\Components\Section::make('Información del Grupo de Investigación')
                     ->description('Solo puede existir un grupo de investigación en el sistema')
                     ->schema([
-                        Forms\Components\Select::make('area_id')
-                            ->label('Área')
-                            ->relationship('area', 'name')
-                            ->default(fn () => \App\Models\Area::where('slug', 'investigacion')->first()?->id)
-                            ->required()
-                            ->disabled()
-                            ->dehydrated(),
+                        Forms\Components\Hidden::make('area_id')
+                            ->default(fn () => \App\Models\Area::where('slug', 'investigacion')->first()?->id),
 
                         Forms\Components\TextInput::make('name')
                             ->label('Nombre del Grupo')
                             ->required()
                             ->maxLength(100)
-                            ->columnSpanFull(),
-
-                        Forms\Components\Textarea::make('mini_description')
-                            ->label('Mini Descripción')
-                            ->required()
-                            ->maxLength(300)
-                            ->rows(3)
-                            ->helperText('Descripción corta para vista previa')
                             ->columnSpanFull(),
 
                         Forms\Components\RichEditor::make('description')
@@ -168,11 +155,6 @@ class ResearchGroupResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->weight('bold'),
-
-                Tables\Columns\TextColumn::make('mini_description')
-                    ->label('Descripción')
-                    ->limit(50)
-                    ->wrap(),
 
                 Tables\Columns\TextColumn::make('total_publications')
                     ->label('Publicaciones')

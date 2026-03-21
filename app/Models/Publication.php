@@ -16,7 +16,6 @@ class Publication extends Model
     protected $fillable = [
         'area_id',
         'title',
-        'subtitle',
         'short_description',
         'image',
         'external_link',

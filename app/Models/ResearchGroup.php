@@ -17,7 +17,6 @@ class ResearchGroup extends Model
         'area_id',
         'name',
         'description',
-        'mini_description',
         'link',
         'active',
         'created_by',

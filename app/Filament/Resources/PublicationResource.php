@@ -33,13 +33,8 @@ class PublicationResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Información de la Publicación')
                     ->schema([
-                        Forms\Components\Select::make('area_id')
-                            ->label('Área')
-                            ->relationship('area', 'name')
-                            ->default(fn () => \App\Models\Area::where('slug', 'investigacion')->first()?->id)
-                            ->required()
-                            ->disabled()
-                            ->dehydrated(),
+                        Forms\Components\Hidden::make('area_id')
+                            ->default(fn () => \App\Models\Area::where('slug', 'investigacion')->first()?->id),
 
                         Forms\Components\TextInput::make('title')
                             ->label('Título')
@@ -53,23 +48,15 @@ class PublicationResource extends Resource
                                 'unique'   => 'Ya existe una publicación con este título.',
                             ]),
 
-                        Forms\Components\TextInput::make('subtitle')
-                            ->label('Subtítulo')
-                            ->maxLength(100)
-                            ->columnSpanFull()
-                            ->validationMessages([
-                                'max' => 'El subtítulo no puede exceder los 100 caracteres.',
-                            ]),
-
                         Forms\Components\Textarea::make('short_description')
                             ->label('Descripción Corta')
                             ->required()
-                            ->maxLength(300)
+                            ->maxLength(150)
                             ->rows(3)
                             ->columnSpanFull()
                             ->validationMessages([
                                 'required' => 'La descripción corta es obligatoria.',
-                                'max'      => 'La descripción no puede exceder los 300 caracteres.',
+                                'max'      => 'La descripción no puede exceder los 150 caracteres.',
                             ]),
 
                         Forms\Components\FileUpload::make('image')
@@ -79,9 +66,29 @@ class PublicationResource extends Resource
                             ->required()
                             ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                            ->imageResizeMode('cover')
-                            ->helperText('Máximo 2MB. Formatos: JPG, PNG')
+                            ->helperText('Obligatoria. Dimensiones: 390 × 200 px. Formatos: JPG, PNG. Máx 2MB')
                             ->columnSpanFull()
+                            ->rules([
+                                function () {
+                                    return function (string $attribute, $value, $fail) {
+                                        if (!$value) return;
+                                        try {
+                                            $image = is_string($value)
+                                                ? getimagesize(storage_path('app/public/' . $value))
+                                                : getimagesize($value->getRealPath());
+
+                                            if (!$image) { $fail('No se pudo leer la imagen.'); return; }
+
+                                            [$width, $height] = $image;
+                                            if ($width !== 390 || $height !== 200) {
+                                                $fail("La imagen debe tener exactamente 390 × 200 px. Dimensiones actuales: {$width} × {$height} px.");
+                                            }
+                                        } catch (\Exception $e) {
+                                            $fail('No se pudo validar las dimensiones: ' . $e->getMessage());
+                                        }
+                                    };
+                                },
+                            ])
                             ->validationMessages([
                                 'required' => 'La imagen de la publicación es obligatoria.',
                             ]),
