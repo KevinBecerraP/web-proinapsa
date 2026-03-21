@@ -8,6 +8,7 @@ use App\Http\Controllers\EducationCommunicationController;
 use App\Http\Controllers\ResearchController;
 use App\Http\Controllers\SocialProjectionController;
 use App\Http\Controllers\FormalEducationController;
+use App\Http\Controllers\NonFormalEducationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,7 @@ Route::get('/noticias/{id}', [NewsController::class, 'show'])->name('news.show')
 Route::get('/que-hacemos', [WhatWeDoController::class, 'index'])->name('what-we-do.index');
 Route::get('/que-hacemos/educacion-comunicacion', [EducationCommunicationController::class, 'index'])->name('area.educacion-comunicacion');
 Route::get('/que-hacemos/educacion-comunicacion/educacion-formal', [FormalEducationController::class, 'index'])->name('area.educacion-formal');
+Route::get('/que-hacemos/educacion-comunicacion/educacion-no-formal', [NonFormalEducationController::class, 'index'])->name('area.educacion-no-formal');
 Route::get('/que-hacemos/investigacion', [ResearchController::class, 'index'])->name('area.investigacion');
 Route::get('/que-hacemos/proyeccion-social', [SocialProjectionController::class, 'index'])->name('area.proyeccion-social');
 

@@ -59,10 +59,18 @@
         @endif
         <!-- Areas Start -->
         @if ($areas->isNotEmpty())
+            @php
+                $areaRoutes = [
+                    'educacion-comunicacion' => route('area.educacion-comunicacion'),
+                    'investigacion'          => route('area.investigacion'),
+                    'proyeccion-social'      => route('area.proyeccion-social'),
+                ];
+            @endphp
             <div class="rs-degree style1 modify gray-bg pt-100 pb-70 md-pt-70 md-pb-40">
                 <div class="container">
                     <div class="row y-middle">
                         @foreach ($areas as $area)
+                            @php $areaUrl = $areaRoutes[$area->slug] ?? '#'; @endphp
                             <div class="col-lg-4 col-md-6 mb-30">
                                 <div class="degree-wrap">
                                     @if ($area->image)
@@ -76,6 +84,7 @@
                                         @if ($area->description)
                                             <p class="desc">{{ Str::limit(strip_tags($area->description), 100) }}</p>
                                         @endif
+                                        <a href="{{ $areaUrl }}" class="readon">Ver más</a>
                                     </div>
                                 </div>
                             </div>
