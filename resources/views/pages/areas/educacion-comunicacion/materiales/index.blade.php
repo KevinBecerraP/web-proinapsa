@@ -98,8 +98,8 @@
                                     <p class="desc" style="text-align: justify;">{{ $material->short_description }}</p>
                                 @endif
                                 @if ($material->pdf_file)
-                                    <a href="{{ Storage::url($material->pdf_file) }}" target="_blank" class="readon"
-                                        style="margin-top: auto;">Ver documento</a>
+                                    <a href="{{ Storage::url($material->pdf_file) }}" target="_blank"
+                                        class="btn-shop orange-color" style="margin-top: auto; display: block; text-align: center;">Ver documento</a>
                                 @endif
                             </div>
                         </div>
