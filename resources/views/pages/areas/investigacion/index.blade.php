@@ -100,6 +100,15 @@
         </div>
     @endif
 
+    <div id="rs-popular-courses" class="rs-popular-courses main-home event-bg pt-20 pb-20 md-pt-70 md-pb-70">
+        <div class="container">
+            <div class="sec-title3 text-center mb-45">
+                <div class="sub-title">Ciencia al servicio de la comunidad</div>
+                <h2 class="title black-color">Explora lo que publicamos e investigamos</h2>
+            </div>
+        </div>
+    </div>
+
     <div id="rs-popular-courses" class="rs-popular-courses style3 orange-color pt-30 pb-100 md-pt-70 md-pb-70">
         <div class="container">
             <div class="gridFilter text-center mb-50">

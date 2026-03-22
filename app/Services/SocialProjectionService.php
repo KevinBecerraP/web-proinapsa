@@ -10,7 +10,7 @@ class SocialProjectionService
     public function getAll(): array
     {
         $banner = Banner::active()
-            ->where('page', 'proyeccion_social')
+            ->where('page', 'social_projection')
             ->latest()
             ->first()
             ?? Banner::active()
