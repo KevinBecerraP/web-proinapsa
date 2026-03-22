@@ -42,13 +42,8 @@ class HealthPromotionCategoryResource extends Resource
                 Forms\Components\Section::make('Información de la Categoría')
                     ->description('Las 4 categorías fijas del sistema de promoción de salud')
                     ->schema([
-                        Forms\Components\Select::make('area_id')
-                            ->label('Área')
-                            ->relationship('area', 'name')
-                            ->default(fn () => \App\Models\Area::where('slug', 'proyeccion-social')->first()?->id)
-                            ->required()
-                            ->disabled()
-                            ->dehydrated(),
+                        Forms\Components\Hidden::make('area_id')
+                            ->default(fn () => \App\Models\Area::where('slug', 'proyeccion-social')->first()?->id),
 
                         Forms\Components\Select::make('category')
                             ->label('Categoría')
@@ -61,7 +56,9 @@ class HealthPromotionCategoryResource extends Resource
                             ->required()
                             ->searchable()
                             ->unique(ignoreRecord: true)
-                            ->disabled(fn ($record) => $record !== null) // No se puede cambiar si ya existe
+                            ->disabled(fn ($record) => $record !== null)
+                            ->dehydrated()
+                            ->visible(fn ($record) => $record === null)
                             ->validationMessages([
                                 'required' => 'La categoría es obligatoria.',
                                 'unique'   => 'Esta categoría ya está registrada.',
@@ -76,31 +73,6 @@ class HealthPromotionCategoryResource extends Resource
                                 'required' => 'El nombre a mostrar es obligatorio.',
                                 'max'      => 'El nombre no puede exceder los 100 caracteres.',
                             ]),
-
-                        Forms\Components\FileUpload::make('image')
-                            ->label('Imagen de la Categoría')
-                            ->image()
-                            ->directory('health-promotion/categories')
-                            ->required()
-                            ->maxSize(2048)
-                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                            ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('16:9')
-                            ->helperText('Máximo 2MB. Formatos: JPG, PNG')
-                            ->columnSpanFull()
-                            ->validationMessages([
-                                'required' => 'La imagen de la categoría es obligatoria.',
-                            ]),
-
-                        Forms\Components\FileUpload::make('pdf_file')
-                            ->label('Archivo PDF (Opcional)')
-                            ->directory('health-promotion/pdfs')
-                            ->maxSize(3072)
-                            ->acceptedFileTypes(['application/pdf'])
-                            ->helperText('PDF general de la categoría. Máximo 3MB')
-                            ->openable()
-                            ->downloadable()
-                            ->columnSpanFull(),
 
                         Forms\Components\Toggle::make('active')
                             ->label('Activo')
@@ -147,14 +119,6 @@ class HealthPromotionCategoryResource extends Resource
                     ->label('Nombre')
                     ->searchable()
                     ->sortable(),
-
-                Tables\Columns\IconColumn::make('pdf_file')
-                    ->label('PDF')
-                    ->boolean()
-                    ->trueIcon('heroicon-o-document-text')
-                    ->falseIcon('heroicon-o-x-circle')
-                    ->trueColor('success')
-                    ->falseColor('gray'),
 
                 Tables\Columns\TextColumn::make('total_items')
                     ->label('Ítems')
