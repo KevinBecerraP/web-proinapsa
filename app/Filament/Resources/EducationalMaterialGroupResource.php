@@ -52,10 +52,12 @@ class EducationalMaterialGroupResource extends Resource
                     ->icon('heroicon-o-tag')
                     ->schema([
                         Forms\Components\Select::make('category')
-                            ->label('Categoría')
+                            ->label('Categoría (clave interna)')
                             ->options([
-                                'early_childhood'    => 'Primera Infancia',
-                                'school_adolescence' => 'Escolar y Adolescencia',
+                                'early_childhood' => 'Primera Infancia',
+                                'childhood'       => 'Niñez',
+                                'women'           => 'Mujer',
+                                'workers'         => 'Trabajadores',
                             ])
                             ->disabled()
                             ->dehydrated(),
@@ -68,6 +70,12 @@ class EducationalMaterialGroupResource extends Resource
                             ])
                             ->disabled()
                             ->dehydrated(),
+                        Forms\Components\TextInput::make('display_name')
+                            ->label('Nombre a mostrar en la sección')
+                            ->maxLength(100)
+                            ->placeholder('Ej: Primera Infancia')
+                            ->helperText('Si lo dejas vacío, se usará el nombre por defecto de la categoría. Cambia esto si quieres mostrar un nombre diferente sin alterar la categoría.')
+                            ->columnSpanFull(),
                     ])->columns(2)->collapsible(),
 
                 Forms\Components\Section::make('Información de la Tarjeta')

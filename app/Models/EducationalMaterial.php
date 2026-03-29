@@ -129,8 +129,10 @@ class EducationalMaterial extends Model
     {
         return match($this->category) {
             'early_childhood' => 'Primera Infancia',
-            'school_adolescence' => 'Escolar y Adolescencia',
-            default => $this->category,
+            'childhood'       => 'Niñez',
+            'women'           => 'Mujer',
+            'workers'         => 'Trabajadores',
+            default           => $this->category,
         };
     }
 

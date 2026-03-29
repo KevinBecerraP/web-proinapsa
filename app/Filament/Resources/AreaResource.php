@@ -60,6 +60,25 @@ class AreaResource extends Resource
                                 'maxSize' => 'La imagen no puede superar los 2 MB.',
                             ]),
 
+                        Forms\Components\FileUpload::make('logo')
+                            ->label('Logo del Área')
+                            ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('128')
+                            ->imageResizeTargetHeight('128')
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                            ->maxSize(1024)
+                            ->directory('areas/logos')
+                            ->nullable()
+                            ->helperText('Se redimensionará automáticamente a 128 × 128 px. Solo JPG o PNG. Máximo 1 MB.')
+                            ->columnSpanFull()
+                            ->validationMessages([
+                                'image'   => 'El archivo debe ser una imagen válida.',
+                                'mimes'   => 'Solo se permiten imágenes JPG o PNG.',
+                                'maxSize' => 'El logo no puede superar 1 MB.',
+                            ]),
+
                         Forms\Components\TextInput::make('name')
                             ->label('Nombre')
                             ->required()

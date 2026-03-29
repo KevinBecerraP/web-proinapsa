@@ -20,6 +20,7 @@ class Area extends Model
         'description',
         'icon',
         'image',
+        'logo',
         'order',
         'active',
         'coordinator_id',

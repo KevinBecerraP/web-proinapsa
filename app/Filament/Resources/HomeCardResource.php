@@ -53,15 +53,18 @@ class HomeCardResource extends Resource
                                         'max' => 'El título no puede exceder los 40 caracteres.',
                                     ]),
 
-                                Forms\Components\TextInput::make('icon')
-                                    ->label('Ícono')
-                                    ->maxLength(100)
-                                    ->placeholder('heroicon-o-academic-cap')
-                                    ->prefixIcon('heroicon-o-sparkles')
-                                    ->helperText('Busca íconos en heroicons.com — escríbelo así: heroicon-o-nombre (outline) o heroicon-s-nombre (solid). Ej: heroicon-o-heart, heroicon-o-beaker, heroicon-o-academic-cap')
-                                    ->validationMessages([
-                                        'max' => 'El ícono no puede exceder los 100 caracteres.',
-                                    ]),
+                                Forms\Components\FileUpload::make('icon')
+                                    ->label('Ícono / Imagen')
+                                    ->image()
+                                    ->imageEditor()
+                                    ->imageResizeMode('force')
+                                    ->imageResizeTargetWidth('75')
+                                    ->imageResizeTargetHeight('75')
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'])
+                                    ->maxSize(1024)
+                                    ->directory('home-cards/icons')
+                                    ->nullable()
+                                    ->helperText('Se redimensionará automáticamente a 75 × 75 px. Formatos: JPG, PNG, SVG, WEBP. Máx. 1 MB.'),
 
                                 Forms\Components\TextInput::make('button_text')
                                     ->label('Texto del Botón')

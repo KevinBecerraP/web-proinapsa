@@ -46,8 +46,10 @@ class EducationalMaterialResource extends Resource
                         Forms\Components\Select::make('category')
                             ->label('Categoría')
                             ->options([
-                                'early_childhood'    => 'Primera Infancia',
-                                'school_adolescence' => 'Escolar y Adolescencia',
+                                'early_childhood' => 'Primera Infancia',
+                                'childhood'       => 'Niñez',
+                                'women'           => 'Mujer',
+                                'workers'         => 'Trabajadores',
                             ])
                             ->required()
                             ->validationMessages([
@@ -194,8 +196,10 @@ class EducationalMaterialResource extends Resource
                 Tables\Filters\SelectFilter::make('category')
                     ->label('Categoría')
                     ->options([
-                        'early_childhood'    => 'Primera Infancia',
-                        'school_adolescence' => 'Escolar y Adolescencia',
+                        'early_childhood' => 'Primera Infancia',
+                        'childhood'       => 'Niñez',
+                        'women'           => 'Mujer',
+                        'workers'         => 'Trabajadores',
                     ]),
 
                 Tables\Filters\SelectFilter::make('type')

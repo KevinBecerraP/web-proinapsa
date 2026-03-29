@@ -12,6 +12,7 @@ class EducationalMaterialGroup extends Model
 
     protected $fillable = [
         'category',
+        'display_name',
         'type',
         'title',
         'slug',
@@ -77,8 +78,15 @@ class EducationalMaterialGroup extends Model
 
     public function getCategoryLabelAttribute(): string
     {
+        if ($this->display_name) {
+            return $this->display_name;
+        }
+
         return match ($this->category) {
             'early_childhood'    => 'Primera Infancia',
+            'childhood'          => 'Niñez',
+            'women'              => 'Mujer',
+            'workers'            => 'Trabajadores',
             'school_adolescence' => 'Escolar y Adolescencia',
             default              => $this->category,
         };
