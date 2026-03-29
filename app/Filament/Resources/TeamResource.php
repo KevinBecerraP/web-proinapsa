@@ -41,6 +41,7 @@ class TeamResource extends Resource
                                     ->label('Nombre Completo')
                                     ->required()
                                     ->maxLength(255)
+                                    ->unique(table: 'teams', column: 'name', ignoreRecord: true)
                                     ->placeholder('Ej: Juan Pérez García')
                                     ->prefixIcon('heroicon-o-user')
                                     ->live(onBlur: true)
@@ -49,20 +50,16 @@ class TeamResource extends Resource
                                     ->validationMessages([
                                         'required' => 'El nombre es obligatorio.',
                                         'max'      => 'El nombre no puede exceder los 255 caracteres.',
+                                        'unique'   => 'Ya existe un miembro con este nombre.',
                                     ]),
 
                                 Forms\Components\TextInput::make('slug')
                                     ->label('Slug')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->unique(ignoreRecord: true)
+                                    ->disabled()
+                                    ->dehydrated()
                                     ->prefixIcon('heroicon-o-link')
-                                    ->helperText('Se genera automáticamente desde el nombre. Puedes editarlo manualmente.')
-                                    ->columnSpan(1)
-                                    ->validationMessages([
-                                        'required' => 'El slug es obligatorio.',
-                                        'unique'   => 'Este slug ya está en uso.',
-                                    ]),
+                                    ->helperText('Se genera automáticamente desde el nombre.')
+                                    ->columnSpan(1),
 
                                 Forms\Components\TextInput::make('position')
                                     ->label('Cargo')
