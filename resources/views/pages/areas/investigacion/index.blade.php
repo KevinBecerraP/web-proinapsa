@@ -160,7 +160,28 @@
                                             <p style="text-align: justify;">{!! $group->description !!}</p>
                                         @endif
                                     </div>
-                                    <div class="title mb-40 md-mb-15">
+
+                                    <div class="rs-cta">
+                                        <div class="cta-img">
+                                            <img src="{{ asset('images/cta/cta-bg2.jpg') }}" alt="">
+                                        </div>
+                                        <div class="cta-content text-center">
+                                            <div class="sec-title mb-40 sm-mb-20 wow fadeInUp" data-wow-delay="300ms"
+                                                data-wow-duration="2000ms"
+                                                style="visibility: visible; animation-duration: 2000ms; animation-delay: 300ms; animation-name: fadeInUp;">
+                                                <h2 class="title white-color extra-bold mb-16 sm-mb-5">Somos clasificación
+                                                    B de Minciencias</h2>
+                                                <h2 class="sub-title capitalize white-color mb-0">Proinapsa UIS</h2>
+                                            </div>
+                                            <div class="btn-part wow fadeInUp" data-wow-delay="500ms"
+                                                data-wow-duration="2000ms"
+                                                style="visibility: visible; animation-duration: 2000ms; animation-delay: 500ms; animation-name: fadeInUp;">
+                                                <a class="readon2" href="{{ $group->link }}" target="_blank">Ir a
+                                                    GrupLac</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="title mb-40 md-mb-15 mt-30">
                                         <h2 class="text-part">Lineas de investigación</h2>
                                     </div>
 

@@ -48,6 +48,14 @@
 
 <body class="defult-home">
 
+    <div id="loader" class="loader orange-color">
+        <div class="loader-container">
+            <div class='loader-icon'>
+                <img src="{{ asset('images/pre-logo1.png') }}" alt="">
+            </div>
+        </div>
+    </div>
+
     <!-- Main content Start -->
     <div class="main-content">
         <!--Full width header Start-->
