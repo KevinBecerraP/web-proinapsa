@@ -61,7 +61,9 @@ class HealthPromotionItemResource extends Resource
                             ->required()
                             ->maxLength(150)
                             ->rows(3)
-                            ->helperText('Máximo 150 caracteres')
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 150 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 130 ? 'danger' : (strlen($state ?? '') > 110 ? 'warning' : 'gray'))
                             ->columnSpanFull()
                             ->validationMessages([
                                 'required' => 'La descripción es obligatoria.',

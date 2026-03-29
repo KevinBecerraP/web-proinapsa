@@ -82,14 +82,15 @@ class NewsResource extends Resource
                             ->required()
                             ->image()
                             ->imageEditor()
-                            ->imageResizeMode('cover')
-                            ->imageCropAspectRatio('16:9')
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('1200')
+                            ->imageResizeTargetHeight('675')
                             ->imagePreviewHeight('200')
                             ->directory('news/images')
                             ->maxSize(2048)
                             ->downloadable()
-                            ->openable()
-                            ->helperText('📐 Relación de aspecto 16:9. Formatos: JPG, PNG. Máximo: 2MB')
+
+                            ->helperText('Se redimensionará automáticamente a 1200 × 675 px (16:9). Formatos: JPG, PNG. Máximo: 2MB')
                             ->columnSpanFull()
                             ->validationMessages([
                                 'required' => 'La imagen es obligatoria.',
@@ -103,6 +104,15 @@ class NewsResource extends Resource
                         Forms\Components\RichEditor::make('content')
                             ->label('Contenido')
                             ->required()
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen(strip_tags($state ?? '')) . ' / 6000 caracteres')
+                            ->hintColor(fn ($state) => strlen(strip_tags($state ?? '')) > 5400 ? 'danger' : (strlen(strip_tags($state ?? '')) > 4800 ? 'warning' : 'gray'))
+                            ->rules([
+                                fn () => fn (string $attribute, $value, $fail) =>
+                                    strlen(strip_tags($value ?? '')) > 6000
+                                        ? $fail('El contenido no puede exceder los 6000 caracteres de texto visible.')
+                                        : null,
+                            ])
                             ->toolbarButtons([
                                 'bold',
                                 'italic',

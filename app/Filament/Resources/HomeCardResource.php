@@ -53,6 +53,16 @@ class HomeCardResource extends Resource
                                         'max' => 'El título no puede exceder los 40 caracteres.',
                                     ]),
 
+                                Forms\Components\TextInput::make('icon')
+                                    ->label('Ícono')
+                                    ->maxLength(100)
+                                    ->placeholder('heroicon-o-academic-cap')
+                                    ->prefixIcon('heroicon-o-sparkles')
+                                    ->helperText('Busca íconos en heroicons.com — escríbelo así: heroicon-o-nombre (outline) o heroicon-s-nombre (solid). Ej: heroicon-o-heart, heroicon-o-beaker, heroicon-o-academic-cap')
+                                    ->validationMessages([
+                                        'max' => 'El ícono no puede exceder los 100 caracteres.',
+                                    ]),
+
                                 Forms\Components\TextInput::make('button_text')
                                     ->label('Texto del Botón')
                                     ->required()
@@ -70,15 +80,16 @@ class HomeCardResource extends Resource
                         Forms\Components\Textarea::make('description')
                             ->label('Descripción')
                             ->required()
-                            ->maxLength(200)
+                            ->maxLength(150)
                             ->rows(3)
                             ->live(onBlur: true)
                             ->placeholder('Escribe una breve descripción...')
-                            ->helperText('Máximo 200 caracteres')
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 150 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 120 ? 'danger' : (strlen($state ?? '') > 100 ? 'warning' : 'gray'))
                             ->columnSpanFull()
                             ->validationMessages([
                                 'required' => 'La descripción es obligatoria.',
-                                'max' => 'La descripción no puede exceder los 200 caracteres.',
+                                'max' => 'La descripción no puede exceder los 150 caracteres.',
                             ]),
                     ])->collapsible(),
 
@@ -108,7 +119,7 @@ class HomeCardResource extends Resource
                             ->maxSize(10240)
                             ->directory('home-cards/pdfs')
                             ->downloadable()
-                            ->openable()
+
                             ->previewable(false)
                             ->visible(fn (Forms\Get $get) => $get('type') === 'pdf')
                             ->required(fn (Forms\Get $get) => $get('type') === 'pdf')
@@ -290,18 +301,18 @@ class HomeCardResource extends Resource
     public static function canCreate(): bool
     {
         $count = HomeCard::count();
-        
-        if ($count >= 6) {
+
+        if ($count >= 3) {
             Notification::make()
                 ->title('Límite alcanzado')
                 ->warning()
-                ->body('Ya existen 6 tarjetas. Elimina alguna para crear una nueva.')
+                ->body('Solo se permiten 3 tarjetas en el home. Elimina una para poder crear una nueva.')
                 ->persistent()
                 ->send();
-                
+
             return false;
         }
-        
+
         return true;
     }
 }

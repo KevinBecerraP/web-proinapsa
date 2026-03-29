@@ -74,13 +74,15 @@ class TeamResource extends Resource
                                     ->label('Descripción')
                                     ->required()
                                     ->rows(3)
-                                    ->maxLength(1000)
+                                    ->maxLength(600)
                                     ->placeholder('Describe la experiencia y habilidades del miembro del equipo...')
-                                    ->helperText('Breve descripción profesional (máximo 1000 caracteres)')
+                                    ->live(onBlur: true)
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 600 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') > 540 ? 'danger' : (strlen($state ?? '') > 480 ? 'warning' : 'gray'))
                                     ->columnSpanFull()
                                     ->validationMessages([
                                         'required' => 'La descripción es obligatoria.',
-                                        'max'      => 'La descripción no puede exceder los 1000 caracteres.',
+                                        'max'      => 'La descripción no puede exceder los 600 caracteres.',
                                     ]),
                             ]),
                     ])->collapsible(),
@@ -102,7 +104,7 @@ class TeamResource extends Resource
                             ->directory('team')
                             ->maxSize(2048)
                             ->downloadable()
-                            ->openable()
+
                             ->helperText('📐 Dimensión final: 393 × 390 px - La imagen se redimensionará automáticamente sin recortar. Formatos: JPG, PNG. Máximo: 2MB')
                             ->columnSpanFull()
                             ->validationMessages([

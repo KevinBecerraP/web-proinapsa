@@ -45,15 +45,14 @@ class AreaResource extends Resource
                             ->label('Imagen del Área')
                             ->image()
                             ->imageEditor()
-                            ->imageResizeMode('cover')
-                            ->required()
-                            ->imageResizeTargetWidth('393')
-                            ->imageResizeTargetHeight('390')
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('900')
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
                             ->maxSize(2048)
                             ->directory('areas/images')
                             ->nullable()
-                            ->helperText('Solo JPG o PNG. Máximo 2 MB. Se redimensionará automáticamente a 393 × 390 px.')
+                            ->helperText('Se redimensionará automáticamente a 800 × 900 px. Solo JPG o PNG. Máximo 2 MB.')
                             ->columnSpanFull()
                             ->validationMessages([
                                 'image'   => 'El archivo debe ser una imagen válida.',
@@ -104,6 +103,15 @@ class AreaResource extends Resource
                                 'link',
                             ])
                             ->placeholder('Escribe una descripción detallada del área...')
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen(strip_tags($state ?? '')) . ' / 700 caracteres')
+                            ->hintColor(fn ($state) => strlen(strip_tags($state ?? '')) > 630 ? 'danger' : (strlen(strip_tags($state ?? '')) > 560 ? 'warning' : 'gray'))
+                            ->rules([
+                                fn () => fn (string $attribute, $value, $fail) =>
+                                    strlen(strip_tags($value ?? '')) > 700
+                                        ? $fail('La descripción no puede exceder los 700 caracteres.')
+                                        : null,
+                            ])
                             ->columnSpanFull(),
 
                         Forms\Components\TextInput::make('icon')
@@ -150,13 +158,13 @@ class AreaResource extends Resource
                                     ->image()
                                     ->imageEditor()
                                     ->imageResizeMode('force')
-                                    ->imageResizeTargetWidth('1024')
-                                    ->imageResizeTargetHeight('577')
+                                    ->imageResizeTargetWidth('900')
+                                    ->imageResizeTargetHeight('900')
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->maxSize(2048)
                                     ->nullable()
                                     ->directory('areas/education')
-                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 1024 × 577 px.'),
+                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 900 × 900 px.'),
 
                                 Forms\Components\ColorPicker::make('formal_education_color')
                                     ->label('Color de tarjeta')
@@ -168,6 +176,9 @@ class AreaResource extends Resource
                                     ->rows(3)
                                     ->maxLength(1000)
                                     ->placeholder('Descripción introductoria de la educación formal...')
+                                    ->live(onBlur: true)
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 1000 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') > 900 ? 'danger' : (strlen($state ?? '') > 800 ? 'warning' : 'gray'))
                                     ->columnSpanFull(),
                             ])
                             ->columns(2),
@@ -180,13 +191,13 @@ class AreaResource extends Resource
                                     ->image()
                                     ->imageEditor()
                                     ->imageResizeMode('force')
-                                    ->imageResizeTargetWidth('1024')
-                                    ->imageResizeTargetHeight('577')
+                                    ->imageResizeTargetWidth('900')
+                                    ->imageResizeTargetHeight('900')
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->maxSize(2048)
                                     ->nullable()
                                     ->directory('areas/education')
-                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 1024 × 577 px.'),
+                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 900 × 900 px.'),
 
                                 Forms\Components\ColorPicker::make('non_formal_education_color')
                                     ->label('Color de tarjeta')
@@ -198,6 +209,9 @@ class AreaResource extends Resource
                                     ->rows(3)
                                     ->maxLength(1000)
                                     ->placeholder('Descripción introductoria de la educación no formal y cursos...')
+                                    ->live(onBlur: true)
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 1000 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') > 900 ? 'danger' : (strlen($state ?? '') > 800 ? 'warning' : 'gray'))
                                     ->columnSpanFull(),
                             ])
                             ->columns(2),
@@ -210,13 +224,13 @@ class AreaResource extends Resource
                                     ->image()
                                     ->imageEditor()
                                     ->imageResizeMode('force')
-                                    ->imageResizeTargetWidth('1024')
-                                    ->imageResizeTargetHeight('577')
+                                    ->imageResizeTargetWidth('900')
+                                    ->imageResizeTargetHeight('900')
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
                                     ->maxSize(2048)
                                     ->nullable()
                                     ->directory('areas/education')
-                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 1024 × 577 px.'),
+                                    ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 900 × 900 px.'),
 
                                 Forms\Components\ColorPicker::make('educational_materials_color')
                                     ->label('Color de tarjeta')
@@ -228,6 +242,9 @@ class AreaResource extends Resource
                                     ->rows(3)
                                     ->maxLength(1000)
                                     ->placeholder('Descripción introductoria de los materiales educativos...')
+                                    ->live(onBlur: true)
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 1000 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') > 900 ? 'danger' : (strlen($state ?? '') > 800 ? 'warning' : 'gray'))
                                     ->columnSpanFull(),
                             ])
                             ->columns(2),

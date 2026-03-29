@@ -127,8 +127,12 @@ class RepositoryCategoryResource extends Resource
 
                         Forms\Components\Textarea::make('description')
                             ->label('Descripción')
-                            ->rows(3)
+                            ->rows(4)
+                            ->maxLength(750)
                             ->placeholder('Descripción de la categoría...')
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 750 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 650 ? 'danger' : (strlen($state ?? '') > 550 ? 'warning' : 'gray'))
                             ->columnSpanFull(),
                     ])->columns(2)->collapsible(),
 
@@ -139,7 +143,13 @@ class RepositoryCategoryResource extends Resource
                             ->label('Imagen de la Categoría')
                             ->image()
                             ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('1080')
+                            ->imageResizeTargetHeight('1080')
                             ->directory('repository/categories')
+                            ->maxSize(3072)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                            ->helperText('Se redimensionará automáticamente a 1080 × 1080 px. Formatos: JPG, PNG. Máx. 3MB')
                             ->nullable(),
                     ])->collapsible(),
 

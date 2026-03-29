@@ -111,14 +111,22 @@ class CompanyResource extends Resource
                                     ->label('Descripción')
                                     ->required()
                                     ->rows(4)
+                                    ->maxLength(1000)
                                     ->placeholder('Describe tu empresa...')
+                                    ->live(onBlur: true)
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 1000 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') > 900 ? 'danger' : (strlen($state ?? '') > 800 ? 'warning' : 'gray'))
                                     ->columnSpanFull(),
 
                                 Forms\Components\Textarea::make('address')
                                     ->label('Dirección')
                                     ->required()
                                     ->rows(2)
+                                    ->maxLength(300)
                                     ->placeholder('Calle, número, ciudad, país')
+                                    ->live(onBlur: true)
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 300 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') > 250 ? 'danger' : (strlen($state ?? '') > 200 ? 'warning' : 'gray'))
                                     ->columnSpanFull(),
                             ]),
                     ])->collapsible(),
@@ -280,7 +288,7 @@ class CompanyResource extends Resource
                                     ->directory('company/logos')
                                     ->maxSize(2048)
                                     ->downloadable()
-                                    ->openable()
+
                                     ->helperText('📐 Dimensión final: 725 × 121 px - La imagen se redimensionará automáticamente sin recortar. Logo principal del sitio web. Formatos: JPG, PNG. Máximo: 2MB')
                                     ->columnSpan(1),
 
@@ -298,7 +306,7 @@ class CompanyResource extends Resource
                                     ->maxSize(512)
                                     ->acceptedFileTypes(['image/png', 'image/x-icon', 'image/vnd.microsoft.icon'])
                                     ->downloadable()
-                                    ->openable()
+
                                     ->helperText('📐 Dimensión final: 132 × 128 px - La imagen se redimensionará automáticamente sin recortar. Ícono de la pestaña del navegador. Formato: PNG o ICO. Máximo: 512KB')
                                     ->columnSpan(1),
                             ]),
@@ -318,7 +326,7 @@ class CompanyResource extends Resource
                             ->directory('company/policies')
                             ->maxSize(5120)
                             ->downloadable()
-                            ->openable()
+
                             ->previewable()
                             ->helperText('Formato: PDF. Tamaño máximo: 5MB')
                             ->columnSpanFull(),
@@ -340,7 +348,11 @@ class CompanyResource extends Resource
                             ->label('Descripción de la Misión')
                             ->required()
                             ->rows(4)
+                            ->maxLength(1000)
                             ->placeholder('Describe la misión de tu empresa...')
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 1000 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 900 ? 'danger' : (strlen($state ?? '') > 800 ? 'warning' : 'gray'))
                             ->columnSpanFull(),
 
                         Forms\Components\FileUpload::make('mission_image')
@@ -356,7 +368,7 @@ class CompanyResource extends Resource
                             ->directory('company/mission')
                             ->maxSize(2048)
                             ->downloadable()
-                            ->openable()
+
                             ->helperText('📐 Dimensión final: 635 × 492 px - La imagen se redimensionará automáticamente sin recortar. Formatos: JPG, PNG. Máximo: 2MB')
                             ->columnSpanFull(),
                     ])->collapsible(),
@@ -377,7 +389,11 @@ class CompanyResource extends Resource
                             ->label('Descripción de la Visión')
                             ->required()
                             ->rows(4)
+                            ->maxLength(1000)
                             ->placeholder('Describe la visión de tu empresa...')
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 1000 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 900 ? 'danger' : (strlen($state ?? '') > 800 ? 'warning' : 'gray'))
                             ->columnSpanFull(),
 
                         Forms\Components\FileUpload::make('vision_image')
@@ -393,7 +409,7 @@ class CompanyResource extends Resource
                             ->directory('company/vision')
                             ->maxSize(2048)
                             ->downloadable()
-                            ->openable()
+
                             ->helperText('📐 Dimensión final: 960 × 523 px - La imagen se redimensionará automáticamente sin recortar. Formatos: JPG, PNG. Máximo: 2MB')
                             ->columnSpanFull(),
                     ])->collapsible(),
@@ -435,11 +451,14 @@ class CompanyResource extends Resource
                             ->label('Imagen de Trayectoria')
                             ->image()
                             ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('600')
                             ->directory('company/trajectory')
                             ->maxSize(2048)
                             ->downloadable()
-                            ->openable()
-                            ->helperText('Imagen representativa de la línea de tiempo. Formatos: JPG, PNG. Máximo: 2MB')
+
+                            ->helperText('Se redimensionará automáticamente a 800 × 600 px. Formatos: JPG, PNG. Máximo: 2MB')
                             ->columnSpanFull(),
                     ])->collapsible(),
 
@@ -503,11 +522,14 @@ class CompanyResource extends Resource
                             ->required()
                             ->image()
                             ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('800')
+                            ->imageResizeTargetHeight('800')
                             ->directory('company/methodology')
                             ->maxSize(2048)
                             ->downloadable()
-                            ->openable()
-                            ->helperText('Imagen ilustrativa de la metodología. Formatos: JPG, PNG. Máximo: 2MB')
+
+                            ->helperText('Se redimensionará automáticamente a 800 × 800 px. Formatos: JPG, PNG. Máximo: 2MB')
                             ->validationMessages([
                                 'required' => 'La imagen de la metodología es obligatoria.',
                             ])

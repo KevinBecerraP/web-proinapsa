@@ -78,6 +78,7 @@ class FormalEducationSectionResource extends Resource
                         Forms\Components\FileUpload::make('image')
                             ->label('Ícono')
                             ->image()
+                            ->imageEditor()
                             ->imageResizeMode('force')
                             ->imageResizeTargetWidth('35')
                             ->imageResizeTargetHeight('40')
@@ -99,7 +100,7 @@ class FormalEducationSectionResource extends Resource
                             ->maxSize(3072)
                             ->acceptedFileTypes(['application/pdf'])
                             ->required()
-                            ->openable()
+
                             ->downloadable()
                             ->helperText('Solo PDF. Máximo 3 MB.')
                             ->validationMessages([

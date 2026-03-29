@@ -37,11 +37,11 @@
         <div class="rs-about style9 pt-100 pb-20 md-pt-70 md-pb-70">
             <div class="container">
                 <div class="row align-items-center">
-                    @if ($area->non_formal_education_image)
+                    @if ($area->educational_materials_image)
                         <div class="col-lg-6 col-md-12 md-mb-40">
                             <div class="img-part js-tilt"
                                 style="will-change: transform; transform: perspective(300px) rotateX(0deg) rotateY(0deg);">
-                                <img src="{{ Storage::url($area->non_formal_education_image) }}"
+                                <img src="{{ Storage::url($area->educational_materials_image) }}"
                                     alt="Materiales Educativos">
                             </div>
                         </div>

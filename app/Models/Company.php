@@ -26,6 +26,7 @@ class Company extends Model
         'email_2',
         'email_3',
         'logo',
+        'favicon',
         'description',
         'facebook_link',
         'instagram_link',

@@ -80,7 +80,7 @@ class CourseResource extends Resource
                                 Forms\Components\TextInput::make('title')
                                     ->label('Título')
                                     ->required()
-                                    ->maxLength(50)
+                                    ->maxLength(70)
                                     ->unique(ignoreRecord: true)
                                     ->live(onBlur: true)
                                     ->afterStateUpdated(fn (Set $set, ?string $state) =>
@@ -89,7 +89,7 @@ class CourseResource extends Resource
                                     ->columnSpanFull()
                                     ->validationMessages([
                                         'required' => 'El título del curso es obligatorio.',
-                                        'max'      => 'El título no puede exceder los 50 caracteres.',
+                                        'max'      => 'El título no puede exceder los 70 caracteres.',
                                         'unique'   => 'Ya existe un curso con este título.',
                                     ]),
 
@@ -107,6 +107,9 @@ class CourseResource extends Resource
                                     ->required()
                                     ->maxLength(200)
                                     ->rows(3)
+                                    ->live(onBlur: true)
+                                    ->hint(fn ($state) => strlen($state ?? '') . ' / 200 caracteres')
+                                    ->hintColor(fn ($state) => strlen($state ?? '') > 170 ? 'danger' : (strlen($state ?? '') > 140 ? 'warning' : 'gray'))
                                     ->columnSpanFull()
                                     ->validationMessages([
                                         'required' => 'La descripción corta es obligatoria.',
@@ -116,13 +119,15 @@ class CourseResource extends Resource
                                 Forms\Components\FileUpload::make('main_image')
                                     ->label('Imagen Principal')
                                     ->image()
+                                    ->imageEditor()
                                     ->directory('courses/images')
                                     ->required()
                                     ->maxSize(2048)
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                    ->imageResizeMode('cover')
-                                    ->imageCropAspectRatio('16:9')
-                                    ->helperText('Máximo 2MB. Formatos: JPG, PNG')
+                                    ->imageResizeMode('force')
+                                    ->imageResizeTargetWidth('390')
+                                    ->imageResizeTargetHeight('220')
+                                    ->helperText('Se redimensionará automáticamente a 390 × 220 px. Formatos: JPG, PNG. Máx. 2MB')
                                     ->columnSpanFull()
                                     ->validationMessages([
                                         'required' => 'La imagen principal es obligatoria.',
@@ -134,8 +139,14 @@ class CourseResource extends Resource
                                 Forms\Components\RichEditor::make('full_description')
                                     ->label('Descripción Completa')
                                     ->required()
-                                    ->validationMessages([
-                                        'required' => 'La descripción completa es obligatoria.',
+                                    ->live(onBlur: true)
+                                    ->hint(fn ($state) => strlen(strip_tags($state ?? '')) . ' / 1000 caracteres')
+                                    ->hintColor(fn ($state) => strlen(strip_tags($state ?? '')) > 900 ? 'danger' : (strlen(strip_tags($state ?? '')) > 800 ? 'warning' : 'gray'))
+                                    ->rules([
+                                        fn () => fn (string $attribute, $value, $fail) =>
+                                            strlen(strip_tags($value ?? '')) > 1000
+                                                ? $fail('La descripción completa no puede exceder los 1000 caracteres de texto visible.')
+                                                : null,
                                     ])
                                     ->toolbarButtons([
                                         'bold',
@@ -147,35 +158,25 @@ class CourseResource extends Resource
                                         'orderedList',
                                         'link',
                                     ])
+                                    ->validationMessages([
+                                        'required' => 'La descripción completa es obligatoria.',
+                                    ])
                                     ->columnSpanFull(),
 
                                 Forms\Components\FileUpload::make('gallery_image_1')
                                     ->label('Imagen de Galería')
                                     ->image()
+                                    ->imageEditor()
+                                    ->imageResizeMode('force')
+                                    ->imageResizeTargetWidth('1200')
+                                    ->imageResizeTargetHeight('1600')
                                     ->directory('courses/gallery')
+                                    ->required()
                                     ->maxSize(2048)
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                                    ->helperText('Opcional. Dimensiones: 1200 × 1600 px. Formatos: JPG, PNG. Máx 2MB')
-                                    ->rules([
-                                        function () {
-                                            return function (string $attribute, $value, $fail) {
-                                                if (!$value) return;
-                                                try {
-                                                    $image = is_string($value)
-                                                        ? getimagesize(storage_path('app/public/' . $value))
-                                                        : getimagesize($value->getRealPath());
-
-                                                    if (!$image) { $fail('No se pudo leer la imagen.'); return; }
-
-                                                    [$width, $height] = $image;
-                                                    if ($width !== 1200 || $height !== 1600) {
-                                                        $fail("La imagen debe tener exactamente 1200 × 1600 px. Dimensiones actuales: {$width} × {$height} px.");
-                                                    }
-                                                } catch (\Exception $e) {
-                                                    $fail('No se pudo validar las dimensiones: ' . $e->getMessage());
-                                                }
-                                            };
-                                        },
+                                    ->helperText('Se redimensionará automáticamente a 1200 × 1600 px. Formatos: JPG, PNG. Máx 2MB')
+                                    ->validationMessages([
+                                        'required' => 'La imagen de galería es obligatoria.',
                                     ])
                                     ->columnSpanFull(),
 
@@ -185,7 +186,7 @@ class CourseResource extends Resource
                                     ->maxSize(3072)
                                     ->acceptedFileTypes(['application/pdf'])
                                     ->helperText('Opcional. Máximo 3MB')
-                                    ->openable()
+
                                     ->downloadable()
                                     ->columnSpanFull(),
                             ])

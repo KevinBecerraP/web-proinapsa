@@ -220,63 +220,31 @@ class BannerResource extends Resource
                             ->required()
                             ->image()
                             ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('1920')
+                            ->imageResizeTargetHeight('960')
                             ->imagePreviewHeight('250')
-                            ->imageEditorAspectRatios(
-                                fn(callable $get) => $get('type') === 'main'
-                                    ? ['2:1']
-                                    : ['3.84:1']
-                            )
                             ->directory('banners')
-                            ->maxSize(2048)
-                            ->downloadable()
-                            ->openable()
-                            ->helperText(
-                                fn(callable $get) =>
-                                $get('type') === 'main'
-                                    ? '📐 Tamaño requerido: 1920 × 960 px (Principal) - Formatos: JPG, PNG. Máx: 2MB'
-                                    : '📐 Tamaño requerido: 1920 × 500 px (Secundario) - Formatos: JPG, PNG. Máx: 2MB'
-                            )
-                            ->rules([
-                                function (callable $get) {
-                                    return function (string $attribute, $value, $fail) use ($get) {
-                                        if (!$value) {
-                                            return;
-                                        }
+                            ->maxSize(4096)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                            ->helperText('Se redimensionará automáticamente a 1920 × 960 px. Formatos: JPG, PNG. Máx: 4MB')
+                            ->visible(fn(callable $get) => $get('type') === 'main' || !$get('type'))
+                            ->columnSpanFull(),
 
-                                        $type = $get('type');
-
-                                        try {
-                                            if (is_string($value)) {
-                                                $imagePath = storage_path('app/public/' . $value);
-
-                                                if (!file_exists($imagePath)) {
-                                                    $fail("No se encontró la imagen.");
-                                                    return;
-                                                }
-
-                                                $image = getimagesize($imagePath);
-                                            } else {
-                                                $image = getimagesize($value->getRealPath());
-                                            }
-
-                                            $width = $image[0];
-                                            $height = $image[1];
-
-                                            if ($type === 'main') {
-                                                if ($width !== 1920 || $height !== 960) {
-                                                    $fail("La imagen debe tener exactamente 1920 × 960 px (Banner Principal). Dimensiones actuales: {$width} × {$height} px.");
-                                                }
-                                            } elseif ($type === 'secondary') {
-                                                if ($width !== 1920 || $height !== 500) {
-                                                    $fail("La imagen debe tener exactamente 1920 × 500 px (Banner Secundario). Dimensiones actuales: {$width} × {$height} px.");
-                                                }
-                                            }
-                                        } catch (\Exception $e) {
-                                            $fail("No se pudo validar las dimensiones de la imagen: " . $e->getMessage());
-                                        }
-                                    };
-                                },
-                            ])
+                        Forms\Components\FileUpload::make('image')
+                            ->label('Imagen')
+                            ->required()
+                            ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('1920')
+                            ->imageResizeTargetHeight('500')
+                            ->imagePreviewHeight('250')
+                            ->directory('banners')
+                            ->maxSize(4096)
+                            ->acceptedFileTypes(['image/jpeg', 'image/png'])
+                            ->helperText('Se redimensionará automáticamente a 1920 × 500 px. Formatos: JPG, PNG. Máx: 4MB')
+                            ->visible(fn(callable $get) => $get('type') === 'secondary')
                             ->columnSpanFull(),
                     ])->collapsible(),
 

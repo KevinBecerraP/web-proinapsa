@@ -132,6 +132,9 @@ class RepositoryDocumentResource extends Resource
                             ->rows(3)
                             ->maxLength(600)
                             ->placeholder('Descripción del documento...')
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 600 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 520 ? 'danger' : (strlen($state ?? '') > 420 ? 'warning' : 'gray'))
                             ->columnSpanFull()
                             ->validationMessages([
                                 'required' => 'La descripción del documento es obligatoria.',

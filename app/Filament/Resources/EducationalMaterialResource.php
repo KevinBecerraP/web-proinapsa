@@ -88,8 +88,10 @@ class EducationalMaterialResource extends Resource
                             ->maxLength(300)
                             ->rows(4)
                             ->placeholder('Descripción del material educativo...')
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 300 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 250 ? 'danger' : (strlen($state ?? '') > 200 ? 'warning' : 'gray'))
                             ->columnSpanFull()
-                            ->helperText('Máximo 300 caracteres.')
                             ->validationMessages([
                                 'required' => 'La descripción es obligatoria.',
                                 'max'      => 'La descripción no puede exceder los 300 caracteres.',
@@ -124,7 +126,7 @@ class EducationalMaterialResource extends Resource
                             ->directory('educational-materials/pdfs')
                             ->maxSize(3072)
                             ->acceptedFileTypes(['application/pdf'])
-                            ->openable()
+
                             ->downloadable()
                             ->helperText('Opcional. Solo PDF. Máximo 3 MB.')
                             ->validationMessages([

@@ -14,6 +14,7 @@ class HomeCard extends Model
      */
     protected $fillable = [
         'title',
+        'icon',
         'description',
         'type',
         'file_path',
@@ -52,7 +53,7 @@ class HomeCard extends Model
      */
     public function scopeVisibleInHome($query)
     {
-        return $query->active()->ordered()->limit(6);
+        return $query->active()->ordered()->limit(3);
     }
 
     /**

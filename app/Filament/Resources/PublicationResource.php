@@ -53,6 +53,9 @@ class PublicationResource extends Resource
                             ->required()
                             ->maxLength(150)
                             ->rows(3)
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 150 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 130 ? 'danger' : (strlen($state ?? '') > 110 ? 'warning' : 'gray'))
                             ->columnSpanFull()
                             ->validationMessages([
                                 'required' => 'La descripción corta es obligatoria.',
@@ -62,33 +65,16 @@ class PublicationResource extends Resource
                         Forms\Components\FileUpload::make('image')
                             ->label('Imagen')
                             ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('390')
+                            ->imageResizeTargetHeight('200')
                             ->directory('publications/images')
                             ->required()
                             ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
-                            ->helperText('Obligatoria. Dimensiones: 390 × 200 px. Formatos: JPG, PNG. Máx 2MB')
+                            ->helperText('Se redimensionará automáticamente a 390 × 200 px. Formatos: JPG, PNG. Máx 2MB')
                             ->columnSpanFull()
-                            ->rules([
-                                function () {
-                                    return function (string $attribute, $value, $fail) {
-                                        if (!$value) return;
-                                        try {
-                                            $image = is_string($value)
-                                                ? getimagesize(storage_path('app/public/' . $value))
-                                                : getimagesize($value->getRealPath());
-
-                                            if (!$image) { $fail('No se pudo leer la imagen.'); return; }
-
-                                            [$width, $height] = $image;
-                                            if ($width !== 390 || $height !== 200) {
-                                                $fail("La imagen debe tener exactamente 390 × 200 px. Dimensiones actuales: {$width} × {$height} px.");
-                                            }
-                                        } catch (\Exception $e) {
-                                            $fail('No se pudo validar las dimensiones: ' . $e->getMessage());
-                                        }
-                                    };
-                                },
-                            ])
                             ->validationMessages([
                                 'required' => 'La imagen de la publicación es obligatoria.',
                             ]),

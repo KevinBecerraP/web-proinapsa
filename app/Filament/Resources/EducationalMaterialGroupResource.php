@@ -104,8 +104,10 @@ class EducationalMaterialGroupResource extends Resource
                             ->rows(3)
                             ->maxLength(300)
                             ->placeholder('Descripción corta que se muestra en la tarjeta...')
+                            ->live(onBlur: true)
+                            ->hint(fn ($state) => strlen($state ?? '') . ' / 300 caracteres')
+                            ->hintColor(fn ($state) => strlen($state ?? '') > 250 ? 'danger' : (strlen($state ?? '') > 200 ? 'warning' : 'gray'))
                             ->columnSpanFull()
-                            ->helperText('Máximo 300 caracteres.')
                             ->validationMessages([
                                 'max' => 'La descripción no puede exceder los 300 caracteres.',
                             ]),
@@ -113,11 +115,15 @@ class EducationalMaterialGroupResource extends Resource
                         Forms\Components\FileUpload::make('icon')
                             ->label('Ícono de la Tarjeta')
                             ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('200')
+                            ->imageResizeTargetHeight('200')
                             ->directory('educational-materials/icons')
                             ->acceptedFileTypes(['image/png'])
                             ->maxSize(1024)
                             ->nullable()
-                            ->helperText('Solo PNG. Máximo 1 MB.')
+                            ->helperText('Se redimensionará automáticamente a 200 × 200 px. Solo PNG. Máximo 1 MB.')
                             ->columnSpan(1)
                             ->validationMessages([
                                 'image'   => 'El archivo debe ser una imagen válida.',

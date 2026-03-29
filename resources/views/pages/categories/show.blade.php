@@ -35,7 +35,7 @@
         @if ($category->image || $category->description)
             <div class="rs-about style9 pt-100 pb-60 md-pt-70 md-pb-70">
                 <div class="container">
-                    <div class="row align-items-center">
+                    <div class="row align-items-start">
                         @if ($category->image)
                             <div class="col-lg-4 col-md-12 md-mb-40">
                                 <div class="img-part js-tilt"
