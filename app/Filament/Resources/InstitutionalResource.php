@@ -95,6 +95,7 @@ class InstitutionalResource extends Resource
                                     ->label('Logo del Socio/Aliado')
                                     ->image()
                                     ->directory('partners/logos')
+                                    ->disk('public')
                                     ->required(fn ($get) => $get('type') === 'partner')
                                     ->maxSize(2048)
                                     ->acceptedFileTypes(['image/jpeg', 'image/png'])
@@ -156,10 +157,15 @@ class InstitutionalResource extends Resource
                     ->sortable(),
 
 
-                Tables\Columns\ImageColumn::make('image')
-                    ->label('Logo')
-                    ->circular()
-                    ->visible(fn ($record) => $record?->type === 'partner'),
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Título')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(40)
+                    ->weight('bold')
+                    ->icon('heroicon-o-link')
+                    ->iconColor('info')
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
@@ -169,28 +175,18 @@ class InstitutionalResource extends Resource
                     ->weight('bold')
                     ->icon('heroicon-o-building-office-2')
                     ->iconColor('success')
-                    ->visible(fn ($record) => $record?->type === 'partner'),
-
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Nombre')
-                    ->searchable()
-                    ->sortable()
-                    ->limit(40)
-                    ->weight('bold')
-                    ->icon('heroicon-o-link')
-                    ->iconColor('info')
-                    ->visible(fn ($record) => $record?->type === 'interest_link'),
+                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('url')
-                    ->label('Link de Interés')
+                    ->label('URL')
                     ->searchable()
-                    ->limit(50)
+                    ->limit(40)
                     ->icon('heroicon-o-globe-alt')
                     ->iconColor('gray')
                     ->copyable()
                     ->copyMessage('URL copiada')
                     ->copyMessageDuration(1500)
-                    ->visible(fn ($record) => $record?->type === 'interest_link'),
+                    ->toggleable(),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')

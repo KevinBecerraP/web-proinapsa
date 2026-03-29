@@ -51,6 +51,7 @@ class AreaResource extends Resource
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
                             ->maxSize(2048)
                             ->directory('areas/images')
+                                    ->disk('public')
                             ->nullable()
                             ->helperText('Se redimensionará automáticamente a 800 × 900 px. Solo JPG o PNG. Máximo 2 MB.')
                             ->columnSpanFull()
@@ -70,6 +71,7 @@ class AreaResource extends Resource
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
                             ->maxSize(1024)
                             ->directory('areas/logos')
+                                    ->disk('public')
                             ->nullable()
                             ->helperText('Se redimensionará automáticamente a 128 × 128 px. Solo JPG o PNG. Máximo 1 MB.')
                             ->columnSpanFull()
@@ -183,6 +185,7 @@ class AreaResource extends Resource
                                     ->maxSize(2048)
                                     ->nullable()
                                     ->directory('areas/education')
+                                    ->disk('public')
                                     ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 900 × 900 px.'),
 
                                 Forms\Components\ColorPicker::make('formal_education_color')
@@ -216,6 +219,7 @@ class AreaResource extends Resource
                                     ->maxSize(2048)
                                     ->nullable()
                                     ->directory('areas/education')
+                                    ->disk('public')
                                     ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 900 × 900 px.'),
 
                                 Forms\Components\ColorPicker::make('non_formal_education_color')
@@ -249,6 +253,7 @@ class AreaResource extends Resource
                                     ->maxSize(2048)
                                     ->nullable()
                                     ->directory('areas/education')
+                                    ->disk('public')
                                     ->helperText('JPG o PNG. Máx. 2 MB. Se redimensionará a 900 × 900 px.'),
 
                                 Forms\Components\ColorPicker::make('educational_materials_color')

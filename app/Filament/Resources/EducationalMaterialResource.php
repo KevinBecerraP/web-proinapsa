@@ -112,6 +112,7 @@ class EducationalMaterialResource extends Resource
                             ->imageResizeTargetWidth('393')
                             ->imageResizeTargetHeight('390')
                             ->directory('educational-materials/images')
+                                    ->disk('public')
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
                             ->maxSize(2048)
                             ->required()
@@ -126,6 +127,7 @@ class EducationalMaterialResource extends Resource
                         Forms\Components\FileUpload::make('pdf_file')
                             ->label('Archivo PDF')
                             ->directory('educational-materials/pdfs')
+                                    ->disk('public')
                             ->maxSize(3072)
                             ->acceptedFileTypes(['application/pdf'])
 

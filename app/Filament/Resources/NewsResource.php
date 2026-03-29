@@ -87,6 +87,7 @@ class NewsResource extends Resource
                             ->imageResizeTargetHeight('675')
                             ->imagePreviewHeight('200')
                             ->directory('news/images')
+                                    ->disk('public')
                             ->maxSize(2048)
                             ->downloadable()
 

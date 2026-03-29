@@ -176,6 +176,7 @@ class RepositoryDocumentResource extends Resource
                             ->maxSize(2048)
                             ->required()
                             ->directory('repository/images')
+                                    ->disk('public')
                             ->nullable()
                             ->helperText('Solo JPG o PNG. Máximo 2 MB. Se redimensionará automáticamente a 393 × 393 px.')
                             ->validationMessages([
@@ -190,6 +191,7 @@ class RepositoryDocumentResource extends Resource
                             ->acceptedFileTypes(['application/pdf'])
                             ->maxSize(3072)
                             ->directory('repository/documents')
+                                    ->disk('public')
                             ->required()
                             ->nullable()
                             ->helperText('Solo PDF. Máximo 3 MB.')

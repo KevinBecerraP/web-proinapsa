@@ -123,6 +123,7 @@ class EducationalMaterialGroupResource extends Resource
                             ->imageResizeTargetWidth('200')
                             ->imageResizeTargetHeight('200')
                             ->directory('educational-materials/icons')
+                                    ->disk('public')
                             ->acceptedFileTypes(['image/png'])
                             ->maxSize(1024)
                             ->nullable()

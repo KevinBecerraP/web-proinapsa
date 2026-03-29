@@ -70,6 +70,7 @@ class PublicationResource extends Resource
                             ->imageResizeTargetWidth('390')
                             ->imageResizeTargetHeight('200')
                             ->directory('publications/images')
+                                    ->disk('public')
                             ->required()
                             ->maxSize(2048)
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])

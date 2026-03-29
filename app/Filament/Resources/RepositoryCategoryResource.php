@@ -147,6 +147,7 @@ class RepositoryCategoryResource extends Resource
                             ->imageResizeTargetWidth('1080')
                             ->imageResizeTargetHeight('1080')
                             ->directory('repository/categories')
+                                    ->disk('public')
                             ->maxSize(3072)
                             ->acceptedFileTypes(['image/jpeg', 'image/png'])
                             ->helperText('Se redimensionará automáticamente a 1080 × 1080 px. Formatos: JPG, PNG. Máx. 3MB')

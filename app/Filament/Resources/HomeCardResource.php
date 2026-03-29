@@ -63,6 +63,7 @@ class HomeCardResource extends Resource
                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/svg+xml', 'image/webp'])
                                     ->maxSize(1024)
                                     ->directory('home-cards/icons')
+                                    ->disk('public')
                                     ->nullable()
                                     ->helperText('Se redimensionará automáticamente a 75 × 75 px. Formatos: JPG, PNG, SVG, WEBP. Máx. 1 MB.'),
 
@@ -121,6 +122,7 @@ class HomeCardResource extends Resource
                             ->acceptedFileTypes(['application/pdf'])
                             ->maxSize(10240)
                             ->directory('home-cards/pdfs')
+                                    ->disk('public')
                             ->downloadable()
 
                             ->previewable(false)

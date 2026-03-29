@@ -99,6 +99,7 @@ class ValuesResource extends Resource
                                     ->image()
                                     ->required()
                                     ->directory('values/images')
+                                    ->disk('public')
                                     ->maxSize(2048)
                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                                     ->imageResizeMode('force')

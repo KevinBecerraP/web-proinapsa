@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Team extends Model
 {
@@ -18,6 +19,7 @@ class Team extends Model
      */
     protected $fillable = [
         'name',
+        'slug',
         'image',
         'position',
         'profesion',
@@ -44,6 +46,17 @@ class Team extends Model
     {
         parent::boot();
 
+        // Generar slug automáticamente desde el nombre
+        static::creating(function ($team) {
+            $team->slug = static::generateUniqueSlug($team->name);
+        });
+
+        static::updating(function ($team) {
+            if ($team->isDirty('name')) {
+                $team->slug = static::generateUniqueSlug($team->name, $team->id);
+            }
+        });
+
         // Antes de actualizar, verificar si cambió la imagen
         static::updating(function ($team) {
             if ($team->isDirty('image')) {
@@ -60,6 +73,31 @@ class Team extends Model
                 Storage::disk('public')->delete($team->image);
             }
         });
+    }
+
+    /**
+     * Genera un slug único basado en el nombre.
+     */
+    public static function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $slug = Str::slug($name);
+        $original = $slug;
+        $i = 1;
+
+        $query = static::where('slug', $slug);
+        if ($ignoreId) {
+            $query->where('id', '!=', $ignoreId);
+        }
+
+        while ($query->exists()) {
+            $slug = $original . '-' . $i++;
+            $query = static::where('slug', $slug);
+            if ($ignoreId) {
+                $query->where('id', '!=', $ignoreId);
+            }
+        }
+
+        return $slug;
     }
 
     /**

@@ -6,6 +6,7 @@ use App\Filament\Resources\TeamResource\Pages;
 use App\Models\Team;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Illuminate\Support\Str;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -42,10 +43,25 @@ class TeamResource extends Resource
                                     ->maxLength(255)
                                     ->placeholder('Ej: Juan Pérez García')
                                     ->prefixIcon('heroicon-o-user')
+                                    ->live(onBlur: true)
+                                    ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state ?? '')))
                                     ->columnSpan(1)
                                     ->validationMessages([
                                         'required' => 'El nombre es obligatorio.',
                                         'max'      => 'El nombre no puede exceder los 255 caracteres.',
+                                    ]),
+
+                                Forms\Components\TextInput::make('slug')
+                                    ->label('Slug')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->unique(ignoreRecord: true)
+                                    ->prefixIcon('heroicon-o-link')
+                                    ->helperText('Se genera automáticamente desde el nombre. Puedes editarlo manualmente.')
+                                    ->columnSpan(1)
+                                    ->validationMessages([
+                                        'required' => 'El slug es obligatorio.',
+                                        'unique'   => 'Este slug ya está en uso.',
                                     ]),
 
                                 Forms\Components\TextInput::make('position')
@@ -102,6 +118,7 @@ class TeamResource extends Resource
                             ->imagePreviewHeight('150')
                             ->panelLayout('integrated')
                             ->directory('team')
+                                    ->disk('public')
                             ->maxSize(2048)
                             ->downloadable()
 

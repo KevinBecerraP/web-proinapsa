@@ -286,6 +286,7 @@ class CompanyResource extends Resource
                                     ->imagePreviewHeight('150')
                                     ->panelLayout('integrated')
                                     ->directory('company/logos')
+                                    ->disk('public')
                                     ->maxSize(2048)
                                     ->downloadable()
 
@@ -303,6 +304,7 @@ class CompanyResource extends Resource
                                     ->imagePreviewHeight('150')
                                     ->panelLayout('integrated')
                                     ->directory('company/favicons')
+                                    ->disk('public')
                                     ->maxSize(512)
                                     ->acceptedFileTypes(['image/png', 'image/x-icon', 'image/vnd.microsoft.icon'])
                                     ->downloadable()
@@ -324,6 +326,7 @@ class CompanyResource extends Resource
                             ->label('Política de Protección de Datos (PDF)')
                             ->acceptedFileTypes(['application/pdf'])
                             ->directory('company/policies')
+                                    ->disk('public')
                             ->maxSize(5120)
                             ->downloadable()
 
@@ -366,6 +369,7 @@ class CompanyResource extends Resource
                             ->imagePreviewHeight('150')
                             ->panelLayout('integrated')
                             ->directory('company/mission')
+                                    ->disk('public')
                             ->maxSize(2048)
                             ->downloadable()
 
@@ -407,6 +411,7 @@ class CompanyResource extends Resource
                             ->imagePreviewHeight('150')
                             ->panelLayout('integrated')
                             ->directory('company/vision')
+                                    ->disk('public')
                             ->maxSize(2048)
                             ->downloadable()
 
@@ -455,6 +460,7 @@ class CompanyResource extends Resource
                             ->imageResizeTargetWidth('800')
                             ->imageResizeTargetHeight('600')
                             ->directory('company/trajectory')
+                                    ->disk('public')
                             ->maxSize(2048)
                             ->downloadable()
 
@@ -526,6 +532,7 @@ class CompanyResource extends Resource
                             ->imageResizeTargetWidth('800')
                             ->imageResizeTargetHeight('800')
                             ->directory('company/methodology')
+                                    ->disk('public')
                             ->maxSize(2048)
                             ->downloadable()
 
