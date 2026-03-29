@@ -80,24 +80,24 @@ class TestimonialResource extends Resource
                                     ->label('Testimonio')
                                     ->required()
                                     ->rows(5)
-                                    ->maxLength(600)
+                                    ->maxLength(200)
                                     ->placeholder('Escribe aquí el testimonio de la persona...')
                                     ->live(onBlur: true)
                                     ->hint(function ($state) {
                                         $length = strlen($state ?? '');
-                                        return $length . ' / 600 caracteres';
+                                        return $length . ' / 200 caracteres';
                                     })
                                     ->hintColor(function ($state) {
                                         $length = strlen($state ?? '');
-                                        $remaining = 600 - $length;
-                                        if ($remaining < 60) return 'danger';
-                                        if ($remaining < 120) return 'warning';
+                                        $remaining = 200 - $length;
+                                        if ($remaining < 20) return 'danger';
+                                        if ($remaining < 40) return 'warning';
                                         return 'gray';
                                     })
                                     ->columnSpanFull()
                                     ->validationMessages([
                                         'required' => 'El testimonio es obligatorio.',
-                                        'max'      => 'El testimonio no puede exceder los 600 caracteres.',
+                                        'max'      => 'El testimonio no puede exceder los 200 caracteres.',
                                     ]),
                             ]),
                     ])->collapsible(),

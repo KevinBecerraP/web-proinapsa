@@ -156,15 +156,10 @@ class InstitutionalResource extends Resource
                     ->sortable(),
 
 
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Título')
-                    ->searchable()
-                    ->sortable()
-                    ->limit(40)
-                    ->weight('bold')
-                    ->icon('heroicon-o-link')
-                    ->iconColor('info')
-                    ->toggleable(),
+                Tables\Columns\ImageColumn::make('image')
+                    ->label('Logo')
+                    ->circular()
+                    ->visible(fn ($record) => $record?->type === 'partner'),
 
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
@@ -174,18 +169,28 @@ class InstitutionalResource extends Resource
                     ->weight('bold')
                     ->icon('heroicon-o-building-office-2')
                     ->iconColor('success')
-                    ->toggleable(),
+                    ->visible(fn ($record) => $record?->type === 'partner'),
+
+                Tables\Columns\TextColumn::make('title')
+                    ->label('Nombre')
+                    ->searchable()
+                    ->sortable()
+                    ->limit(40)
+                    ->weight('bold')
+                    ->icon('heroicon-o-link')
+                    ->iconColor('info')
+                    ->visible(fn ($record) => $record?->type === 'interest_link'),
 
                 Tables\Columns\TextColumn::make('url')
-                    ->label('URL')
+                    ->label('Link de Interés')
                     ->searchable()
-                    ->limit(40)
+                    ->limit(50)
                     ->icon('heroicon-o-globe-alt')
                     ->iconColor('gray')
                     ->copyable()
                     ->copyMessage('URL copiada')
                     ->copyMessageDuration(1500)
-                    ->toggleable(),
+                    ->visible(fn ($record) => $record?->type === 'interest_link'),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')
