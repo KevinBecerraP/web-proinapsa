@@ -11,6 +11,8 @@ use App\Http\Controllers\FormalEducationController;
 use App\Http\Controllers\EducationalMaterialsController;
 use App\Http\Controllers\NonFormalEducationController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,8 +26,8 @@ use App\Http\Controllers\CourseController;
 */
 
 
-Route::get('/', function () {return view('index');})->name('home');
-Route::get('/sobre-nosotros', function () { return view('pages.about.About-us');})->name('about-us');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/sobre-nosotros', [AboutController::class, 'index'])->name('about-us');
 
 Route::get('/noticias', [NewsController::class, 'index'])->name('news.index');
 Route::get('/noticias/{id}', [NewsController::class, 'show'])->name('news.show');
