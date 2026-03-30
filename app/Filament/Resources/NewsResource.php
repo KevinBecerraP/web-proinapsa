@@ -180,7 +180,6 @@ class NewsResource extends Resource
                     ->label('Título')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold')
                     ->limit(50)
                     ->tooltip(function (Tables\Columns\TextColumn $column): ?string {
                         $state = $column->getState();

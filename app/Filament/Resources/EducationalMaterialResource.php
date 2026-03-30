@@ -47,13 +47,22 @@ class EducationalMaterialResource extends Resource
                             ->label('Categoría')
                             ->options([
                                 'early_childhood' => 'Primera Infancia',
-                                'childhood'       => 'Niñez',
+                                'childhood'       => 'Niñez, Adolescencia y Juventud',
                                 'women'           => 'Mujer',
                                 'workers'         => 'Trabajadores',
                             ])
                             ->required()
                             ->validationMessages([
                                 'required' => 'La categoría es obligatoria.',
+                            ]),
+
+                        Forms\Components\TextInput::make('display_name')
+                            ->label('Nombre a Mostrar')
+                            ->maxLength(100)
+                            ->placeholder('Ej: Primera Infancia Feliz')
+                            ->helperText('Nombre personalizado para mostrar en el sitio. Si se deja vacío, se usará el nombre por defecto.')
+                            ->validationMessages([
+                                'max' => 'El nombre no puede exceder los 100 caracteres.',
                             ]),
 
                         Forms\Components\Select::make('type')
@@ -166,6 +175,13 @@ class EducationalMaterialResource extends Resource
                     ->badge()
                     ->color('info'),
 
+                Tables\Columns\TextColumn::make('display_name')
+                    ->label('Nombre a Mostrar')
+                    ->searchable()
+                    ->limit(30)
+                    ->placeholder('—')
+                    ->toggleable(),
+
                 Tables\Columns\TextColumn::make('type_label')
                     ->label('Tipo')
                     ->badge()
@@ -175,8 +191,7 @@ class EducationalMaterialResource extends Resource
                     ->label('Título')
                     ->searchable()
                     ->sortable()
-                    ->limit(35)
-                    ->weight('bold'),
+                    ->limit(35),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')
@@ -199,7 +214,7 @@ class EducationalMaterialResource extends Resource
                     ->label('Categoría')
                     ->options([
                         'early_childhood' => 'Primera Infancia',
-                        'childhood'       => 'Niñez',
+                        'childhood'       => 'Niñez, Adolescencia y Juventud',
                         'women'           => 'Mujer',
                         'workers'         => 'Trabajadores',
                     ]),

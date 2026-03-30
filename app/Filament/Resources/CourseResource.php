@@ -213,8 +213,7 @@ class CourseResource extends Resource
                     ->label('Título')
                     ->searchable()
                     ->sortable()
-                    ->limit(30)
-                    ->weight('bold'),
+                    ->limit(30),
 
                 Tables\Columns\TextColumn::make('status_label')
                     ->label('Estado')

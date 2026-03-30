@@ -149,7 +149,6 @@ class TestimonialResource extends Resource
                     ->label('Nombre')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold')
                     ->icon('heroicon-o-user')
                     ->iconColor('primary'),
 

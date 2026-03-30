@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\HealthPromotionItemResource\Pages;
+use App\Models\HealthPromotionCategory;
 use App\Models\HealthPromotionItem;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -36,7 +37,7 @@ class HealthPromotionItemResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('category_id')
                             ->label('Categoría')
-                            ->relationship('category', 'display_name')
+                            ->options(fn () => HealthPromotionCategory::all()->pluck('category_label', 'id'))
                             ->required()
                             ->searchable()
                             ->preload()
@@ -95,15 +96,13 @@ class HealthPromotionItemResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->badge()
-                    ->color('info')
-                    ->weight('bold'),
+                    ->color('info'),
 
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable()
                     ->sortable()
-                    ->limit(40)
-                    ->weight('bold'),
+                    ->limit(40),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')
@@ -125,7 +124,7 @@ class HealthPromotionItemResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('category_id')
                     ->label('Categoría')
-                    ->relationship('category', 'display_name')
+                    ->options(fn () => HealthPromotionCategory::all()->pluck('category_label', 'id'))
                     ->searchable()
                     ->preload(),
 

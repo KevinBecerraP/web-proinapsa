@@ -203,7 +203,6 @@ class EducationalMaterialGroupResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable()
-                    ->weight('bold')
                     ->limit(45),
 
                 Tables\Columns\TextColumn::make('slug')

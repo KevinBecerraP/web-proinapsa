@@ -292,7 +292,6 @@ class AreaResource extends Resource
                     ->label('Nombre')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold')
                     ->icon('heroicon-o-tag')
                     ->iconColor('primary'),
 

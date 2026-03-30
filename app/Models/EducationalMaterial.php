@@ -16,6 +16,7 @@ class EducationalMaterial extends Model
     protected $fillable = [
         'area_id',
         'category',
+        'display_name',
         'type',
         'title',
         'short_description',
@@ -117,11 +118,6 @@ class EducationalMaterial extends Model
         return $query->where('category', 'early_childhood');
     }
 
-    public function scopeSchoolAdolescence($query)
-    {
-        return $query->where('category', 'school_adolescence');
-    }
-
     /**
      * Accessors
      */
@@ -129,7 +125,7 @@ class EducationalMaterial extends Model
     {
         return match($this->category) {
             'early_childhood' => 'Primera Infancia',
-            'childhood'       => 'Niñez',
+            'childhood'       => 'Niñez, Adolescencia y Juventud',
             'women'           => 'Mujer',
             'workers'         => 'Trabajadores',
             default           => $this->category,

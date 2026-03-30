@@ -107,7 +107,7 @@ class HealthPromotionCategory extends Model
     {
         return match($this->category) {
             'early_childhood' => 'Primera Infancia',
-            'childhood' => 'Niñez',
+            'childhood' => 'Niñez, Adolescencia y Juventud',
             'women' => 'Mujer',
             'workers' => 'Trabajadores',
             default => $this->category,

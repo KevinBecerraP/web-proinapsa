@@ -27,12 +27,15 @@ class HealthPromotionCategoryResource extends Resource
 
     protected static ?int $navigationSort = 30;
 
+    const ALLOWED_CATEGORIES = ['early_childhood', 'childhood', 'women', 'workers'];
+
     /**
-     * Only allow creating if there are less than 4 categories (Fixed categories)
+     * Solo permite crear si aún hay categorías disponibles que no existen.
      */
     public static function canCreate(): bool
     {
-        return HealthPromotionCategory::count() < 4;
+        $existing = HealthPromotionCategory::pluck('category')->toArray();
+        return count(array_diff(static::ALLOWED_CATEGORIES, $existing)) > 0;
     }
 
     public static function form(Form $form): Form
@@ -47,12 +50,16 @@ class HealthPromotionCategoryResource extends Resource
 
                         Forms\Components\Select::make('category')
                             ->label('Categoría')
-                            ->options([
-                                'early_childhood' => 'Primera Infancia',
-                                'childhood' => 'Niñez',
-                                'women' => 'Mujer',
-                                'workers' => 'Trabajadores',
-                            ])
+                            ->options(function () {
+                                $all = [
+                                    'early_childhood' => 'Primera Infancia',
+                                    'childhood'       => 'Niñez, Adolescencia y Juventud',
+                                    'women'           => 'Mujer',
+                                    'workers'         => 'Trabajadores',
+                                ];
+                                $existing = HealthPromotionCategory::pluck('category')->toArray();
+                                return array_diff_key($all, array_flip($existing));
+                            })
                             ->required()
                             ->searchable()
                             ->unique(ignoreRecord: true)
@@ -112,8 +119,7 @@ class HealthPromotionCategoryResource extends Resource
                         return $query->orderBy('category', $direction);
                     })
                     ->badge()
-                    ->color('info')
-                    ->weight('bold'),
+                    ->color('info'),
 
                 Tables\Columns\TextColumn::make('display_name')
                     ->label('Nombre')
@@ -148,7 +154,7 @@ class HealthPromotionCategoryResource extends Resource
                     ->label('Categoría')
                     ->options([
                         'early_childhood' => 'Primera Infancia',
-                        'childhood' => 'Niñez',
+                        'childhood' => 'Niñez, Adolescencia y Juventud',
                         'women' => 'Mujer',
                         'workers' => 'Trabajadores',
                     ]),

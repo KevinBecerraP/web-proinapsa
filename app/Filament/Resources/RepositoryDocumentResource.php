@@ -228,7 +228,6 @@ class RepositoryDocumentResource extends Resource
                     ->label('Título')
                     ->searchable()
                     ->sortable()
-                    ->weight('bold')
                     ->limit(40),
 
                 Tables\Columns\TextColumn::make('authors')

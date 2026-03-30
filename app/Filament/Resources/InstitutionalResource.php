@@ -162,7 +162,6 @@ class InstitutionalResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->limit(40)
-                    ->weight('bold')
                     ->icon('heroicon-o-link')
                     ->iconColor('info')
                     ->toggleable(),
@@ -172,7 +171,6 @@ class InstitutionalResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->limit(40)
-                    ->weight('bold')
                     ->icon('heroicon-o-building-office-2')
                     ->iconColor('success')
                     ->toggleable(),

@@ -124,8 +124,7 @@ class ValuesResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable()
-                    ->sortable()
-                    ->weight('bold'),
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('status')
                     ->label('Estado')
                     ->boolean()

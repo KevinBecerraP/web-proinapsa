@@ -179,8 +179,7 @@ class RepositoryCategoryResource extends Resource
                 Tables\Columns\TextColumn::make('title')
                     ->label('Título')
                     ->searchable()
-                    ->sortable()
-                    ->weight('bold'),
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('documents_count')
                     ->label('Documentos')

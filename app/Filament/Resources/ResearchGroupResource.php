@@ -153,8 +153,7 @@ class ResearchGroupResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()
-                    ->sortable()
-                    ->weight('bold'),
+                    ->sortable(),
 
                 Tables\Columns\TextColumn::make('total_publications')
                     ->label('Publicaciones')
