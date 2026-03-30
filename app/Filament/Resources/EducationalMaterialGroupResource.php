@@ -28,6 +28,8 @@ class EducationalMaterialGroupResource extends Resource
 
     protected static ?int $navigationSort = 11;
 
+    protected static bool $shouldRegisterNavigation = false;
+
     public static function canCreate(): bool
     {
         return false;

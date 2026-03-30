@@ -94,24 +94,6 @@ class ValuesResource extends Resource
                                     ])
                                     ->columnSpanFull(),
 
-                                Forms\Components\FileUpload::make('image')
-                                    ->label('Imagen del Valor')
-                                    ->image()
-                                    ->required()
-                                    ->directory('values/images')
-                                    ->disk('public')
-                                    ->maxSize(2048)
-                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
-                                    ->imageResizeMode('force')
-                                    ->imageResizeTargetWidth('635')
-                                    ->imageResizeTargetHeight('627')
-                                    ->imageEditor()
-                                    ->imageEditorAspectRatios(['635:627'])
-                                    ->helperText('📸 Dimensiones requeridas: 635 × 627 px | Formatos: JPG, PNG, WEBP | Máximo: 2MB')
-                                    ->columnSpanFull()
-                                    ->validationMessages([
-                                        'required' => 'La imagen del valor es obligatoria.',
-                                    ]),
                             ]),
                     ])->collapsible(),
 

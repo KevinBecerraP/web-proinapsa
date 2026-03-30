@@ -543,6 +543,27 @@ class CompanyResource extends Resource
                             ->columnSpanFull(),
                     ])->collapsible(),
 
+                Forms\Components\Section::make('Valores')
+                    ->description('Imagen general de la sección de valores')
+                    ->icon('heroicon-o-star')
+                    ->schema([
+                        Forms\Components\FileUpload::make('values_image')
+                            ->label('Imagen Valores')
+                            ->image()
+                            ->imageEditor()
+                            ->imageResizeMode('force')
+                            ->imageResizeTargetWidth('635')
+                            ->imageResizeTargetHeight('627')
+                            ->imagePreviewHeight('150')
+                            ->panelLayout('integrated')
+                            ->directory('company/values')
+                            ->disk('public')
+                            ->maxSize(2048)
+                            ->downloadable()
+                            ->helperText('📐 Dimensión final: 635 × 627 px. Formatos: JPG, PNG. Máximo: 2MB')
+                            ->columnSpanFull(),
+                    ])->collapsible(),
+
                 Forms\Components\Section::make('Geolocalización')
                     ->description('Coordenadas de ubicación de la empresa')
                     ->icon('heroicon-o-map')

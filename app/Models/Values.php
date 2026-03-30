@@ -17,7 +17,6 @@ class Values extends Model
     protected $fillable = [
         'title',
         'description',
-        'image',
         'order',
         'status',
     ];

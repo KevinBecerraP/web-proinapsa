@@ -52,6 +52,7 @@ class Company extends Model
         'methodology_title',
         'methodology_description',
         'methodology_image',
+        'values_image',
     ];
 
     /**
@@ -124,6 +125,13 @@ class Company extends Model
                     Storage::disk('public')->delete($company->getOriginal('methodology_image'));
                 }
             }
+
+            // Imagen de valores
+            if ($company->isDirty('values_image')) {
+                if ($company->getOriginal('values_image')) {
+                    Storage::disk('public')->delete($company->getOriginal('values_image'));
+                }
+            }
         });
 
         // Antes de eliminar, borrar todos los archivos
@@ -161,6 +169,11 @@ class Company extends Model
             // Imagen de metodología
             if ($company->methodology_image) {
                 Storage::disk('public')->delete($company->methodology_image);
+            }
+
+            // Imagen de valores
+            if ($company->values_image) {
+                Storage::disk('public')->delete($company->values_image);
             }
         });
     }
