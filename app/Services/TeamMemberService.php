@@ -3,13 +3,11 @@
 namespace App\Services;
 
 use App\Models\Banner;
-use App\Models\Company;
 use App\Models\Team;
-use App\Models\Values;
 
-class AboutService
+class TeamMemberService
 {
-    public function getAll(): array
+    public function getBySlug(string $slug): array
     {
         $banner = Banner::active()
             ->where('page', 'about_us')
@@ -21,12 +19,8 @@ class AboutService
                 ->latest()
                 ->first();
 
-        $company = Company::first();
+        $member = Team::where('slug', $slug)->where('status', true)->firstOrFail();
 
-        $values = Values::active()->ordered()->get();
-
-        $team = Team::where('status', true)->get();
-
-        return compact('banner', 'company', 'values', 'team');
+        return compact('banner', 'member');
     }
 }
