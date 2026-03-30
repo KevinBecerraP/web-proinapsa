@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\EducationalMaterialGroup;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EducationalMaterial extends Model
@@ -15,6 +16,7 @@ class EducationalMaterial extends Model
 
     protected $fillable = [
         'area_id',
+        'group_id',
         'category',
         'type',
         'title',
@@ -45,10 +47,10 @@ class EducationalMaterial extends Model
     {
         parent::boot();
 
-        // Automatic order by category
+        // Automatic order by group
         static::creating(function ($model) {
             if (empty($model->order)) {
-                $maxOrder = static::where('category', $model->category)->max('order') ?? 0;
+                $maxOrder = static::where('group_id', $model->group_id)->max('order') ?? 0;
                 $model->order = $maxOrder + 1;
             }
 
@@ -63,9 +65,9 @@ class EducationalMaterial extends Model
             }
         });
 
-        // Reorganize orders on delete (within same category)
+        // Reorganize orders on delete (within same group)
         static::deleted(function ($model) {
-            static::where('category', $model->category)
+            static::where('group_id', $model->group_id)
                 ->where('order', '>', $model->order)
                 ->decrement('order');
         });
@@ -77,6 +79,11 @@ class EducationalMaterial extends Model
     public function area(): BelongsTo
     {
         return $this->belongsTo(Area::class);
+    }
+
+    public function group(): BelongsTo
+    {
+        return $this->belongsTo(EducationalMaterialGroup::class, 'group_id');
     }
 
     public function createdBy(): BelongsTo

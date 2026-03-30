@@ -44,13 +44,9 @@ class EducationalMaterialResource extends Resource
                             ->disabled()
                             ->dehydrated(),
 
-                        Forms\Components\Select::make('category')
+                        Forms\Components\Select::make('group_id')
                             ->label('Sección en la que se va a mostrar')
-                            ->options(fn () => EducationalMaterialGroup::active()
-                                ->ordered()
-                                ->get()
-                                ->pluck('display_name', 'category')
-                            )
+                            ->relationship('group', 'display_name', fn ($query) => $query->active()->ordered())
                             ->required()
                             ->helperText('Selecciona la sección donde se mostrará este material')
                             ->validationMessages([
@@ -162,7 +158,7 @@ class EducationalMaterialResource extends Resource
                     ->badge()
                     ->color('success'),
 
-                Tables\Columns\TextColumn::make('category_label')
+                Tables\Columns\TextColumn::make('group.display_name')
                     ->label('Categoría')
                     ->badge()
                     ->color('info'),
@@ -196,14 +192,9 @@ class EducationalMaterialResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->reorderable('order')
             ->filters([
-                Tables\Filters\SelectFilter::make('category')
+                Tables\Filters\SelectFilter::make('group_id')
                     ->label('Categoría')
-                    ->options([
-                        'early_childhood' => 'Primera Infancia',
-                        'childhood'       => 'Niñez, Adolescencia y Juventud',
-                        'women'           => 'Mujer',
-                        'workers'         => 'Trabajadores',
-                    ]),
+                    ->relationship('group', 'display_name'),
 
                 Tables\Filters\SelectFilter::make('type')
                     ->label('Tipo')
