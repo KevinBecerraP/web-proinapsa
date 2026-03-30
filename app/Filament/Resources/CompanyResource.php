@@ -454,6 +454,7 @@ class CompanyResource extends Resource
 
                         Forms\Components\FileUpload::make('trajectory_image')
                             ->label('Imagen de Trayectoria')
+                            ->required()
                             ->image()
                             ->imageEditor()
                             ->imageResizeMode('force')
@@ -549,6 +550,7 @@ class CompanyResource extends Resource
                     ->schema([
                         Forms\Components\FileUpload::make('values_image')
                             ->label('Imagen Valores')
+                            ->required()
                             ->image()
                             ->imageEditor()
                             ->imageResizeMode('force')
