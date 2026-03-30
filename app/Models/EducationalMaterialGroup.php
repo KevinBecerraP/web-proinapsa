@@ -57,8 +57,7 @@ class EducationalMaterialGroup extends Model
 
     public function educationalMaterials(): HasMany
     {
-        return $this->hasMany(EducationalMaterial::class, 'category', 'category')
-            ->where('type', $this->type);
+        return $this->hasMany(EducationalMaterial::class, 'category', 'category');
     }
 
     public function createdBy(): BelongsTo

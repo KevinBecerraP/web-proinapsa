@@ -16,7 +16,6 @@ class EducationalMaterial extends Model
     protected $fillable = [
         'area_id',
         'category',
-        'display_name',
         'type',
         'title',
         'short_description',

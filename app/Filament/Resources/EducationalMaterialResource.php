@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\EducationalMaterialResource\Pages;
 use App\Models\EducationalMaterial;
+use App\Models\EducationalMaterialGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -44,25 +45,16 @@ class EducationalMaterialResource extends Resource
                             ->dehydrated(),
 
                         Forms\Components\Select::make('category')
-                            ->label('Categoría')
-                            ->options([
-                                'early_childhood' => 'Primera Infancia',
-                                'childhood'       => 'Niñez, Adolescencia y Juventud',
-                                'women'           => 'Mujer',
-                                'workers'         => 'Trabajadores',
-                            ])
+                            ->label('Sección en la que se va a mostrar')
+                            ->options(fn () => EducationalMaterialGroup::active()
+                                ->ordered()
+                                ->get()
+                                ->pluck('display_name', 'category')
+                            )
                             ->required()
+                            ->helperText('Selecciona la sección donde se mostrará este material')
                             ->validationMessages([
-                                'required' => 'La categoría es obligatoria.',
-                            ]),
-
-                        Forms\Components\TextInput::make('display_name')
-                            ->label('Nombre a Mostrar')
-                            ->maxLength(100)
-                            ->placeholder('Ej: Primera Infancia Feliz')
-                            ->helperText('Nombre personalizado para mostrar en el sitio. Si se deja vacío, se usará el nombre por defecto.')
-                            ->validationMessages([
-                                'max' => 'El nombre no puede exceder los 100 caracteres.',
+                                'required' => 'La sección es obligatoria.',
                             ]),
 
                         Forms\Components\Select::make('type')
@@ -175,12 +167,6 @@ class EducationalMaterialResource extends Resource
                     ->badge()
                     ->color('info'),
 
-                Tables\Columns\TextColumn::make('display_name')
-                    ->label('Nombre a Mostrar')
-                    ->searchable()
-                    ->limit(30)
-                    ->placeholder('—')
-                    ->toggleable(),
 
                 Tables\Columns\TextColumn::make('type_label')
                     ->label('Tipo')
