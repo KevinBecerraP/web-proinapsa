@@ -14,6 +14,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\TeamMemberController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +43,8 @@ Route::get('/que-hacemos/educacion-comunicacion/educacion-no-formal/{slug}', [Co
 Route::get('/que-hacemos/educacion-comunicacion/materiales', [EducationalMaterialsController::class, 'index'])->name('area.materiales-educacion');
 Route::get('/que-hacemos/investigacion', [ResearchController::class, 'index'])->name('area.investigacion');
 Route::get('/que-hacemos/proyeccion-social', [SocialProjectionController::class, 'index'])->name('area.proyeccion-social');
+
+Route::get('/contactanos', [ContactController::class, 'index'])->name('contact.index');
 
 Route::get('/repositorio', [RepositoryController::class, 'index'])->name('repository.index');
 Route::get('/repositorio/{slug}', [RepositoryController::class, 'show'])->name('repository.show');

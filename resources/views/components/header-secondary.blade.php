@@ -50,7 +50,7 @@
                                         </li>
 
                                         <li class="menu-item">
-                                            <a href="{{ route('news.index') }}">Contactanos</a>
+                                            <a href="{{ route('contact.index') }}">Contactanos</a>
                                         </li>
 
                                     </ul> <!-- //.nav-menu -->

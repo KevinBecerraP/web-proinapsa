@@ -10,8 +10,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- favicon -->
-    <link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('images/fav-orange.png') }}">
+    <link rel="apple-touch-icon" href="{{ $company?->favicon_url ?? asset('apple-touch-icon.png') }}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ $company?->favicon_url ?? asset('images/fav-orange.png') }}">
     <!-- Bootstrap v4.4.1 css -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
     <!-- font-awesome css -->
