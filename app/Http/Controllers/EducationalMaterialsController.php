@@ -10,8 +10,8 @@ class EducationalMaterialsController extends Controller
 
     public function index()
     {
-        ['banner' => $banner, 'area' => $area, 'materials' => $materials, 'courses' => $courses] = $this->service->getAll();
+        $data = $this->service->getAll();
 
-        return view('pages.areas.educacion-comunicacion.materiales.index', compact('banner', 'area', 'materials', 'courses'));
+        return view('pages.areas.educacion-comunicacion.materiales.index', $data);
     }
 }

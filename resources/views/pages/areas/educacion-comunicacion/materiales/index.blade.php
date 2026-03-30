@@ -72,17 +72,15 @@
                 <div class="col-lg-6">
                     <div class="gridFilter style2 modify1 mb-10" id="materialFilter">
                         <button class="active" data-filter="*">Todos</button>
-                        <button data-filter="filter1" class="">Primera Infancia</button>
-                        <button data-filter="filter2" class="">Escolar y adolescencia</button>
+                        @foreach ($groups as $group)
+                            <button data-filter="group-{{ $group->id }}">{{ $group->display_name ?? $group->category_label }}</button>
+                        @endforeach
                     </div>
                 </div>
             </div>
             <div class="row d-flex align-items-stretch" id="materialsGrid">
                 @foreach ($materials as $material)
-                    @php
-                        $filterClass = $material->category === 'early_childhood' ? 'filter1' : 'filter2';
-                    @endphp
-                    <div class="col-lg-3 col-md-6 material-item {{ $filterClass }} mb-30">
+                    <div class="col-lg-3 col-md-6 material-item group-{{ $material->group_id }} mb-30">
                         <div class="courses-item mb-30" style="height: 100%; display: flex; flex-direction: column;">
                             <div class="img-part">
                                 <a href="#">
