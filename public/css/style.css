@@ -11912,8 +11912,7 @@ body .modal-backdrop {
     transform: translateX(-50%) !important;
     width: 100% !important;
     height: 320px !important;
-    background: #ffffff;
-    border-radius: 50%;
+    background: #f3f1f1;
     padding-top: 30px;
     opacity: 1 !important;
     transition: all 0.3s ease;
