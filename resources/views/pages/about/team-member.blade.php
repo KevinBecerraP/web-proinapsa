@@ -61,5 +61,37 @@
             </div>
         </div>
         <!-- Team Member Detail -->
+
+        <!-- Related Members -->
+        @if ($relatedMembers->isNotEmpty())
+            <div class="rs-team style1 inner-style orange-color pt-94 pb-100 md-pt-64 md-pb-70 gray-bg">
+                <div class="container">
+                    <div class="sec-title mb-50 md-mb-30 text-center">
+                        <div class="sub-title orange">Talento Humano</div>
+                        <h2 class="title mb-0">Otros Integrantes</h2>
+                    </div>
+                    <div class="row justify-content-center">
+                        @foreach ($relatedMembers as $related)
+                            <div class="col-lg-4 col-sm-6 mb-30">
+                                <div class="team-item">
+                                    @if ($related->image_url)
+                                        <a href="{{ route('team.show', $related->slug) }}">
+                                            <img src="{{ $related->image_url }}" alt="{{ $related->name }}">
+                                        </a>
+                                    @endif
+                                    <div class="content-part">
+                                        <h4 class="name">
+                                            <a href="{{ route('team.show', $related->slug) }}">{{ $related->name }}</a>
+                                        </h4>
+                                        <span class="designation">{{ $related->position }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
+        <!-- Related Members -->
     </div>
 @endsection

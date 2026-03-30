@@ -21,6 +21,12 @@ class TeamMemberService
 
         $member = Team::where('slug', $slug)->where('status', true)->firstOrFail();
 
-        return compact('banner', 'member');
+        $relatedMembers = Team::where('status', true)
+            ->where('id', '!=', $member->id)
+            ->inRandomOrder()
+            ->limit(3)
+            ->get();
+
+        return compact('banner', 'member', 'relatedMembers');
     }
 }

@@ -9,14 +9,21 @@
                     <div class="col-lg-2">
                         <div class="logo-cat-wrap">
                             <div class="logo-part">
-                                <a href="index.html">
-                                    <img class="normal-logo" src="assets/images/lite-logo.png" alt="">
-                                    <img class="sticky-logo" src="assets/images/dark-logo.png" alt="">
+                                <a href="{{ route('home') }}">
+                                    @if ($company?->logo)
+                                        <img class="normal-logo" src="{{ Storage::url($company->logo) }}"
+                                            alt="{{ $company->business_name ?? '' }}">
+                                        <img class="sticky-logo" src="{{ Storage::url($company->logo) }}"
+                                            alt="{{ $company->business_name ?? '' }}">
+                                    @else
+                                        <img class="normal-logo" src="assets/images/lite-logo.png" alt="">
+                                        <img class="sticky-logo" src="assets/images/lite-logo.png" alt="">
+                                    @endif
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 text-right">
+                    <div class="col-lg-10 text-right">
                         <div class="rs-menu-area">
                             <div class="main-menu">
                                 <div class="mobile-menu">
@@ -29,14 +36,8 @@
                                         <li class="rs-mega-menu mega-rs menu-item">
                                             <a href="{{ route('home') }}">Inicio</a>
                                         </li>
-                                        <li class="menu-item-has-children">
+                                        <li class="menu-item">
                                             <a href="{{ route('about-us') }}"> Sobre Nosotros</a>
-                                            <ul class="sub-menu">
-                                                <li><a href="quienesSomos.html">Trayectoria</a> </li>
-                                                <li><a href="quienesSomos.html#mision">Misión y Visión</a> </li>
-                                                <li><a href="quienesSomos.html#valores">Valores</a> </li>
-                                                <li><a href="quienesSomos.html#talentoHumano">Talento Humano</a> </li>
-                                            </ul>
                                         </li>
 
                                         <li class="menu-item">
