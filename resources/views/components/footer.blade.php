@@ -1,120 +1,120 @@
 <!-- Footer Start -->
-    <footer id="rs-footer" class="rs-footer home9-style main-home">
-        <div class="footer-top">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-12 col-sm-12 footer-widget md-mb-50">
-                        <div class="footer-logo mb-30">
-                            <a href="index.html"><img src="assets/images/lite-logo.png" alt=""></a>
-                        </div>
-                        <div class="textwidget pr-60 md-pr-15">
-                            <p class="white-color">We denounce with righteous indi gnation and dislike men who are so
-                                beguiled and demoralized by the charms of pleasure of your moment, so blinded by desire
-                                those who fail weakness.</p>
-                        </div>
-                        <ul class="footer_social">
-                            <li>
-                                <a href="#" target="_blank"><span><i class="fa fa-facebook"></i></span></a>
-                            </li>
-                            <li>
-                                <a href="# " target="_blank"><span><i class="fa fa-twitter"></i></span></a>
-                            </li>
-
-                            <li>
-                                <a href="# " target="_blank"><span><i class="fa fa-pinterest-p"></i></span></a>
-                            </li>
-                            <li>
-                                <a href="# " target="_blank"><span><i class="fa fa-google-plus-square"></i></span></a>
-                            </li>
-                            <li>
-                                <a href="# " target="_blank"><span><i class="fa fa-instagram"></i></span></a>
-                            </li>
-
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 col-md-12 col-sm-12 footer-widget md-mb-50">
-                        <h3 class="widget-title">Address</h3>
-                        <ul class="address-widget">
+<footer id="rs-footer" class="rs-footer home9-style main-home">
+    <div class="footer-top no-gap">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 col-sm-12 footer-widget md-mb-50">
+                    <h3 class="widget-title">Contáctanos</h3>
+                    <ul class="address-widget">
+                        @if ($company?->address)
                             <li>
                                 <i class="flaticon-location"></i>
-                                <div class="desc">374 William S Canning Blvd, River MA 2721, USA</div>
+                                <div class="desc">{{ $company->address }}</div>
                             </li>
+                        @endif
+                        @if ($company?->phone_1)
                             <li>
                                 <i class="flaticon-call"></i>
                                 <div class="desc">
-                                    <a href="tel:(+880)155-69569">(+880)155-69569</a>
+                                    <a href="tel:{{ $company->phone_1 }}">{{ $company->phone_1 }}</a>
                                 </div>
                             </li>
+                        @endif
+                        @if ($company?->email_1)
                             <li>
                                 <i class="flaticon-email"></i>
                                 <div class="desc">
-                                    <a href="mailto:support@rstheme.com">support@rstheme.com</a>
+                                    <a href="mailto:{{ $company->email_1 }}">{{ $company->email_1 }}</a>
                                 </div>
                             </li>
-                        </ul>
-                    </div>
-                    <div class="col-lg-3 col-md-12 col-sm-12 pl-50 md-pl-15 footer-widget md-mb-50">
-                        <h3 class="widget-title">Courses</h3>
+                        @endif
+                    </ul>
+                    @if ($company?->privacy_policy_pdf)
+                        <div class="mt-30">
+                            <h3 class="widget-title">Políticas de Protección de Datos</h3>
+                            <a href="{{ $company->privacy_policy_url }}" target="_blank" rel="noopener noreferrer"
+                                style="color:#e8e8e8; font-size:14px;">
+                                <i class="fa fa-file-pdf-o" style="margin-right:6px;"></i> Ver políticas
+                            </a>
+                        </div>
+                    @endif
+                </div>
+
+                @foreach ($interestLinks->chunk(5) as $i => $chunk)
+                    <div class="col-lg-4 col-md-12 col-sm-12 pl-50 md-pl-15 footer-widget md-mb-50">
+                        @if ($i === 0)
+                            <h3 class="widget-title">Links de Interés</h3>
+                        @else
+                            <h3 class="widget-title">&nbsp;</h3>
+                        @endif
                         <ul class="site-map">
-                            <li><a href="#">Courses</a></li>
-                            <li><a href="#">Course Two</a></li>
-                            <li><a href="#">Single Course</a></li>
-                            <li><a href="#">Profile</a></li>
-                            <li><a href="#">Login/Register</a></li>
+                            @foreach ($chunk as $link)
+                                <li><a href="{{ $link->url }}" target="_blank"
+                                        rel="noopener noreferrer">{{ $link->title }}</a></li>
+                            @endforeach
                         </ul>
                     </div>
-                    <div class="col-lg-3 col-md-12 col-sm-12 footer-widget">
-                        <h3 class="widget-title">Recent Posts</h3>
-                        <div class="recent-post mb-20">
-                            <div class="post-img">
-                                <img src="assets/images/footer/1.jpg" alt="">
-                            </div>
-                            <div class="post-item">
-                                <div class="post-desc">
-                                    <a href="#">University while the lovely valley team work</a>
-                                </div>
-                                <span class="post-date">
-                                    <i class="fa fa-calendar"></i>
-                                    September 20, 2020
-                                </span>
-                            </div>
-                        </div>
-                        <div class="recent-post mb-20 md-pb-0">
-                            <div class="post-img">
-                                <img src="assets/images/footer/2.jpg" alt="">
-                            </div>
-                            <div class="post-item">
-                                <div class="post-desc">
-                                    <a href="#">High school program starting soon 2021</a>
-                                </div>
-                                <span class="post-date">
-                                    <i class="fa fa-calendar-check-o"></i>
-                                    September 14, 2020
-                                </span>
-                            </div>
-                        </div>
+                @endforeach
+
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row y-middle">
+                <div class="col-lg-8 md-mb-20">
+                    <div class="copyright">
+                        <p>&copy; {{ date('Y') }} {{ $company?->business_name }}. Todos los derechos reservados.</p>
                     </div>
+                </div>
+                <div class="col-lg-4 text-right md-text-left">
+                    <ul class="footer_social"
+                        style="display:flex; justify-content:flex-end; flex-wrap:wrap; gap:10px; list-style:none; padding:0; margin:0;">
+                        @if ($company?->facebook_link)
+                            <li>
+                                <a href="{{ $company->facebook_link }}" target="_blank" rel="noopener noreferrer"
+                                    style="color:#ffffff; font-size:16px;"><span><i
+                                            class="fa fa-facebook"></i></span></a>
+                            </li>
+                        @endif
+                        @if ($company?->instagram_link)
+                            <li>
+                                <a href="{{ $company->instagram_link }}" target="_blank" rel="noopener noreferrer"
+                                    style="color:#ffffff; font-size:16px;"><span><i
+                                            class="fa fa-instagram"></i></span></a>
+                            </li>
+                        @endif
+                        @if ($company?->youtube_link)
+                            <li>
+                                <a href="{{ $company->youtube_link }}" target="_blank" rel="noopener noreferrer"
+                                    style="color:#ffffff; font-size:16px;"><span><i
+                                            class="fa fa-youtube"></i></span></a>
+                            </li>
+                        @endif
+                        @if ($company?->x_link)
+                            <li>
+                                <a href="{{ $company->x_link }}" target="_blank" rel="noopener noreferrer"
+                                    style="color:#ffffff; font-size:16px;"><span><i
+                                            class="fa fa-twitter"></i></span></a>
+                            </li>
+                        @endif
+                        @if ($company?->whatsapp_link)
+                            <li>
+                                <a href="{{ $company->whatsapp_link }}" target="_blank" rel="noopener noreferrer"
+                                    style="color:#ffffff; font-size:16px;"><span><i
+                                            class="fa fa-whatsapp"></i></span></a>
+                            </li>
+                        @endif
+                        @if ($company?->threads_link)
+                            <li>
+                                <a href="{{ $company->threads_link }}" target="_blank" rel="noopener noreferrer"
+                                    style="color:#ffffff; font-size:16px;"><span><i class="fa fa-at"></i></span></a>
+                            </li>
+                        @endif
+                    </ul>
                 </div>
             </div>
         </div>
-        <div class="footer-bottom">
-            <div class="container">
-                <div class="row y-middle">
-                    <div class="col-lg-6 md-mb-20">
-                        <div class="copyright">
-                            <p>&copy; 2020 All Rights Reserved. Developed By <a href="http://rstheme.com/">RSTheme</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 text-right md-text-left">
-                        <ul class="copy-right-menu">
-                            <li><a href="#">Event</a></li>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer End -->
+    </div>
+</footer>
+<!-- Footer End -->
