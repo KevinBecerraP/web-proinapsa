@@ -175,14 +175,12 @@ class RepositoryCategoryResource extends Resource
                 Tables\Actions\ViewAction::make()
                     ->label('')
                     ->icon('heroicon-o-eye')
-                    ->tooltip('Ver detalles')
-                    ->visible(fn() => static::userCanList()),
+                    ->tooltip('Ver detalles'),
 
                 Tables\Actions\EditAction::make()
                     ->label('')
                     ->icon('heroicon-o-pencil-square')
-                    ->tooltip('Editar categoría')
-                    ->visible(fn() => static::userCanEdit()),
+                    ->tooltip('Editar categoría'),
 
                 Tables\Actions\DeleteAction::make()
                     ->label('')
@@ -191,13 +189,11 @@ class RepositoryCategoryResource extends Resource
                     ->tooltip('Eliminar categoría')
                     ->requiresConfirmation()
                     ->modalHeading('¿Eliminar categoría?')
-                    ->modalDescription('Se eliminarán también todos los documentos asociados.')
-                    ->visible(fn() => static::userCanDelete()),
+                    ->modalDescription('Se eliminarán también todos los documentos asociados.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn() => static::userCanDelete()),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }

@@ -594,13 +594,11 @@ class CompanyResource extends Resource
                 Tables\Actions\ViewAction::make()
                     ->label('')
                     ->icon('heroicon-o-eye')
-                    ->tooltip('Ver detalles')
-                    ->visible(fn() => static::userCanList()),
+                    ->tooltip('Ver detalles'),
                 Tables\Actions\EditAction::make()
                     ->label('')
                     ->icon('heroicon-o-pencil-square')
-                    ->tooltip('Editar información de la empresa')
-                    ->visible(fn() => static::userCanEdit()),
+                    ->tooltip('Editar información de la empresa'),
                 Tables\Actions\DeleteAction::make()
                     ->label('')
                     ->icon('heroicon-o-trash')
@@ -609,12 +607,10 @@ class CompanyResource extends Resource
                     ->requiresConfirmation()
                     ->modalHeading('¿Eliminar permanentemente?')
                     ->modalDescription('Esta acción NO se puede deshacer.')
-                    ->visible(fn() => static::userCanDelete())
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn() => static::userCanDelete())
                         ->requiresConfirmation()
                         ->modalHeading('¿Eliminar permanentemente?')
                         ->modalDescription('Esta acción NO se puede deshacer.')

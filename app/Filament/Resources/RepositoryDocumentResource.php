@@ -249,14 +249,12 @@ class RepositoryDocumentResource extends Resource
                 Tables\Actions\ViewAction::make()
                     ->label('')
                     ->icon('heroicon-o-eye')
-                    ->tooltip('Ver detalles')
-                    ->visible(fn() => static::userCanList()),
+                    ->tooltip('Ver detalles'),
 
                 Tables\Actions\EditAction::make()
                     ->label('')
                     ->icon('heroicon-o-pencil-square')
-                    ->tooltip('Editar documento')
-                    ->visible(fn() => static::userCanEdit()),
+                    ->tooltip('Editar documento'),
 
                 Tables\Actions\DeleteAction::make()
                     ->label('')
@@ -265,13 +263,11 @@ class RepositoryDocumentResource extends Resource
                     ->tooltip('Eliminar documento')
                     ->requiresConfirmation()
                     ->modalHeading('¿Eliminar documento?')
-                    ->modalDescription('Esta acción NO se puede deshacer.')
-                    ->visible(fn() => static::userCanDelete()),
+                    ->modalDescription('Esta acción NO se puede deshacer.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn() => static::userCanDelete()),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
