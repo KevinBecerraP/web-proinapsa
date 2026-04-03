@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\InstitutionalResource\Pages;
+use App\Filament\Traits\HasRoleAccess;
 use App\Models\Institutional;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,6 +14,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 class InstitutionalResource extends Resource
 {
+    use HasRoleAccess;
+
+    const MAX_INTEREST_LINKS = 10;
+
     protected static ?string $model = Institutional::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-library';
@@ -27,6 +32,12 @@ class InstitutionalResource extends Resource
 
     protected static ?int $navigationSort = 40;
 
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -38,16 +49,30 @@ class InstitutionalResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('type')
                                     ->label('Tipo de Recurso')
-                                    ->options([
-                                        'interest_link' => '🔗 Link de Interés',
-                                        'partner' => '🤝 Socio/Aliado',
-                                    ])
+                                    ->options(function (?Institutional $record) {
+                                        $currentCount = Institutional::where('type', 'interest_link')
+                                            ->when($record?->id, fn($q) => $q->where('id', '!=', $record->id))
+                                            ->count();
+                                        $limitReached = $currentCount >= self::MAX_INTEREST_LINKS;
+                                        return array_filter([
+                                            'interest_link' => $limitReached ? null : '🔗 Link de Interés',
+                                            'partner' => '🤝 Socio/Aliado',
+                                        ]);
+                                    })
+                                    ->helperText(function (?Institutional $record) {
+                                        $count = Institutional::where('type', 'interest_link')
+                                            ->when($record?->id, fn($q) => $q->where('id', '!=', $record->id))
+                                            ->count();
+                                        if ($count >= self::MAX_INTEREST_LINKS) {
+                                            return 'Límite alcanzado: ' . self::MAX_INTEREST_LINKS . '/' . self::MAX_INTEREST_LINKS . ' links de interés. Solo puedes agregar socios/aliados.';
+                                        }
+                                        return 'Elige si es un link externo o un socio/aliado (' . $count . '/' . self::MAX_INTEREST_LINKS . ' links de interés)';
+                                    })
                                     ->required()
                                     ->native(false)
                                     ->live()
                                     ->prefixIcon('heroicon-o-tag')
                                     ->placeholder('Selecciona el tipo de recurso')
-                                    ->helperText('Elige si es un link externo o un socio/aliado')
                                     ->columnSpanFull(),
                             ]),
 
@@ -156,35 +181,6 @@ class InstitutionalResource extends Resource
                     })
                     ->sortable(),
 
-
-                Tables\Columns\TextColumn::make('title')
-                    ->label('Título')
-                    ->searchable()
-                    ->sortable()
-                    ->limit(40)
-                    ->icon('heroicon-o-link')
-                    ->iconColor('info')
-                    ->toggleable(),
-
-                Tables\Columns\TextColumn::make('name')
-                    ->label('Nombre')
-                    ->searchable()
-                    ->sortable()
-                    ->limit(40)
-                    ->icon('heroicon-o-building-office-2')
-                    ->iconColor('success')
-                    ->toggleable(),
-
-                Tables\Columns\TextColumn::make('url')
-                    ->label('URL')
-                    ->searchable()
-                    ->limit(40)
-                    ->icon('heroicon-o-globe-alt')
-                    ->iconColor('gray')
-                    ->copyable()
-                    ->copyMessage('URL copiada')
-                    ->copyMessageDuration(1500)
-                    ->toggleable(),
 
                 Tables\Columns\IconColumn::make('active')
                     ->label('Activo')

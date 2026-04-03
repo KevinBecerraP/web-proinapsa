@@ -5,9 +5,12 @@ namespace App\Filament\Resources\FormalEducationSectionResource\Pages;
 use App\Filament\Resources\FormalEducationSectionResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class CreateFormalEducationSection extends CreateRecord
 {
+    use RedirectsToIndex;
+
      protected static string $resource = FormalEducationSectionResource::class;
     // Validar que el usuario tenga permiso para crear registros
     public function mount(): void

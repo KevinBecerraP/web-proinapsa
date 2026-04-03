@@ -5,9 +5,12 @@ namespace App\Filament\Resources\TeamResource\Pages;
 use App\Filament\Resources\TeamResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class CreateTeam extends CreateRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = TeamResource::class;
     // Validar que el usuario tenga permiso para crear registros
     public function mount(): void

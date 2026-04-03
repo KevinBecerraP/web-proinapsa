@@ -5,9 +5,12 @@ namespace App\Filament\Resources\PublicationResource\Pages;
 use App\Filament\Resources\PublicationResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditPublication extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = PublicationResource::class;
 
     // Validar permiso para editar

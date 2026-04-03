@@ -3,76 +3,30 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserResource\Pages;
-use App\Filament\Resources\UserResource\RelationManagers;
+use App\Filament\Traits\HasRoleAccess;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
+    use HasRoleAccess;
+
     protected static ?string $model = User::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationGroup = 'Administración';
     protected static ?int $navigationSort = 1;
 
-    private static function userCanList(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('listUsers') || $user->hasRole('SuperAdmin');
-    }
-
-    private static function userCanCreate(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('createUser') || $user->hasRole('SuperAdmin');
-    }
-
-    private static function userCanEdit(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('editUser') || $user->hasRole('SuperAdmin');
-    }
-
-    private static function userCanDelete(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('deleteUser') || $user->hasRole('SuperAdmin');
-    }
-
-    public static function canViewAny(): bool
-    {
-        return static::userCanList();
-    }
-
-    public static function canCreate(): bool
-    {
-        return static::userCanCreate();
-    }
-
-    public static function canEdit($record): bool
-    {
-        return static::userCanEdit();
-    }
-
-    public static function canDelete($record): bool
-    {
-        return static::userCanDelete();
-    }
-
-    public static function shouldRegisterNavigation(): bool
-    {
-        return static::canViewAny();
-    }
+    public static function canViewAny(): bool    { return static::canManageUsers(); }
+    public static function canCreate(): bool     { return static::canManageUsers(); }
+    public static function canEdit($record): bool   { return static::canManageUsers(); }
+    public static function canDelete($record): bool { return static::canManageUsers(); }
+    public static function shouldRegisterNavigation(): bool { return static::canManageUsers(); }
 
     public static function getModelLabel(): string
     {
@@ -124,29 +78,69 @@ class UserResource extends Resource
                                     ->label('Contraseña')
                                     ->password()
                                     ->required(fn(string $context): bool => $context === 'create')
-                                    ->hiddenOn('edit')
                                     ->minLength(8)
                                     ->maxLength(255)
                                     ->placeholder('Mínimo 8 caracteres')
                                     ->prefixIcon('heroicon-o-key')
                                     ->revealable()
                                     ->dehydrated(fn($state) => filled($state))
-                                    ->autocomplete('new-password'),
+                                    ->autocomplete('new-password')
+                                    ->visibleOn('create'),
 
                                 Forms\Components\TextInput::make('password_confirmation')
                                     ->label('Confirmar Contraseña')
                                     ->password()
                                     ->required(fn(string $context): bool => $context === 'create')
-                                    ->hiddenOn('edit')
                                     ->maxLength(255)
                                     ->placeholder('Repite la contraseña')
                                     ->prefixIcon('heroicon-o-key')
                                     ->revealable()
                                     ->same('password')
                                     ->dehydrated(false)
-                                    ->autocomplete('new-password'),
+                                    ->autocomplete('new-password')
+                                    ->visibleOn('create'),
                             ]),
-                    ])->collapsible()->hiddenOn('edit'),
+
+                        // Cambio de contraseña en edición
+                        Forms\Components\Grid::make(2)
+                            ->schema([
+                                Forms\Components\TextInput::make('new_password')
+                                    ->label('Nueva Contraseña')
+                                    ->password()
+                                    ->revealable()
+                                    ->minLength(8)
+                                    ->maxLength(255)
+                                    ->placeholder('Déjalo vacío para no cambiarla')
+                                    ->prefixIcon('heroicon-o-key')
+                                    ->autocomplete('new-password')
+                                    ->dehydrated(false)
+                                    ->rule(function ($get, $record) {
+                                        return function (string $attribute, $value, \Closure $fail) use ($record) {
+                                            if (filled($value) && Hash::check($value, $record->password)) {
+                                                $fail('La nueva contraseña no puede ser igual a la actual.');
+                                            }
+                                        };
+                                    })
+                                    ->afterStateUpdated(function ($state, Forms\Set $set) {
+                                        if (blank($state)) {
+                                            $set('new_password_confirmation', null);
+                                        }
+                                    })
+                                    ->live(onBlur: true),
+
+                                Forms\Components\TextInput::make('new_password_confirmation')
+                                    ->label('Confirmar Nueva Contraseña')
+                                    ->password()
+                                    ->revealable()
+                                    ->maxLength(255)
+                                    ->placeholder('Repite la nueva contraseña')
+                                    ->prefixIcon('heroicon-o-key')
+                                    ->autocomplete('new-password')
+                                    ->dehydrated(false)
+                                    ->same('new_password'),
+                            ])
+                            ->visibleOn('edit'),
+                    ])->collapsible(),
 
                 Forms\Components\Section::make('Roles y Permisos')
                     ->description('Asigna los roles correspondientes')
@@ -204,14 +198,12 @@ class UserResource extends Resource
                 Tables\Actions\ViewAction::make()
                     ->label('')
                     ->icon('heroicon-o-eye')
-                    ->tooltip('Ver detalles')
-                    ->visible(fn() => static::userCanList()),
+                    ->tooltip('Ver detalles'),
 
                 Tables\Actions\EditAction::make()
                     ->label('')
                     ->icon('heroicon-o-pencil-square')
-                    ->tooltip('Editar usuario')
-                    ->visible(fn() => static::userCanEdit()),
+                    ->tooltip('Editar usuario'),
 
                 Tables\Actions\DeleteAction::make()
                     ->label('')
@@ -220,13 +212,11 @@ class UserResource extends Resource
                     ->tooltip('Eliminar permanentemente')
                     ->requiresConfirmation()
                     ->modalHeading('¿Eliminar permanentemente?')
-                    ->modalDescription('Esta acción NO se puede deshacer.')
-                    ->visible(fn() => static::userCanDelete()),
+                    ->modalDescription('Esta acción NO se puede deshacer.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn() => static::userCanDelete())
                         ->requiresConfirmation()
                         ->modalHeading('¿Eliminar permanentemente?')
                         ->modalDescription('Esta acción NO se puede deshacer.')
@@ -237,6 +227,11 @@ class UserResource extends Resource
                     ->icon('heroicon-o-ellipsis-vertical')
                     ->color('gray'),
             ]);
+    }
+
+    public static function getEloquentQuery(): \Illuminate\Database\Eloquent\Builder
+    {
+        return parent::getEloquentQuery()->where('email', '!=', \App\Models\User::ROOT_EMAIL);
     }
 
     public static function getRelations(): array

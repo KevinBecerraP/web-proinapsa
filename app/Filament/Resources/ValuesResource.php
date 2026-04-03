@@ -13,8 +13,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class ValuesResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = Values::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-star';

@@ -5,9 +5,12 @@ namespace App\Filament\Resources\CompanyResource\Pages;
 use App\Filament\Resources\CompanyResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditCompany extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = CompanyResource::class;
 
     // Validar permiso para editar

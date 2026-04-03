@@ -4,9 +4,12 @@ namespace App\Filament\Resources\NewsResource\Pages;
 
 use App\Filament\Resources\NewsResource;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class CreateNews extends CreateRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = NewsResource::class;
     // Validar que el usuario tenga permiso para crear registros
     public function mount(): void

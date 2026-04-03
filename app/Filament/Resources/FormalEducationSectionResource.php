@@ -11,8 +11,17 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class FormalEducationSectionResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = FormalEducationSection::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
@@ -28,10 +37,6 @@ class FormalEducationSectionResource extends Resource
     protected static ?int $navigationSort = 10;
 
     // Solo se puede crear si aún no existen las 6 secciones
-    public static function canCreate(): bool
-    {
-        return FormalEducationSection::count() < 6;
-    }
 
     public static function form(Form $form): Form
     {

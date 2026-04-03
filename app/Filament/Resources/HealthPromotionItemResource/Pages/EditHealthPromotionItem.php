@@ -5,9 +5,12 @@ namespace App\Filament\Resources\HealthPromotionItemResource\Pages;
 use App\Filament\Resources\HealthPromotionItemResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditHealthPromotionItem extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = HealthPromotionItemResource::class;
 
     // Validar permiso para editar

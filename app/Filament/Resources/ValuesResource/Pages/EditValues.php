@@ -5,9 +5,12 @@ namespace App\Filament\Resources\ValuesResource\Pages;
 use App\Filament\Resources\ValuesResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditValues extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = ValuesResource::class;
 
     // Validar permiso para editar

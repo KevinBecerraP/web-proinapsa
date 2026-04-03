@@ -11,8 +11,17 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class HealthPromotionCategoryResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = HealthPromotionCategory::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-heart';
@@ -32,11 +41,6 @@ class HealthPromotionCategoryResource extends Resource
     /**
      * Solo permite crear si aún hay categorías disponibles que no existen.
      */
-    public static function canCreate(): bool
-    {
-        $existing = HealthPromotionCategory::pluck('category')->toArray();
-        return count(array_diff(static::ALLOWED_CATEGORIES, $existing)) > 0;
-    }
 
     public static function form(Form $form): Form
     {

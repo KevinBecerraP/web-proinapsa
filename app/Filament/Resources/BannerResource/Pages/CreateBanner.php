@@ -5,9 +5,12 @@ namespace App\Filament\Resources\BannerResource\Pages;
 use App\Filament\Resources\BannerResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class CreateBanner extends CreateRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = BannerResource::class;
     public function mount(): void
     {

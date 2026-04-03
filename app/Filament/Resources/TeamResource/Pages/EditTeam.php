@@ -5,9 +5,12 @@ namespace App\Filament\Resources\TeamResource\Pages;
 use App\Filament\Resources\TeamResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditTeam extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = TeamResource::class;
 
     // Validar permiso para editar

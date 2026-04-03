@@ -11,8 +11,17 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class AreaResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = Area::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -28,10 +37,6 @@ class AreaResource extends Resource
     /**
      * Only allow creating if there are less than 3 areas
      */
-    public static function canCreate(): bool
-    {
-        return Area::count() < 3;
-    }
 
     public static function form(Form $form): Form
     {

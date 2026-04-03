@@ -12,8 +12,17 @@ use Filament\Tables\Table;
 use Filament\Notifications\Notification;
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class HomeCardResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = HomeCard::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -300,24 +309,4 @@ class HomeCardResource extends Resource
         ];
     }
 
-    /**
-     * Validación antes de crear: máximo 6 registros
-     */
-    public static function canCreate(): bool
-    {
-        $count = HomeCard::count();
-
-        if ($count >= 3) {
-            Notification::make()
-                ->title('Límite alcanzado')
-                ->warning()
-                ->body('Solo se permiten 3 tarjetas en el home. Elimina una para poder crear una nueva.')
-                ->persistent()
-                ->send();
-
-            return false;
-        }
-
-        return true;
-    }
 }

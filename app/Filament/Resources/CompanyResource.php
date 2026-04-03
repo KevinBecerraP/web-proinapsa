@@ -13,8 +13,17 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class CompanyResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = Company::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
@@ -26,61 +35,10 @@ class CompanyResource extends Resource
     protected static ?string $pluralModelLabel = 'Empresas';
 
     // Métodos helper para verificar permisos
-    private static function userCanList(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('listCompanies') || $user->hasRole('SuperAdmin');
-    }
 
-    private static function userCanCreate(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
 
-        // Solo permitir crear si no hay registros Y tiene permisos
-        return Company::count() === 0 &&
-            ($user->can('createCompany') || $user->hasRole('SuperAdmin'));
-    }
 
-    private static function userCanEdit(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('editCompany') || $user->hasRole('SuperAdmin');
-    }
 
-    private static function userCanDelete(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('deleteCompany') || $user->hasRole('SuperAdmin');
-    }
-
-    public static function canViewAny(): bool
-    {
-        return static::userCanList();
-    }
-
-    public static function canCreate(): bool
-    {
-        return static::userCanCreate();
-    }
-
-    public static function canEdit($record): bool
-    {
-        return static::userCanEdit();
-    }
-
-    public static function canDelete($record): bool
-    {
-        return static::userCanDelete();
-    }
-
-    public static function shouldRegisterNavigation(): bool
-    {
-        return static::canViewAny();
-    }
 
     public static function form(Form $form): Form
     {

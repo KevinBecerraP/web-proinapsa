@@ -128,6 +128,7 @@
     <script src="{{ asset('js/contact.form.js') }}"></script>
     <!-- main js -->
     <script src="{{ asset('js/main.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>

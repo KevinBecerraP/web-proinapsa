@@ -10,8 +10,17 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class EducationalMaterialGroupResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = EducationalMaterialGroup::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
@@ -28,15 +37,6 @@ class EducationalMaterialGroupResource extends Resource
 
     protected static bool $shouldRegisterNavigation = true;
 
-    public static function canCreate(): bool
-    {
-        return false;
-    }
-
-    public static function canDelete($record): bool
-    {
-        return false;
-    }
 
     public static function form(Form $form): Form
     {

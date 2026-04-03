@@ -5,9 +5,12 @@ namespace App\Filament\Resources\InstitutionalResource\Pages;
 use App\Filament\Resources\InstitutionalResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditInstitutional extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = InstitutionalResource::class;
 
     // Validar permiso para editar

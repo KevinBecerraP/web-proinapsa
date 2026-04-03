@@ -5,9 +5,12 @@ namespace App\Filament\Resources\TestimonialResource\Pages;
 use App\Filament\Resources\TestimonialResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditTestimonial extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = TestimonialResource::class;
 
     // Validar permiso para editar

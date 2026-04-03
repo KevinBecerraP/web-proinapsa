@@ -44,4 +44,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    const ROOT_EMAIL = 'kevinbecerram07@gmail.com';
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function (User $user) {
+            if ($user->email === self::ROOT_EMAIL) {
+                throw new \RuntimeException('El usuario root no puede ser eliminado.');
+            }
+        });
+    }
 }

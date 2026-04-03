@@ -11,66 +11,26 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class RepositoryDocumentResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = RepositoryDocument::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationGroup = 'Repositorio';
     protected static ?int $navigationSort = 2;
 
-    private static function userCanList(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('listRepositoryDocuments') || $user->hasRole('SuperAdmin');
-    }
 
-    private static function userCanCreate(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('createRepositoryDocument') || $user->hasRole('SuperAdmin');
-    }
 
-    private static function userCanEdit(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('editRepositoryDocument') || $user->hasRole('SuperAdmin');
-    }
 
-    private static function userCanDelete(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('deleteRepositoryDocument') || $user->hasRole('SuperAdmin');
-    }
-
-    public static function canViewAny(): bool
-    {
-        return static::userCanList();
-    }
-
-    public static function canCreate(): bool
-    {
-        return static::userCanCreate();
-    }
-
-    public static function canEdit($record): bool
-    {
-        return static::userCanEdit();
-    }
-
-    public static function canDelete($record): bool
-    {
-        return static::userCanDelete();
-    }
-
-    public static function shouldRegisterNavigation(): bool
-    {
-        return static::canViewAny();
-    }
 
     public static function getModelLabel(): string
     {

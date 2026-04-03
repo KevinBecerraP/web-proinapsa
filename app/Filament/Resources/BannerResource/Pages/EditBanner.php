@@ -5,9 +5,12 @@ namespace App\Filament\Resources\BannerResource\Pages;
 use App\Filament\Resources\BannerResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditBanner extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = BannerResource::class;
 
     // Validar permiso para editar

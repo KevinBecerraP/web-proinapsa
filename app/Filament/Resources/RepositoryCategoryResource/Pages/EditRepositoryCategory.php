@@ -5,9 +5,12 @@ namespace App\Filament\Resources\RepositoryCategoryResource\Pages;
 use App\Filament\Resources\RepositoryCategoryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditRepositoryCategory extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = RepositoryCategoryResource::class;
 
     // Validar permiso para editar

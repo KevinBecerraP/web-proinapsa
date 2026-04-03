@@ -3,70 +3,30 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BannerResource\Pages;
-use App\Filament\Resources\BannerResource\RelationManagers;
+use App\Filament\Traits\HasRoleAccess;
 use App\Models\Banner;
-use App\Enums\BannerPage;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Validation\Rules\Unique;
 
 class BannerResource extends Resource
 {
+    use HasRoleAccess;
+
     protected static ?string $model = Banner::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Contenido';
+    protected static ?int $navigationSort = 1;
 
-    // Métodos helper para verificar permisos
-    private static function userCanList(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('listBanners') || $user->hasRole('SuperAdmin');
-    }
-    private static function userCanCreate(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('createBanner') || $user->hasRole('SuperAdmin');
-    }
-    private static function userCanEdit(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('editBanner') || $user->hasRole('SuperAdmin');
-    }
-    private static function userCanDelete(): bool
-    {
-        $user = auth()->user();
-        if (!$user) return false;
-        return $user->can('deleteBanner') || $user->hasRole('SuperAdmin');
-    }
-
-    public static function canViewAny(): bool
-    {
-        return static::userCanList();
-    }
-    public static function canCreate(): bool
-    {
-        return static::userCanCreate();
-    }
-    public static function canEdit($record): bool
-    {
-        return static::userCanEdit();
-    }
-    public static function canDelete($record): bool
-    {
-        return static::userCanDelete();
-    }
-    public static function shouldRegisterNavigation(): bool
-    {
-        return static::canViewAny();
-    }
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
 
     public static function form(Form $form): Form
     {
@@ -127,19 +87,29 @@ class BannerResource extends Resource
 
                         Forms\Components\Select::make('page')
                             ->label('Página del Banner')
-                            ->options([
-                                'about_us'               => 'Quiénes Somos',
-                                'what_we_do'             => 'Qué Hacemos',
-                                'education_communication'=> 'Educación y Comunicación',
-                                'social_projection'      => 'Proyección Social',
-                                'research'               => 'Investigación',
-                                'publications'           => 'Publicaciones',
-                                'research_group'         => 'Grupo de Investigación',
-                                'repository'             => 'Repositorios',
-                                'news'                   => 'Noticias',
-                                'contact_us'             => 'Contáctenos',
-                                'default'                => 'Por Defecto',
-                            ])
+                            ->options(function (?Banner $record) {
+                                $allPages = [
+                                    'about_us'               => 'Quiénes Somos',
+                                    'what_we_do'             => 'Qué Hacemos',
+                                    'education_communication'=> 'Educación y Comunicación',
+                                    'social_projection'      => 'Proyección Social',
+                                    'research'               => 'Investigación',
+                                    'publications'           => 'Publicaciones',
+                                    'research_group'         => 'Grupo de Investigación',
+                                    'repository'             => 'Repositorios',
+                                    'news'                   => 'Noticias',
+                                    'contact_us'             => 'Contáctenos',
+                                ];
+
+                                $usedPages = Banner::where('type', 'secondary')
+                                    ->when($record?->id, fn($q) => $q->where('id', '!=', $record->id))
+                                    ->pluck('page')
+                                    ->toArray();
+
+                                return collect($allPages)
+                                    ->filter(fn($label, $key) => !in_array($key, $usedPages))
+                                    ->toArray();
+                            })
                             ->prefixIcon('heroicon-o-document')
                             ->searchable()
                             ->visible(fn(callable $get) => $get('type') === 'secondary')
@@ -148,10 +118,7 @@ class BannerResource extends Resource
                                 table: 'banners',
                                 column: 'page',
                                 ignoreRecord: true,
-                                modifyRuleUsing: function (Unique $rule, callable $get) {
-                                    return $rule->where('type', 'secondary')
-                                        ->whereNot('page', 'default');
-                                }
+                                modifyRuleUsing: fn (Unique $rule) => $rule->where('type', 'secondary')
                             )
                             ->validationMessages([
                                 'unique' => 'Ya existe un banner secundario asignado a esta página. Solo se permite uno por página.',
@@ -312,7 +279,6 @@ class BannerResource extends Resource
                         'repository'              => 'Repositorios',
                         'news'                    => 'Noticias',
                         'contact_us'              => 'Contáctenos',
-                        'default'                 => 'Por Defecto',
                         default                   => '-',
                     })
                     ->badge()
@@ -344,13 +310,11 @@ class BannerResource extends Resource
                 Tables\Actions\ViewAction::make()
                     ->label('')
                     ->icon('heroicon-o-eye')
-                    ->tooltip('Ver detalles')
-                    ->visible(fn() => static::userCanList()),
+                    ->tooltip('Ver detalles'),
                 Tables\Actions\EditAction::make()
                     ->label('')
                     ->icon('heroicon-o-pencil-square')
-                    ->tooltip('Editar banner')
-                    ->visible(fn() => static::userCanEdit()),
+                    ->tooltip('Editar banner'),
                 Tables\Actions\DeleteAction::make()
                     ->label('')
                     ->icon('heroicon-o-trash')
@@ -358,13 +322,11 @@ class BannerResource extends Resource
                     ->tooltip('Eliminar permanentemente')
                     ->requiresConfirmation()
                     ->modalHeading('¿Eliminar permanentemente?')
-                    ->modalDescription('Esta acción NO se puede deshacer.')
-                    ->visible(fn() => static::userCanDelete())
+                    ->modalDescription('Esta acción NO se puede deshacer.'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
-                        ->visible(fn() => static::userCanDelete())
                         ->requiresConfirmation()
                         ->modalHeading('¿Eliminar permanentemente?')
                         ->modalDescription('Esta acción NO se puede deshacer.')
@@ -379,9 +341,7 @@ class BannerResource extends Resource
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array

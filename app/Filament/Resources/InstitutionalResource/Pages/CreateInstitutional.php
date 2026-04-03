@@ -5,9 +5,12 @@ namespace App\Filament\Resources\InstitutionalResource\Pages;
 use App\Filament\Resources\InstitutionalResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class CreateInstitutional extends CreateRecord
 {
+    use RedirectsToIndex;
+
      protected static string $resource = InstitutionalResource::class;
     // Validar que el usuario tenga permiso para crear registros
     public function mount(): void

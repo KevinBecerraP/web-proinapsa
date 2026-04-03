@@ -10,7 +10,6 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Support\Enums\ThemeMode;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -40,7 +39,6 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->defaultThemeMode(ThemeMode::Light)
             ->renderHook(
                 'panels::head.end',
                 fn () => '<link rel="stylesheet" href="' . asset('css/proinapsa-admin.css') . '">'
@@ -65,7 +63,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
+            // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
 
             ->authMiddleware([
                 Authenticate::class,

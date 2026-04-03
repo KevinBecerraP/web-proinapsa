@@ -5,9 +5,12 @@ namespace App\Filament\Resources\CourseResource\Pages;
 use App\Filament\Resources\CourseResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditCourse extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = CourseResource::class;
 
     // Validar permiso para editar

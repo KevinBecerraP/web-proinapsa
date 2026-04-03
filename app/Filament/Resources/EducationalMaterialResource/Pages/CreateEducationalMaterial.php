@@ -5,9 +5,12 @@ namespace App\Filament\Resources\EducationalMaterialResource\Pages;
 use App\Filament\Resources\EducationalMaterialResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class CreateEducationalMaterial extends CreateRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = EducationalMaterialResource::class;
     // Validar que el usuario tenga permiso para crear registros
     public function mount(): void

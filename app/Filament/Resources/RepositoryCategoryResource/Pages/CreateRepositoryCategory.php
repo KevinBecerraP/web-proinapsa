@@ -5,9 +5,12 @@ namespace App\Filament\Resources\RepositoryCategoryResource\Pages;
 use App\Filament\Resources\RepositoryCategoryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class CreateRepositoryCategory extends CreateRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = RepositoryCategoryResource::class;
     // Validar que el usuario tenga permiso para crear registros
     public function mount(): void

@@ -5,9 +5,12 @@ namespace App\Filament\Resources\HomeCardResource\Pages;
 use App\Filament\Resources\HomeCardResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditHomeCard extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = HomeCardResource::class;
 
     // Validar permiso para editar

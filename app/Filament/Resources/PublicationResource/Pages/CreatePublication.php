@@ -5,9 +5,12 @@ namespace App\Filament\Resources\PublicationResource\Pages;
 use App\Filament\Resources\PublicationResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class CreatePublication extends CreateRecord
 {
+    use RedirectsToIndex;
+
      protected static string $resource = PublicationResource::class;
     // Validar que el usuario tenga permiso para crear registros
     public function mount(): void

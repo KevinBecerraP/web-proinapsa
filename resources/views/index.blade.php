@@ -5,7 +5,7 @@
 @section('content')
     <!-- Slider Section Start -->
     <div class="rs-slider main-home">
-        <div class="rs-carousel owl-carousel" data-loop="true" data-items="1" data-margin="0" data-autoplay="true"
+        <div id="main-banner-carousel" class="rs-carousel owl-carousel" data-loop="true" data-items="1" data-margin="0" data-autoplay="true"
             data-hoverpause="true" data-autoplay-timeout="5000" data-smart-speed="800" data-dots="false" data-nav="false"
             data-nav-speed="false" data-center-mode="false" data-mobile-device="1" data-mobile-device-nav="false"
             data-mobile-device-dots="false" data-ipad-device="1" data-ipad-device-nav="false" data-ipad-device-dots="false"
@@ -13,7 +13,7 @@
             data-md-device-nav="true" data-md-device-dots="false">
             @foreach ($banners as $banner)
                 <div class="slider-content"
-                    style="background-image: url('{{ $banner->image_url }}'); background-size: cover; background-position: center;">
+                    style="background-image: url('{{ $banner->image_url }}'); background-size: cover; background-position: center;" data-btn-color="{{ $banner->button_color ?? '' }}">
                     <div class="container">
                         <div class="content-part">
                             @if ($banner->subtitle)
@@ -223,3 +223,42 @@
         </div>
     @endif
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    var bannerNavColors = @json(
+        $banners->map(fn($b) => filled($b->button_link) && filled($b->button_color)
+            ? $b->button_color
+            : $b->title_color
+        )->toArray()
+    );
+
+    function applyNavColor(index) {
+        var color = bannerNavColors[index] || '';
+        jQuery('#main-banner-carousel')
+            .closest('.rs-slider')
+            .find('.owl-prev, .owl-next')
+            .css({ 'background-color': color, 'border-color': color });
+    }
+
+    function waitForOwl() {
+        var $carousel = jQuery('#main-banner-carousel');
+        if (!$carousel.hasClass('owl-loaded') || $carousel.find('.owl-prev').length === 0) {
+            setTimeout(waitForOwl, 100);
+            return;
+        }
+        applyNavColor(0);
+        $carousel.on('changed.owl.carousel', function (event) {
+            var total   = event.item.count;
+            var current = ((event.item.index - event.relatedTarget._clones.length / 2) % total + total) % total;
+            applyNavColor(current);
+        });
+    }
+
+    jQuery(document).ready(function () {
+        waitForOwl();
+    });
+})();
+</script>
+@endpush

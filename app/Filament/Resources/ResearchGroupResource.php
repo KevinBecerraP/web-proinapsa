@@ -11,8 +11,17 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
+use App\Filament\Traits\HasRoleAccess;
+
 class ResearchGroupResource extends Resource
 {
+    use HasRoleAccess;
+
+    public static function canViewAny(): bool    { return static::canAccessContent(); }
+    public static function canCreate(): bool     { return static::canAccessContent(); }
+    public static function canEdit($record): bool   { return static::canAccessContent(); }
+    public static function canDelete($record): bool { return static::canAccessContent(); }
+    public static function shouldRegisterNavigation(): bool { return static::canAccessContent(); }
     protected static ?string $model = ResearchGroup::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-beaker';
@@ -30,10 +39,6 @@ class ResearchGroupResource extends Resource
     /**
      * Only allow creating if there are no records (Singleton)
      */
-    public static function canCreate(): bool
-    {
-        return ResearchGroup::count() === 0;
-    }
 
     public static function form(Form $form): Form
     {

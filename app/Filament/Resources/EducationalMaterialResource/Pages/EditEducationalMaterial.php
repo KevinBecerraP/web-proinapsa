@@ -5,9 +5,12 @@ namespace App\Filament\Resources\EducationalMaterialResource\Pages;
 use App\Filament\Resources\EducationalMaterialResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditEducationalMaterial extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = EducationalMaterialResource::class;
 
     // Validar permiso para editar

@@ -5,9 +5,12 @@ namespace App\Filament\Resources\ResearchGroupResource\Pages;
 use App\Filament\Resources\ResearchGroupResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use App\Filament\Traits\RedirectsToIndex;
 
 class EditResearchGroup extends EditRecord
 {
+    use RedirectsToIndex;
+
     protected static string $resource = ResearchGroupResource::class;
 
     // Validar permiso para editar
