@@ -59,18 +59,21 @@
 
     <!-- Mision -->
     @if ($company?->mission_title || $company?->mission_description)
+        @if ($company->mission_image_url)
+        <style>
+            .rs-cta.style2 .partition-bg-wrap.inner-page:before,
+            .rs-cta.style2 .partition-bg-wrap.inner-page:after {
+                background: none;
+            }
+        </style>
+        @endif
         <div class="rs-cta style2">
             <div class="partition-bg-wrap inner-page">
                 <div class="container">
                     <div class="row y-bottom">
-                        @if ($company->video_link)
+                        @if ($company->mission_image_url)
                             <div class="col-lg-6 pb-50 md-pt-70 md-pb-70">
-                                <div class="video-wrap">
-                                    <a class="popup-videos" href="{{ $company->video_link }}">
-                                        <i class="fa fa-play"></i>
-                                        <h4 class="title mb-0">{{ $company->business_name }}</h4>
-                                    </a>
-                                </div>
+                                <img src="{{ $company->mission_image_url }}" alt="{{ $company->mission_title }}" style="width:100%;height:auto;object-fit:cover;">
                             </div>
                             <div class="col-lg-6 pl-62 pt-134 pb-150 md-pt-50 md-pb-50 md-pl-15">
                             @else
