@@ -196,6 +196,7 @@ class AreaResource extends Resource
                                 Forms\Components\ColorPicker::make('formal_education_color')
                                     ->label('Color de tarjeta')
                                     ->placeholder('#000000')
+                                    ->hidden()
                                     ->prefixIcon('heroicon-o-paint-brush'),
 
                                 Forms\Components\Textarea::make('formal_education_description')
@@ -230,6 +231,7 @@ class AreaResource extends Resource
                                 Forms\Components\ColorPicker::make('non_formal_education_color')
                                     ->label('Color de tarjeta')
                                     ->placeholder('#000000')
+                                    ->hidden()
                                     ->prefixIcon('heroicon-o-paint-brush'),
 
                                 Forms\Components\Textarea::make('non_formal_education_description')
@@ -264,6 +266,7 @@ class AreaResource extends Resource
                                 Forms\Components\ColorPicker::make('educational_materials_color')
                                     ->label('Color de tarjeta')
                                     ->placeholder('#000000')
+                                    ->hidden()
                                     ->prefixIcon('heroicon-o-paint-brush'),
 
                                 Forms\Components\Textarea::make('educational_materials_description')
